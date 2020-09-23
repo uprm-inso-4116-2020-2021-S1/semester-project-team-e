@@ -1,5 +1,6 @@
 from flask import jsonify
 from handler.utils import to_specified_format, CREATED, OK, BAD_REQUEST
+from entity.team import Team
 
 TEAM_FORMAT = []
 
@@ -23,6 +24,8 @@ class TeamHandler:
 
     #TODO
     def get(self, id):
-        return
+        team = TeamDAO().get(id)
+        team_obj = Team(team[0], team[1], team[2], team[3])
+        return team_obj
 
     
