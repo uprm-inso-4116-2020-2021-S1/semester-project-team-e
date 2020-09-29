@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, json
 from flask_cors import CORS
 
 from handler.team import TeamHandler
@@ -36,13 +36,14 @@ def login():
 @app.route('/team', methods = [GET, POST])
 def addTeam():
     if request.method == POST:
+        print(request.json)
         return TeamHandler().add(request.json)
     elif request.args:
         return TeamHandler().search(request.args)
     else:
         return TeamHandler().getAll()
 
-@app.route('/team/<int: id>', methods = [GET, PUT, DELETE] )
+@app.route('/team/<int:tid>', methods = [GET, PUT, DELETE] )
 def getTeamByID(tid):
     if request.method == PUT:
         return TeamHandler().edit(tid, request.json)
@@ -69,7 +70,7 @@ def addPlayer():
         # return PlayerHandler().getAll()
         return 'Get all players'
 
-@app.route('/player<int: id', methods = [GET, PUT, DELETE])
+@app.route('/player<int:tid>', methods = [GET, PUT, DELETE])
 def getPlayerByID(id):
     if request.method == PUT:
         # return PlayerHandler().edit(id, request.json)
