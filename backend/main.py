@@ -1,5 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, json
 from flask_cors import CORS
+
+from handler.team import TeamHandler
 
 app = Flask(__name__)
 CORS(app)
@@ -34,26 +36,21 @@ def login():
 @app.route('/team', methods = [GET, POST])
 def addTeam():
     if request.method == POST:
-        # return TeamHandler().add(request.json)
-        return 'Add a new team'
+        print(request.json)
+        return TeamHandler().add(request.json)
     elif request.args:
-        # return TeamHandler().search(request.args)
-        return 'Search for teams by keywords'
+        return TeamHandler().search(request.args)
     else:
-        # return TeamHandler().getAll()
-        return 'Get all teams'
+        return TeamHandler().getAll()
 
-@app.route('/team/<int: id>', methods = [GET, PUT, DELETE] )
-def getTeamByID(id):
+@app.route('/team/<int:tid>', methods = [GET, PUT, DELETE] )
+def getTeamByID(tid):
     if request.method == PUT:
-        # return TeamHandler().edit(id, request.json)
-        return 'Edit team by id'
+        return TeamHandler().edit(tid, request.json)
     elif request.method == DELETE:
-        # return TeamHandler().delete(id)
-        return 'Delete team by id'
+        return TeamHandler().delete(tid)
     else:
-        # return TeamHandler().get(id)
-        return 'Get team by id'
+        return TeamHandler().get(tid)
 
 @app.route('/team/compare')
 def compareTeam():
@@ -73,7 +70,7 @@ def addPlayer():
         # return PlayerHandler().getAll()
         return 'Get all players'
 
-@app.route('/player<int: id', methods = [GET, PUT, DELETE])
+@app.route('/player<int:tid>', methods = [GET, PUT, DELETE])
 def getPlayerByID(id):
     if request.method == PUT:
         # return PlayerHandler().edit(id, request.json)
