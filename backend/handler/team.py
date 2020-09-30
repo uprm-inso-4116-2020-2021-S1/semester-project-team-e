@@ -1,5 +1,5 @@
 from flask import jsonify
-from handler.utils import CREATED, OK, BAD_REQUEST
+from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
 from dao.team import TeamDAO
 from entitiy.team import Team
 # from backend.team.services import compareTeam
@@ -36,6 +36,7 @@ class TeamHandler:
         team_obj = [ Team(team[0], team[1], team[2], team[3]) for team in teams ]
         return jsonify(Teams = [ team.__dict__ for team in team_obj ]), OK
 
+    #TODO: finish implementing
     def compare(self, args):
         team_id1 = args.get("id1")
         team_id2 = args.get("id2")
@@ -52,4 +53,17 @@ class TeamHandler:
             return jsonify(Error = 'Unexpected attributes in post request'), BAD_REQUEST
 
     def search(self, args):
-        return
+        team_name = args.get("keyword")
+        sport_name = args.get("sport_name")
+        dao = TeamDAO()
+        teams = []
+        if (len(args) == 2) and team_name and sport_name:
+            teams = dao.getByNameAndSport(team_name, sport_name)
+        elif (len(args) == 1) and team_name:
+            teams = dao.getByName(team_name)
+        elif (len(args) == 1) and sport_name:
+            teams = dao.getBySport(sport_name)
+        else:
+            return jsonify(Error = 'Malformed query string'), NOT_FOUND
+        team_obj = [ Team(team[0], team[1], team[2], team[3]) for team in teams ]
+        return jsonify(Teams = [ team.__dict__ for team in team_obj ]), OK

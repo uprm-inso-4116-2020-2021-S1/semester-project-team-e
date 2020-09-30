@@ -54,7 +54,7 @@ def getTeamByID(tid):
 
 @app.route('/team/compare')
 def compareTeam():
-    return TeamHandler().compare(request.args)
+    # return TeamHandler().compare(request.args)
     return 'Compare two teams'
 
 # Player routes

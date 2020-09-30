@@ -30,10 +30,13 @@ class TeamDAO:
         return [ team for team in team_dummy_data if team[0] != tid ]
 
     def getBySport(self, sport_name):
-        pass
+        # TODO: Connect to database and make query
+        return [ team for team in team_dummy_data if team[3] == sport_name]
 
     def getByName(self, team_name):
-        pass
+        # TODO: Connect to database and make query
+        return [ team for team in team_dummy_data if team[1] == team_name]
 
-
-
+    def getByNameAndSport(self, team_name, sport_name):
+        # TODO: Connect to database and make query
+        return [ team for team in team_dummy_data if (team[3] == sport_name and team[1] == team_name) ]
