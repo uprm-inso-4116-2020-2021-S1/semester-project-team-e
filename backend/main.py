@@ -1,7 +1,7 @@
 from flask import Flask, request, json
 from flask_cors import CORS
-
-from handler.team import TeamHandler
+from team.teamHandler import TeamHandler
+from handler.user import User
 
 app = Flask(__name__)
 CORS(app)
@@ -29,14 +29,12 @@ def registerPlayer():
 # Login
 @app.route('/login', methods = [POST])
 def login():
-    # return UserHandler().login(request.json)
-    return 'Login page'
+    return User().login(request.json)
 
 # Team routes
 @app.route('/team', methods = [GET, POST])
 def addTeam():
     if request.method == POST:
-        print(request.json)
         return TeamHandler().add(request.json)
     elif request.args:
         return TeamHandler().search(request.args)
