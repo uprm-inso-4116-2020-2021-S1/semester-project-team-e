@@ -1,15 +1,17 @@
 from flask import jsonify
 from handler.utils import OK, BAD_REQUEST, CREATED
 from passlib.hash import sha256_crypt
-from dao.user import UserDAO
+from manager.managerRepository import ManagerRepository
+from manager.manager import Manager
 
-class User:
+class ManagerHandler:
     def register(self, json):
         if json['username'] and json['email'] and json['password']:
-            if not UserDAO.get(json['username']):
+            if not ManagerRepository().get(json['username']):
                 json['password'] = sha256_crypt.hash(json['password']) 
-                user = UserDAO.add(json)
-                return jsonify(isAuth = True, UserID = user[0], Username = user[1]), CREATED
+                new_manager = Manager(0, json['username'], json['email'], json['password'])
+                manager = ManagerRepository().add(new_manager)
+                return jsonify(isAuth = True, UserID = manager.user_id, Username = manager.username), CREATED
             else:
                 return jsonify(Error = 'Username already in use'), BAD_REQUEST
         else:
@@ -18,9 +20,9 @@ class User:
 
     def login(self, json):
         if json['username'] and json['password']:
-            user = UserDAO().get(json['username'])
-            if sha256_crypt.verify(json['password'], user[3]):
-                return jsonify(IsAuth = True, UserID = user[0], Username = user[1]), OK
+            manager = ManagerRepository().get(json['username'])
+            if sha256_crypt.verify(json['password'], manager.password):
+                return jsonify(IsAuth = True, UserID = manager.user_id, Username = manager.username), OK
             else:
                 return jsonify(IsAuth = False), OK
         else:
