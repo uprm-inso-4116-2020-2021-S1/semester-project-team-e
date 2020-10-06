@@ -1,7 +1,8 @@
 from flask import Flask, request, json
 from flask_cors import CORS
 from team.teamHandler import TeamHandler
-from handler.user import User
+from player.playerHandler import PlayerHandler
+
 
 app = Flask(__name__)
 CORS(app)
@@ -65,10 +66,10 @@ def addPlayer():
         # return PlayerHandler().search(request.args)
         return 'Search players by id'
     else:
-        # return PlayerHandler().getAll()
-        return 'Get all players'
+        return PlayerHandler().getAll()
+        # return 'Get all players'
 
-@app.route('/player<int:tid>', methods = [GET, PUT, DELETE])
+@app.route('/player<int:id>', methods = [GET, PUT, DELETE])
 def getPlayerByID(id):
     if request.method == PUT:
         # return PlayerHandler().edit(id, request.json)
@@ -77,8 +78,8 @@ def getPlayerByID(id):
         # return PlayerHandler().delete(id)
         return 'Delete player by id'
     else:
-        # return PlayerHandler.get(id)
-        return 'Get player by id'
+        return PlayerHandler().get(id)
+        # return 'Get player by id'
 
 @app.route('/player/compare')
 def comaprePlayer():
