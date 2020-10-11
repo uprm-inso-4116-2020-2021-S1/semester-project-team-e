@@ -9,17 +9,25 @@ class TeamRepository:
         # self.conn = generic_db_connect()
         pass
 
-    def getAll(self):
+    '''def getAll(self):
         # TODO: Connect to database and make query
-        team = [team for team in team_dummy_data][0]
-        teamStats = SoccerTeamDAO().getAll()
-        count = 0
-        for team in team:
-            for newTeamStats in teamStats:
-                if newTeamStats[1] == SoccerTeamDAO.getByid(team[0]):
-                    team.push(teamStats[count])
-                count += 1
-        return  [ Team(team[0], team[1], team[2], team[3]) for team in team_dummy_data ]
+        teams = [team for team in team_dummy_data]
+
+        for index, team in enumerate(teams):
+            team = list(team)
+            team.append(SoccerTeamDAO().getByTeamid(team[0])[0].__dict__)
+            print(SoccerTeamDAO().getByTeamid(team[0]))
+            print(team[0])
+            teams[index] = team
+
+        return  [ Team(team[0], team[1], team[2], team[3], team[4]) for team in teams]'''
+
+    def getAll(self):
+        team_tup = [team for team in team_dummy_data]
+        team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        for team in team_obj:
+            team.sportStatistic = SoccerTeamDAO().getByTeamid(team.team_id)
+        return team_obj
 
     def get(self, tid):
         # TODO: Connect to database and make query

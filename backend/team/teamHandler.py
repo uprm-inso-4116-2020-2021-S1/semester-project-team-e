@@ -2,12 +2,14 @@ from flask import jsonify
 from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
 from team.teamRepository import TeamRepository
 from team.team import Team
+from handler.utils import intoJSON
 # from backend.team.services import compareTeam
 
 class TeamHandler:
+
     def getAll(self):
         teams = TeamRepository().getAll()
-        return jsonify(Teams = [ team.__dict__ for team in teams ]), OK
+        return jsonify(Teams = [ intoJSON(team) for team in teams ]), OK
 
     def add(self, json):
         if json['team_name'] and json['team_info'] and json['sport_name']:
