@@ -4,3 +4,4 @@ class Team():
         self.team_name = team_name
         self.team_info = team_info
         self.sport_name = sport_name
+

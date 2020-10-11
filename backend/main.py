@@ -1,7 +1,7 @@
 from flask import Flask, request, json
 from flask_cors import CORS
 from team.teamHandler import TeamHandler
-from handler.user import User
+#from handler.user import User
 
 app = Flask(__name__)
 CORS(app)
@@ -85,3 +85,5 @@ def comaprePlayer():
     # return PlayerHandler().compare(request.args)
     return 'Compare two player'
 
+if __name__ == '__main__':
+    app.run()
