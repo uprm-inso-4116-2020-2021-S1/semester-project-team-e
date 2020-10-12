@@ -33,7 +33,7 @@ class TeamHandler:
 
     def get(self, tid):
         team = TeamRepository().get(tid)
-        return jsonify(Teams = team.__dict__), OK
+        return jsonify(Teams = intoJSON(team)), OK
 
     def search(self, args):
         team_name = args.get("keyword")
@@ -48,4 +48,4 @@ class TeamHandler:
             teams = repository.getBySport(sport_name)
         else:
             return jsonify(Error = 'Malformed query string'), NOT_FOUND
-        return jsonify(Teams = [ team.__dict__ for team in teams ]), OK
+        return jsonify(Teams = [ intoJSON(team) for team in teams ]), OK

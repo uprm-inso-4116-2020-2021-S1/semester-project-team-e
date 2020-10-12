@@ -18,7 +18,7 @@ class TeamRepository:
 
     def get(self, tid):
         # TODO: Connect to database and make query
-        team_tup = [ team for team in team_dummy_data if team[0] == tid ][0]
+        team_tup = [ team for team in team_dummy_data if team[0] == tid ]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             team.sportStatistic = SoccerTeamDAO().getByTeamid(team.team_id)
