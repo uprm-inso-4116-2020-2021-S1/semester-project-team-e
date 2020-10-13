@@ -2,9 +2,6 @@ from flask import jsonify
 from player.player import Player
 from dao.dummy_data import player_dat
 
-
-
-
 class PlayerRepository:
     
     def getAll(self):
@@ -18,14 +15,13 @@ class PlayerRepository:
         else:
             return None
 
-    def add(self):
+    def add(self, player_info):
         return Player(**player_dat[2])
 
-
-    def edit(self):
+    def edit(self, player_info):
         return Player(**player_dat[1])
 
-    def delete(self):
+    def delete(self, player_id):
         return Player(**player_dat[0])
 
     def getBySportName(self, sport_name):

@@ -25,3 +25,9 @@ player_dat = [
     {'player_name' : 'udyr', 'height' : 4.56, 'weight' : 160, 'team_name' : 'Gatez', 'sport_name' : 'Breaching', 'team_sport_id' : 69, 'player_id' : 123456789},
     {'player_name' : 'profe', 'height' : 69, 'weight' : 420, 'team_name' : 'Team_OP', 'sport_name' : 'FastEating', 'team_sport_id' : 789, 'player_id' : 678},   
 ]
+
+soccer_dummy_data = [
+    (1, 'goalie', '2020', 1, 1, 5, 0, 0, 5, 0, 0, 0),
+    (2, 'field', '2020', 3, 2, 5, 1, 0, 5, 2, 3, 0),
+    (3, 'goalie', '2020', 4, 1, 5, 2, 1, 5, 1, 0, 0)
+]

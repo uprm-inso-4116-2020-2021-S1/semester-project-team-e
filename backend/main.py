@@ -60,29 +60,25 @@ def compareTeam():
 @app.route('/player', methods = [GET, POST])
 def addPlayer():
     if request.method == POST:
-        # return PlayerHandler().add(request.json)
-        return 'Add a new player'
+        return PlayerHandler().add(request.get_json())        
     elif request.args:
-        # return PlayerHandler().search(request.args)
-        return 'Search players by id'
+        return PlayerHandler().search(request.args)                        
     else:
         return PlayerHandler().getAll()
-        # return 'Get all players'
+        
 
 @app.route('/player<int:id>', methods = [GET, PUT, DELETE])
 def getPlayerByID(id):
     if request.method == PUT:
-        # return PlayerHandler().edit(id, request.json)
-        return 'Edit player by id'
+        return PlayerHandler().edit(request.get_json(), id)        
     elif request.method == DELETE:
-        # return PlayerHandler().delete(id)
-        return 'Delete player by id'
+        return PlayerHandler().delete(id)
     else:
         return PlayerHandler().get(id)
-        # return 'Get player by id'
+        
 
-@app.route('/player/compare')
+@app.route('/player/compare,<int:player_1>,<int:player_2>')
 def comaprePlayer():
     # return PlayerHandler().compare(request.args)
-    return 'Compare two player'
+    return PlayerHandler().compare_players(player_1, player_2)
 

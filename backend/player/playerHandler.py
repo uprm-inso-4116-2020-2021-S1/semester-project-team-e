@@ -1,3 +1,4 @@
+import json
 from typing import List, Dict
 from player.player import Player
 from player.playerRepository import PlayerRepository
@@ -26,8 +27,9 @@ class PlayerHandler:
                 PlayerRepository().add(player)
                 return jsonify(Player=player.__dict__), CREATED
 
-    def edit(self, json_obj: Dict):
-        for entryn in json_obj.keys():
+    def edit(self, json_obj: Dict, player_id: int):
+        # TODO Fix this, no tiene el id que se quiere editar o decide si lo buscas internamente                
+        for entry in json_obj.keys():
             if entry not in PlayerHandler.player_dummy.__dict__.keys():
                 return jsonify(Error='Unexpected attributes in post.'), BAD_REQUEST
             else:
@@ -59,5 +61,7 @@ class PlayerHandler:
         except:
             return jsonify(Error='Invalid player attributes for search.'), NOT_FOUND
 
-        
+    def compare_players(player_1, player_2):
+        pass
+
 
