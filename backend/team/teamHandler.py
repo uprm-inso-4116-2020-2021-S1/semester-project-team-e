@@ -9,13 +9,13 @@ class TeamHandler:
 
     def getAll(self):
         teams = TeamRepository().getAll()
-        return jsonify(Teams = [ intoJSON(team) for team in teams ]), OK
+        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def add(self, json):
         if json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(0, json['team_name'], json['team_info'], json['sport_name'])
             team = TeamRepository().add(new_team)
-            return jsonify(Team = team.__dict__), CREATED
+            return jsonify(Team = team.serialize()), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
@@ -23,17 +23,17 @@ class TeamHandler:
         if json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(tid, json['team_name'], json['team_info'], json['sport_name'])
             team = TeamRepository().edit(new_team)
-            return jsonify(Teams = team.__dict__), OK 
+            return jsonify(Teams = team.serialize()), OK 
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
     def delete(self, tid):
         team = TeamRepository().delete(tid)
-        return jsonify(Teams = team.__dict__), OK
+        return jsonify(Teams = team.serialize()), OK
 
     def get(self, tid):
         team = TeamRepository().get(tid)
-        return jsonify(Teams = intoJSON(team)), OK
+        return jsonify(Teams = team.serialize()), OK
 
     def search(self, args):
         team_name = args.get("keyword")
@@ -48,4 +48,4 @@ class TeamHandler:
             teams = repository.getBySport(sport_name)
         else:
             return jsonify(Error = 'Malformed query string'), NOT_FOUND
-        return jsonify(Teams = [ intoJSON(team) for team in teams ]), OK
+        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
