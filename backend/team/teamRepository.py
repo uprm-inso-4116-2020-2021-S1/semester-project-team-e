@@ -14,7 +14,7 @@ class TeamRepository:
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
-            # team.managers = ManagerDAO().getByTeamID()
+            team.managers = ManagerDAO().getByTeamID(team.team_id)
         return team_obj
 
     def get(self, tid):
@@ -24,8 +24,8 @@ class TeamRepository:
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
-            # team.managers = ManagerDAO().getByTeamID()
-        return team_obj
+            team.managers = ManagerDAO().getByTeamID(team.team_id)
+        return team_obj[0]
 
     def add(self, team):
         # TODO: Connect to database and make query
@@ -56,7 +56,7 @@ class TeamRepository:
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
-            # team.managers = ManagerDAO().getByTeamID()
+            team.managers = ManagerDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getByNameAndSport(self, team_name, sport_name):
@@ -66,5 +66,5 @@ class TeamRepository:
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
-            # team.managers = ManagerDAO().getByTeamID()
+            team.managers = ManagerDAO().getByTeamID(team.team_id)
         return team_obj
