@@ -2,6 +2,7 @@
 from dao.dummy_data import team_dummy_data, tid_count
 from team.team import Team
 from soccerTeam.TeamStatisticFactory import TeamStatisticDAOFactory
+from manager.managerRepository import ManagerDAO
 
 class TeamRepository:
     def __init__(self):
@@ -13,6 +14,7 @@ class TeamRepository:
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
+            # team.managers = ManagerDAO().getByTeamID()
         return team_obj
 
     def get(self, tid):
@@ -20,9 +22,9 @@ class TeamRepository:
         team_tup = [ team for team in team_dummy_data if team[0] == tid ]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
-            # User DAO factory to get statistics???
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
+            # team.managers = ManagerDAO().getByTeamID()
         return team_obj
 
     def add(self, team):
@@ -52,9 +54,9 @@ class TeamRepository:
         team_tup = [ team for team in team_dummy_data if team[1] == team_name]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
-            # User DAO factory to get statistics???))
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
+            # team.managers = ManagerDAO().getByTeamID()
         return team_obj
 
     def getByNameAndSport(self, team_name, sport_name):
@@ -62,7 +64,7 @@ class TeamRepository:
         team_tup = [ team for team in team_dummy_data if (team[3] == sport_name and team[1] == team_name) ]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
-            # User DAO factory to get statistics???
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
+            # team.managers = ManagerDAO().getByTeamID()
         return team_obj
