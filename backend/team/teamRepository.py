@@ -11,7 +11,7 @@ class TeamRepository:
 
     def getAll(self):
         #cursor = self.conn.cursor()
-        #query = "select id, team_name, info from team natural inner join team_sport order by;"
+        #query = "SELECT id, team_name, info from team natural inner join team_sport ORDER BY;"
         #cursor.execute(query)
         #result = cursor.fetchall()
         team_tup = [team for team in team_dummy_data]
