@@ -4,6 +4,7 @@ import './App.css';
 
 import Index from './pages/Index';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Switch>
           <Route path="/" component={Index} exact />
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
         </Switch>
       </BrowserRouter>
     </main>

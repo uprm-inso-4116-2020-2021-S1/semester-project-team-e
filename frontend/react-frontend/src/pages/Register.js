@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Row, Col, FormGroup, Label, Input, Button } from 'reactstrap';
-import {Link } from "react-router-dom";
 
-class Login extends Component {
+class Register extends Component {
     render() {
         const styles = {
-            loginBox:{
+            registerBox:{
                 borderRadius:4,
                 backgroundColor:'#ffffff',
                 boxShadow:'0 30px 60px 0 rgba(0,0,0,0.3)',
@@ -13,7 +12,7 @@ class Login extends Component {
                 paddingTop:20,
                 paddingBottom:20
             },
-            loginButton:{
+            registerButton:{
                 backgroundColor:'#0a1325',
                 color:'#ffffff'
             },
@@ -22,9 +21,13 @@ class Login extends Component {
             }
           };
         return <Row type="flex" justify="center" style={{ minHeight: '100vh', minWidth:300, alignContent:'center' }}>
-            <Col span={8} style={styles.loginBox}>
-            <h4 className="text-center">Login</h4>
+            <Col span={8} style={styles.registerBox}>
+            <h4 className="text-center">Register</h4>
                 <form>
+                    <FormGroup>
+                        <Label for="username">Username</Label>
+                        <Input type="text" name="username" id="user" placeholder="Enter username" />
+                    </FormGroup>
                     <FormGroup>
                         <Label for="exampleEmail">Email</Label>
                         <Input type="email" name="email" id="exampleEmail" placeholder="Enter email address" />
@@ -33,27 +36,22 @@ class Login extends Component {
                         <Label for="examplePassword">Password</Label>
                         <Input type="password" name="password" id="examplePassword" placeholder="Enter password" />
                     </FormGroup>
+                    <FormGroup>
+                        <Label for="examplePassword">Confirm Password</Label>
+                        <Input type="password" name="password" id="examplePassword" placeholder="Enter password again" />
+                    </FormGroup>
 
                     <Button
                         block
                         type="primary"
                         type="submit"
-                        className="login-form-button"
-                        style={styles.loginButton}
-                    >Log in
+                        className="register-form-button"
+                        style={styles.registerButton}
+                    >Register
                     </Button>
-                    <div className="mt-4">
-                        <div className="d-flex justify-content-center links">
-                            <a class="link" style={styles.link} href="#">Forgot your password?</a>
-                        </div>
-                        <div className="d-flex justify-content-center links">
-                            Don't have an account?
-                            <Link className="nav-link" style={styles.link} to="/register" className="ml-2" >Sign Up</Link>
-                        </div>
-                    </div>
                 </form>
             </Col>
         </Row>
     }
 }
-export default Login;
+export default Register;
