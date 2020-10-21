@@ -3,11 +3,11 @@ from dao.dummy_data import team_dummy_data, tid_count
 from team.team import Team
 from soccerTeam.soccerTeamDAO import SoccerTeamDAO
 from soccerTeam.soccerTeamStatistics import SoccerTeam
+from handler import utils
 
 class TeamRepository:
     def __init__(self):
-        # self.conn = generic_db_connect()
-        pass
+        self.conn = utils.connectDB()
 
     def getAll(self):
         #cursor = self.conn.cursor()
