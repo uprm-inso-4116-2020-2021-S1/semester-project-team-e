@@ -32,8 +32,8 @@ class TeamHandler:
         return jsonify(Teams = team.serialize()), OK
 
     def get(self, tid):
-        team = TeamRepository().get(tid)
-        return jsonify(Teams = team.serialize()), OK
+        teams = TeamRepository().get(tid)
+        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def search(self, args):
         team_name = args.get("keyword")
