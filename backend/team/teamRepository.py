@@ -12,11 +12,11 @@ class TeamRepository:
         self.conn = utils.connectDB()
 
     def getAll(self):
-        #cursor = self.conn.cursor()
-        #query = "SELECT id, team_name, info from team natural inner join team_sport ORDER BY;"
-        #cursor.execute(query)
-        #result = cursor.fetchall()
-        team_tup = [team for team in team_dummy_data]
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) ORDER BY team_name;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        team_tup = [team for team in result]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
