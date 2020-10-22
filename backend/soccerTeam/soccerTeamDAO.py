@@ -33,7 +33,7 @@ class SoccerTeamDAO:
         def getByTeamAndDate(self, team_name, date):
             cursor = self.conn.cursor()
             query = "SELECT soccer_team_statistics.id, team_sport_id, goals_for, goals_allowed, shots, shots_on_goal, saves, passes, possession, fouls, date FROM ((soccer_team_statistics JOIN team_sport ON team_sport_id = team_sport.id) JOIN team ON team_id = team.id) WHERE team.team_name = %s AND date = %s;"
-            cursor.execute(query, [team_name], date)
+            cursor.execute(query, [team_name], [date])
             team = cursor.fetchall()
             return [ SoccerTeam(teamStat[0], teamStat[1], teamStat[2], teamStat[3], teamStat[4], teamStat[5], teamStat[6], teamStat[7],teamStat[8], teamStat[9], teamStat[10]) for teamStat in team]
 
