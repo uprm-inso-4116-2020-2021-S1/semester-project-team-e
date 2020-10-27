@@ -70,4 +70,4 @@ class TeamRepository:
         return team_obj
 
     def getAvgStats(self, tid):
-        return [ avg_stat[1:] for avg_stat in soccer_team_avg_dummy_data if avg_stat[0] == tid ]
+        return next(avg_stat[1:] for avg_stat in soccer_team_avg_dummy_data if avg_stat[0] == tid)

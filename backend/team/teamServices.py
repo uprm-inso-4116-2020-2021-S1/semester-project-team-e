@@ -3,7 +3,7 @@ SOCCER_COMPATISON_STAT_FORMAT = ['win_count', 'draw_count', 'loss_count', 'avg_g
 
 class TeamService:
     @staticmethod
-    def Comparison(tid1, tid2):
+    def comparison(tid1, tid2):
         #Percent of statistics of all stat for team
         stats1 = TeamRepository().getAvgStats(tid1)
         stats2 = TeamRepository().getAvgStats(tid2)
@@ -12,7 +12,7 @@ class TeamService:
 
         #Most favored to win
         points = {'t1':0, 't2':0}
-        for i in range(stats1.len):
+        for i in range(len(stats1)):
             if stats1[i] > stats2[i]:
                 points['t1'] += 1
             else:
