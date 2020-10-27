@@ -39,3 +39,11 @@ soccer_team_dummy_data = [
     (7, 'lake', 30, 2, 3, 45, 5, 65, 67, '2016'),
     (8, 'xd', 7, 12, 23, 9, 35, 84, 67, '2018'),
 ]
+
+# (tid, wins, draws, loss, goals_for, goals_allowed, goal_difference, points)
+soccer_team_avg_dummy_data = [
+    (1, 2, 3, 2, 3, 4, 5, 1),
+    (2, 1, 4, 2, 2, 5, 5, 0.2),
+    (4, 2, 3, 3, 4, 6, 5, 1.2),
+    (3, 2, 4, 2, 5, 4, 5, 0.5),
+]
