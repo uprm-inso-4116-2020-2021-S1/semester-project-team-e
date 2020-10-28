@@ -1,8 +1,9 @@
 from flask import jsonify
-from handler.utils import OK, BAD_REQUEST, CREATED
+from handler.utils import OK, BAD_REQUEST, CREATED, NOT_FOUND
 from passlib.hash import sha256_crypt
 from manager.managerRepository import ManagerDAO
 from manager.manager import Manager
+from flask_jwt_extended import create_access_token
 
 class ManagerHandler:
     def register(self, json):
@@ -21,9 +22,10 @@ class ManagerHandler:
     def login(self, json):
         if json['username'] and json['password']:
             manager = ManagerDAO().get(json['username'])
-            if sha256_crypt.verify(json['password'], manager.password):
-                return jsonify(IsAuth = True, UserID = manager.user_id, Username = manager.username), OK
+            if manager and sha256_crypt.verify(json['password'], manager.password):
+                access_token = create_access_token(identity=manager.username)
+                return jsonify(access_token = access_token), OK
             else:
-                return jsonify(IsAuth = False), OK
+                return jsonify(Error = 'user not found'), NOT_FOUND 
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
