@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 
 class Header extends Component {
     render() {
         return (
     <header className="masthead mt-auto">
         <div className="inner">
-            <h3 className="masthead-brand">Sports Tracking (*tittle in progress)</h3>
+            <h3 className="masthead-brand">Sports Tracking </h3>
             <nav className="nav nav-masthead justify-content-center">
-                <a className="nav-link active" href="#">Home</a>
-                <a className="nav-link" href="#">Sports</a>
+                <Link className="nav-link active" to="/">Home</Link>
+                <Link className="nav-link" to="/listSports">Sports</Link>
                 <a className="nav-link" href="#">Teams</a>
-                <a className="nav-link" href="#">Log in/ Sign In</a>
-                <a className="nav-link" href="#">Contact</a>
+                <Link className="nav-link" to="/listPlayers">Players</Link>
+                <Link className="nav-link" to="login">Log in/ Sign In</Link>
             </nav>
         </div>
     </header>

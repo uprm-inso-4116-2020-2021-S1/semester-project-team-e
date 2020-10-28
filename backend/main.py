@@ -1,7 +1,6 @@
 from flask import Flask, request, json
 from flask_cors import CORS
 from team.teamHandler import TeamHandler
-import time
 
 app = Flask(__name__)
 CORS(app)
@@ -14,10 +13,6 @@ GET = 'GET'
 @app.route('/home')
 def home():
     return 'Home page'
-
-@app.route('/time')
-def get_current_time():
-    return {'time': time.time()}
 
 # Register routes
 @app.route('/register/manager', methods = [POST])
