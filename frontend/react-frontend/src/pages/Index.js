@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
 import {Link } from "react-router-dom";
+import Header from "../Components/header"
 import './Index.css';
 
 class Index extends Component {
     render() {
         return <div className="text-center">
             <div className="cover-container d-flex h-100 p-3 mx-auto flex-column">
-                <header className="masthead mb-auto">
-                    <div className="inner">
-                        <h3 className="masthead-brand">Sports Tracking</h3>
-                        <nav className="nav nav-masthead justify-content-center">
-                            <a className="nav-link active" href="#">Home</a>
-                            <Link className="nav-link" to="/listSports">Sports</Link>
-                            <a className="nav-link" href="#">Teams</a>
-                            <a className="nav-link" href="#">Players</a>
-                            <Link className="nav-link" to="login">Log in/ Sign In</Link>
-                        </nav>
-                    </div>
-                </header>
+                <Header/>
 
                 <div role="main" className="inner cover">
                     <h1 className="cover-heading">Sports Tracker</h1>
