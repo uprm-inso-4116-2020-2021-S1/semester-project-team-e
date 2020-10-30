@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import ListSport from "./pages/ListSport";
 import ListPlayers from "./pages/ListPlayers";
 import ListTeams from "./pages/ListTeams";
+import TeamProfile from "./pages/teamProfile";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/listSports" component={ListSport}/>
           <Route path="/teams" component={ListTeams}/>
+          <Route path="/team/:teamId" component={TeamProfile}/>
           <Route path="/listPlayers" component={ListPlayers}/>
         </Switch>
       </BrowserRouter>

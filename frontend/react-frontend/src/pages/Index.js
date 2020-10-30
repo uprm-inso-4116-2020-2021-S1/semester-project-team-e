@@ -5,7 +5,7 @@ import './Index.css';
 
 class Index extends Component {
     render() {
-        return <div className="text-center">
+        return (<div className="text-center">
             <div className="cover-container d-flex h-100 p-3 mx-auto flex-column">
                 <Header/>
 
@@ -24,6 +24,7 @@ class Index extends Component {
                 </footer>
             </div>
         </div>
+        );
     }
 }
 
