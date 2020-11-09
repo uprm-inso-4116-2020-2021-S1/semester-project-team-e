@@ -34,13 +34,14 @@ class PlayerHandler:
                 return jsonify(Error='Unexpected attributes in post.'), BAD_REQUEST
             else:
                 player: Player
-                player = Player(**json_obj)
-                player = PlayerRepository().edit(player)
-                return jsonify(Player=player.__dict__), OK
+                player = Player(**json_obj)                
+                print(f'After the edit was made: {PlayerRepository().edit(player)}')
+                return jsonify(Player=vars(PlayerRepository().get(player_id))), OK
 
     def delete(self, player_id):
         player: Player
-        player = PlayerRepository().delete(player_id)
+        player = PlayerRepository().get(player_id)
+        PlayerRepository().delete(player_id)
         if player:
             return jsonify(Player=player.__dict__), OK
         else:
