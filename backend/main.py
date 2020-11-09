@@ -1,6 +1,7 @@
 from flask import Flask, request, json
 from flask_cors import CORS
 from team.teamHandler import TeamHandler
+from manager.managerHandler import ManagerHandler
 
 app = Flask(__name__)
 CORS(app)
@@ -15,10 +16,10 @@ def home():
     return 'Home page'
 
 # Register routes
-@app.route('/register/manager', methods = [POST])
+@app.route('/register', methods = [POST])
 def registerManager():
-    # return ManagerHandler().register(request.json)
-    return 'Register as a manager'
+    print(request.json)
+    return ManagerHandler().register(request.json)
 
 @app.route('/register/player', methods = [POST])
 def registerPlayer():

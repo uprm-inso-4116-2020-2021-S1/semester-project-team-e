@@ -1,8 +1,52 @@
 import React, { Component } from 'react';
 import { Row, Col, FormGroup, Label, Input, Button } from 'reactstrap';
 import {Link } from "react-router-dom";
+import axios from "axios";
 
 class Login extends Component {
+
+    state = {
+        email: '',
+        password: ''
+    }
+
+     handleChange = event => {
+    this.setState({
+        [event.target.name]: event.target.value,
+        [event.target.name]: event.target.value
+    });
+  }
+
+
+
+    handleSubmit = event => {
+        // const onSuccess = ({data}) => {
+        //   setClientToken(data.token);
+        //   this.setState({isLoading: false, isAuthorized: true});
+        // };
+        //
+        // const onFailure = error => {
+        //   console.log(error && error.response);
+        //   this.setState({errors: error.response.data, isLoading: false});
+        // };
+        event.preventDefault();
+        axios.post(`/login`, {
+            email: this.state.email,
+            password: this.state.password
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+          .then(res => {
+            const accessToken = res.data.access_token
+            console.log(res);
+            console.log(res.data);
+            console.log(res.status);
+      })
+
+    }
+
     render() {
         const styles = {
             loginBox:{

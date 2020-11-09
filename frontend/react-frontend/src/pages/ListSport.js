@@ -1,35 +1,52 @@
 import React, { Component } from 'react';
-import Table from '../Components/TableComponent'
-import schemaSports from '../Components/schemaSports.json';
-import data from '../Components/data.json'
-import {Col, Row} from "reactstrap";
 import Header from "../Components/header";
+import BootstrapTable from "react-bootstrap-table-next";
+
 
 class ListSport extends Component {
+
+    state = {
+        loading: false,
+        sports: [{
+            text: 'Soccer'
+        },
+        {
+            text: 'Basketball'
+        }],
+        columns: [{
+            dataField: 'text',
+            text: 'Sport'
+        }]
+    };
+
     render() {
-        const styles = {
-            container:{
-                height: '500px',
-                width: '1200px'
-            },
-            table:{
-                height: '700px',
-                width: '1200px',
-                margin_left: 'auto',
-                position: 'absolute',
-                top: '150px',
-                right: '300px',
-                left: '310px'
-            }
-          }
-        return<div className="container p-2" >
-            <Header/>
-      <div className="row">
-        <div className="col" style = {styles.table}>
-          <Table headers={Object.keys(schemaSports)} rows={data} />
-        </div>
-      </div>
-    </div>
+        if (this.state.loading) {
+            return <div className="container p-2">
+                <Header/>
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        return (
+            <div className="container p-2">
+                <Header/>
+                <div>
+                    <div class="row" className="hdr">
+                        <div class="col-sm-12 btn btn-info">
+                            Sports
+                        </div>
+                    </div>
+                    <div style={{marginTop: 20, backgroundColor: "white"}}>
+                        <BootstrapTable bordered striped hover variant="dark" keyField='team_id'
+                                        data={this.state.sports} columns={this.state.columns}></BootstrapTable>
+                    </div>
+                </div>
+            </div>
+        )
     }
 }
 export default ListSport;
