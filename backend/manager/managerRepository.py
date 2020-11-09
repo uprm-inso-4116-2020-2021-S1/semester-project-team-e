@@ -4,8 +4,11 @@ from manager.manager import Manager
 class ManagerDAO:
     def get(self, username):
         # TODO: Connect to database and make query 
-        manager = [ user for user in users_dummy_data if user[1] == username ][0]
-        return Manager(manager[0], manager[1], manager[2], manager[3], manager[4])
+        manager = next(iter([ user for user in users_dummy_data if user[1] == username ]), None)
+        if manager:
+            return Manager(manager[0], manager[1], manager[2], manager[3], manager[4])
+        else:
+            return None
 
     def getByTeamID(self, tid):
         manager_ids = [ manage[0] for manage in manages if manage[1] == tid]

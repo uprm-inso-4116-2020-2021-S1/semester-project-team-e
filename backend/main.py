@@ -21,8 +21,7 @@ def home():
 # Register routes
 @app.route('/register/manager', methods = [POST])
 def registerManager():
-    # return ManagerHandler().register(request.json)
-    return 'Register as a manager'
+    return ManagerHandler().register(request.json)
 
 @app.route('/register/player', methods = [POST])
 def registerPlayer():
