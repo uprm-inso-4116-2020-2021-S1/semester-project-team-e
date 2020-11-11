@@ -37,5 +37,5 @@ class ManagerHandler:
             return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
 
     def delete(self, userid):
-        user = ManagerDAO().delete(userid)
+        manager = ManagerDAO().delete(userid)
         return jsonify(Manager=manager.serialize()), OK
