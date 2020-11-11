@@ -54,7 +54,7 @@ class TeamHandler:
         return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
 
-    def addTeamStat(self, json):                                                                                        #only team statistic part json
+    def addTeamStat(self, json):                                                                                        #only team statistic part json, only works for 1 sport, have to incorporate team statistic factory for more sports
         if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
             new_teamStat = SoccerTeam(0, json['team_id'], json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
             stat = SoccerTeamDAO().add(new_teamStat)

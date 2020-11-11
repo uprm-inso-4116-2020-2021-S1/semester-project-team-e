@@ -58,7 +58,7 @@ class TeamRepository:
 
     def delete(self, tid):
         cursor = self.conn.cursor()
-        query = "DELETE FROM tean WHERE id = %s;"
+        query = "DELETE FROM team WHERE id = %s;"
         cursor.execute(query, (tid))
         return
 
