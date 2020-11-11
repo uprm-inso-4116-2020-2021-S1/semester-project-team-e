@@ -25,3 +25,17 @@ class ManagerDAO:
         # TODO: Connect to database and make query
          newTeam = Manager(uid_count, manager.username, manager.email, manager.password, manager.full_name)
          return newTeam
+
+    def delete(self, user_id):
+        cursor = self.conn.cursor()
+        query = ""
+        cursor.execute(query, (user_id))
+        manager = cursor.fetchone()
+        return Manager(manager[0], manager[1], manager[2], manager[3], manager[4])
+
+    def edit(self, user_id, manager):
+        cursor = self.conn.cursor()
+        query = ""
+        cursor.execute(query, (user_id))
+        manager = cursor.fetchone()
+        return Manager(manager[0], manager[1], manager[2], manager[3], manager[4])

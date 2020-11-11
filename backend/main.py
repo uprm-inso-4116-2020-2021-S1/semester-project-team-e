@@ -85,6 +85,18 @@ def comaprePlayer():
     # return PlayerHandler().compare(request.args)
     return 'Compare two player'
 
+@app.route('/teamstatistics', methods=['POST'])
+def addTeamStatistics():
+    if request.method == POST:
+        return TeamHandler().addTeamStat(request.json)
+
+@app.route('/teamstatistics/<int:statid>', methods=['PUT', 'DELETE'])
+def addTeamStatistics():
+    if request.method == PUT:
+        return TeamHandler().addTeamStat(id, request.json)
+    else:
+        return TeamHandler().addTeamStat(id)
+
 if __name__ == '__main__':
     app.run()
 
