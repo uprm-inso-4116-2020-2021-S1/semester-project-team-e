@@ -4,7 +4,10 @@ from team.teamRepository import TeamRepository
 from team.team import Team
 from team.teamServices import TeamService
 from handler.utils import intoJSON
+from soccerTeam.soccerTeamStatistics import SoccerTeam
 # from backend.team.services import compareTeam
+from soccerTeam.soccerTeamDAO import SoccerTeamDAO
+
 
 class TeamHandler:
 
@@ -33,8 +36,8 @@ class TeamHandler:
         return jsonify(Teams = team.serialize()), OK
 
     def get(self, tid):
-        team = TeamRepository().get(tid)
-        return jsonify(Teams = team.serialize()), OK
+        teams = TeamRepository().get(tid)
+        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def search(self, args):
         team_name = args.get("keyword")
@@ -51,6 +54,7 @@ class TeamHandler:
             return jsonify(Error = 'Malformed query string'), NOT_FOUND
         return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
+
     def compare(self, args):
         tid1 = int(args.get("team1"))
         tid2 = int(args.get("team2"))
@@ -59,3 +63,23 @@ class TeamHandler:
             return jsonify(Comparison = comparison), OK
         else:
             return jsonify(Error = 'Malformed query string'), NOT_FOUND
+
+    def addTeamStat(self, json):                                                                                        #only team statistic part json, only works for 1 sport, have to incorporate team statistic factory for more sports
+        if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
+            new_teamStat = SoccerTeam(0, json['team_id'], json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
+            stat = SoccerTeamDAO().add(new_teamStat)
+            return jsonify(SoccerTeam = stat.__dict__), CREATED
+        else:
+            return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
+
+    def deleteTeamStat(self, statid):
+        stat = SoccerTeamDAO().delete(statid)
+        return jsonify(SoccerTeam=stat.__dict__), OK
+
+    def editTeamStat(self, statid, json):
+        if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
+            new_teamStat = SoccerTeam(statid, json['team_id'], json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
+            stat = SoccerTeamDAO().edit(new_teamStat)
+            return jsonify(SoccerTeam=stat.__dict__), OK
+        else:
+            return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST

@@ -7,10 +7,10 @@ team_dummy_data = [
     (4, 'los pitbulls', 'info', 'soccer'),
     (5, 'Tainos', 'info', 'soccer'),
     (6, 'Lakers', 'info', 'soccer'),
-    (7, 'Dinos', 'info', 'soccer'),
-    (8, 'Los arboles', 'info', 'soccer'),
-    (9, 'Team E', 'info', 'soccer'),
-    (10, 'Criollos', 'info', 'soccer'),
+    (18, 'Dinos', 'info', 'soccer'),
+    (19, 'Los arboles', 'info', 'soccer'),
+    (20, 'Team E', 'info', 'soccer'),
+    (21, 'Criollos', 'info', 'soccer'),
 ]
 
 uid_count = 2

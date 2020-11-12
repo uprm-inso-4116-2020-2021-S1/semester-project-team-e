@@ -3,13 +3,20 @@ from dao.dummy_data import team_dummy_data, tid_count, soccer_team_avg_dummy_dat
 from team.team import Team
 from soccerTeam.TeamStatisticFactory import TeamStatisticDAOFactory
 from manager.managerRepository import ManagerDAO
+from soccerTeam.soccerTeamDAO import SoccerTeamDAO
+from soccerTeam.soccerTeamStatistics import SoccerTeam
+from handler import utils
 
 class TeamRepository:
     def __init__(self):
-        pass
+        self.conn = utils.connectDB()
 
     def getAll(self):
-        team_tup = [team for team in team_dummy_data]
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) ORDER BY team_name;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        team_tup = [team for team in result]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
@@ -18,8 +25,10 @@ class TeamRepository:
         return team_obj
 
     def get(self, tid):
-        # TODO: Connect to database and make query
-        team_tup = [ team for team in team_dummy_data if team[0] == tid ]
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team.id = %s;"
+        cursor.execute(query, [tid])
+        team_tup = cursor.fetchone()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
@@ -28,43 +37,63 @@ class TeamRepository:
         return team_obj[0]
 
     def add(self, team):
-        # TODO: Connect to database and make query
-        newTeam = Team(tid_count, team.team_name, team.team_info, team.sport_name)
-        # team_dummy_data.append(newTeam)
-        # tid_count += 1
-        return newTeam 
+        cursor = self.conn.cursor()
+        query = "INSERT INTO team(team_name, info) values(%s, %s) returning id;"
+        teamid = cursor.execute(query, (team.team_name, team.team_info))
+        query2 = "SELECT id FROM sport WHERE sportname = %s;"
+        sportid = cursor.execute(query2, (team.sport_name))
+        query3 = "INSERT INTO team_sport(team_id, sport_id) values(%s, %s);"
+        cursor.execute(query3, (teamid, sportid))
+        return teamid
 
     def edit(self, team):
-        # TODO: Connect to database and make query
-        newTeam = Team(tid_count, team.team_name, team.team_info, team.sport_name)
-        return newTeam
+        cursor = self.conn.cursor()
+        query = "UPDATE team SET team_name = %s, info = %s;"
+        cursor.execute(query, (team.team_name, team.team_info))
+        query2 = "SELECT id FROM sport WHERE sportname = %s;"
+        sportid = cursor.execute(query2, (team.sport_name))
+        query3 = "UPDATE team_sport SET team_id = %s, sport_id = %s;"
+        cursor.execute(query3, (team.team_id, sportid))
+        return
 
     def delete(self, tid):
-        # TODO: Connect to database and make query
-        team = [ team for team in team_dummy_data if team[0] == tid ][0]
-        return Team(team[0], team[1], team[2], team[3])
+        cursor = self.conn.cursor()
+        query = "DELETE FROM team WHERE id = %s;"
+        cursor.execute(query, (tid))
+        return
 
     def getBySport(self, sport_name):
-        # TODO: Connect to database and make query
-        teams = [ team for team in team_dummy_data if team[3] == sport_name]
-        return [ Team(team[0], team[1], team[2], team[3]) for team in teams ]
-
-    def getByName(self, team_name):
-        # TODO: Connect to database and make query
-        team_tup = [ team for team in team_dummy_data if team[1] == team_name]
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE sportname = %s ORDER BY team_name;"
+        cursor.execute(query, sport_name)
+        team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
-            dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
+            dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
+            team.sportStatistic = dao.getByTeamid(team.team_id)
+            team.managers = ManagerDAO().getByTeamID(team.team_id)
+        return team_obj
+
+    def getByName(self, team_name):
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s ORDER BY sportname;"
+        cursor.execute(query, team_name)
+        team_tup = cursor.fetchall()
+        team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        for team in team_obj:
+            dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getByNameAndSport(self, team_name, sport_name):
-        # TODO: Connect to database and make query
-        team_tup = [ team for team in team_dummy_data if (team[3] == sport_name and team[1] == team_name) ]
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = % AND sportname = %s;"
+        cursor.execute(query, team_name, sport_name)
+        team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
-            dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
+            dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
         return team_obj
