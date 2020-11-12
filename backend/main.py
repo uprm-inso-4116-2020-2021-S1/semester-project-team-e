@@ -1,11 +1,14 @@
 from flask import Flask, request, json
 from flask_cors import CORS
+from flask_jwt_extended import (JWTManager, jwt_required, jwt_optional, get_jwt_identity)
 from team.teamHandler import TeamHandler
-#from handler.user import User
-from manager.managerHandler import ManagerHandler
+
+from manager.managerHandler import ManagerHandler 
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'unsafe-key'
 CORS(app)
+jwt = JWTManager(app)
 
 DELETE = 'DELETE'
 PUT = 'PUT'
@@ -19,8 +22,7 @@ def home():
 # Register routes
 @app.route('/register/manager', methods = [POST])
 def registerManager():
-    # return ManagerHandler().register(request.json)
-    return 'Register as a manager'
+    return ManagerHandler().register(request.json)
 
 @app.route('/register/player', methods = [POST])
 def registerPlayer():
@@ -30,31 +32,36 @@ def registerPlayer():
 # Login
 @app.route('/login', methods = [POST])
 def login():
-    return User().login(request.json)
+    return ManagerHandler().login(request.json)
 
 # Team routes
 @app.route('/team', methods = [GET, POST])
+@jwt_optional
 def addTeam():
-    if request.method == POST:
-        return TeamHandler().add(request.json)
-    elif request.args:
-        return TeamHandler().search(request.args)
+    manager = get_jwt_identity()
+    if manager:
+        if request.method == POST:
+            return TeamHandler().add(request.json)
+        elif request.args:
+            return TeamHandler().search(request.args)
     else:
         return TeamHandler().getAll()
 
-@app.route('/team/<int:tid>', methods = [GET, PUT, DELETE] )
+@app.route('/team/<int:tid>', methods = [GET, PUT, DELETE])
+@jwt_optional
 def getTeamByID(tid):
-    if request.method == PUT:
-        return TeamHandler().edit(tid, request.json)
-    elif request.method == DELETE:
-        return TeamHandler().delete(tid)
+    manager = get_jwt_identity()
+    if manager:
+        if request.method == PUT:
+            return TeamHandler().edit(tid, request.json)
+        elif request.method == DELETE:
+            return TeamHandler().delete(tid)
     else:
         return TeamHandler().get(tid)
 
 @app.route('/team/compare')
 def compareTeam():
-    # return TeamHandler().compare(request.args)
-    return 'Compare two teams'
+    return TeamHandler().compare(request.args)
 
 # Player routes
 @app.route('/player', methods = [GET, POST])

@@ -2,6 +2,7 @@ from flask import jsonify
 from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
 from team.teamRepository import TeamRepository
 from team.team import Team
+from team.teamServices import TeamService
 from handler.utils import intoJSON
 from soccerTeam.soccerTeamStatistics import SoccerTeam
 # from backend.team.services import compareTeam
@@ -53,6 +54,15 @@ class TeamHandler:
             return jsonify(Error = 'Malformed query string'), NOT_FOUND
         return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
+
+    def compare(self, args):
+        tid1 = int(args.get("team1"))
+        tid2 = int(args.get("team2"))
+        if tid1 and tid2:
+            comparison = TeamService.comparison(tid1, tid2)
+            return jsonify(Comparison = comparison), OK
+        else:
+            return jsonify(Error = 'Malformed query string'), NOT_FOUND
 
     def addTeamStat(self, json):                                                                                        #only team statistic part json, only works for 1 sport, have to incorporate team statistic factory for more sports
         if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:

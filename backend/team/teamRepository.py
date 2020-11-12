@@ -1,5 +1,5 @@
 #import mariadb
-from dao.dummy_data import team_dummy_data, tid_count
+from dao.dummy_data import team_dummy_data, tid_count, soccer_team_avg_dummy_data
 from team.team import Team
 from soccerTeam.TeamStatisticFactory import TeamStatisticDAOFactory
 from manager.managerRepository import ManagerDAO
@@ -97,3 +97,6 @@ class TeamRepository:
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
         return team_obj
+
+    def getAvgStats(self, tid):
+        return next(avg_stat[1:] for avg_stat in soccer_team_avg_dummy_data if avg_stat[0] == tid)
