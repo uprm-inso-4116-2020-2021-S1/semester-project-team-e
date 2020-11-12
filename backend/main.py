@@ -2,6 +2,7 @@ from flask import Flask, request, json
 from flask_cors import CORS
 from team.teamHandler import TeamHandler
 #from handler.user import User
+from manager.managerHandler import ManagerHandler
 
 app = Flask(__name__)
 CORS(app)
@@ -84,6 +85,33 @@ def getPlayerByID(id):
 def comaprePlayer():
     # return PlayerHandler().compare(request.args)
     return 'Compare two player'
+
+#statistics routes
+@app.route('/teamstatistics', methods=[POST])
+def addTeamStatistics():
+    if request.method == POST:
+        return TeamHandler().addTeamStat(request.json)
+
+@app.route('/teamstatistics/<int:statid>', methods=[PUT, DELETE])
+def addTeamStatistics():
+    if request.method == PUT:
+        return TeamHandler().addTeamStat(id, request.json)
+    else:
+        return TeamHandler().addTeamStat(id)
+
+#user routes
+@app.route('/manager', methods = [GET])
+def getUsers():
+    return ManagerHandler().getALL()
+
+@app.route('/manager<int:tid>', methods = [GET, PUT, DELETE])
+def getUserByID():
+    if request.method == PUT:
+        return ManagerHandler().edit(id, request.json)
+    elif request.method == DELETE:
+        return ManagerHandler().delete(id)
+    else:
+        return ManagerHandler().get(id)
 
 if __name__ == '__main__':
     app.run()

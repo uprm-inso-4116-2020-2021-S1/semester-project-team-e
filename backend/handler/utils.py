@@ -1,6 +1,8 @@
+import sys
 from typing import List
 from typing import Dict
 import json
+import mariadb
 
 ''' Status Codes '''
 OK = 200
@@ -17,3 +19,24 @@ def to_specified_format(info_list: List, des_format: List):
 
 def intoJSON(obj):
   return json.dumps(obj, default=lambda o: o.__dict__)
+
+
+DATABASECONFIG = {
+    'host' : 'localhost',
+    'user' : 'inso4116',
+    'password' : 'letmein',
+    'database' : 'sports_tracker',
+}
+
+def connectDB():
+    try:
+        conn = mariadb.connect(**DATABASECONFIG
+            # host= 'localhost',
+            # user= 'inso4116',
+            # password= 'letmein',
+            # database= 'sports_tracker',
+            # port = 3306
+        )
+    except Exception as e:
+        print(f"Error connecting to MariaDB Platform: {e}")
+    return conn

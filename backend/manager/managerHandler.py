@@ -27,3 +27,15 @@ class ManagerHandler:
                 return jsonify(IsAuth = False), OK
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
+
+    def edit(self, userid, json):
+        if json['username'] and json['email'] and json['full_name']:
+            user = Manager(userid, json['username'], json['email'], 0, json['full_name'])
+            manager = ManagerDAO().edit(user)
+            return jsonify(Manager=manager.serialize()), OK
+        else:
+            return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def delete(self, userid):
+        manager = ManagerDAO().delete(userid)
+        return jsonify(Manager=manager.serialize()), OK
