@@ -6,6 +6,9 @@ class ManagerDAO:
     def __init__(self):
         self.conn = utils.connectDB()
 
+    def getAll(self):
+        return
+
     def get(self, username):
         cursor = self.conn.cursor()
         query = "SELECT username, full_name, email FROM user WHERE username = %s"
@@ -32,3 +35,4 @@ class ManagerDAO:
         query = "UPDATE user SET email = %s, full_name = %s;"
         cursor.execute(query, (manager.email, manager.full_name))
         return
+
