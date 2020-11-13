@@ -39,33 +39,33 @@ class TeamRepository:
     def add(self, team):
         cursor = self.conn.cursor()
         query = "INSERT INTO team(team_name, info) values(%s, %s) returning id;"
-        teamid = cursor.execute(query, (team.team_name, team.team_info))
+        teamid = cursor.execute(query, [team.team_name], [team.team_info])
         query2 = "SELECT id FROM sport WHERE sportname = %s;"
-        sportid = cursor.execute(query2, (team.sport_name))
+        sportid = cursor.execute(query2, [team.sport_name])
         query3 = "INSERT INTO team_sport(team_id, sport_id) values(%s, %s);"
-        cursor.execute(query3, (teamid, sportid))
+        cursor.execute(query3, [teamid], [sportid])
         return teamid
 
     def edit(self, team):
         cursor = self.conn.cursor()
         query = "UPDATE team SET team_name = %s, info = %s;"
-        cursor.execute(query, (team.team_name, team.team_info))
+        cursor.execute(query, [team.team_name], [team.team_info])
         query2 = "SELECT id FROM sport WHERE sportname = %s;"
-        sportid = cursor.execute(query2, (team.sport_name))
+        sportid = cursor.execute(query2, [team.sport_name])
         query3 = "UPDATE team_sport SET team_id = %s, sport_id = %s;"
-        cursor.execute(query3, (team.team_id, sportid))
+        cursor.execute(query3, [team.team_id], [sportid])
         return
 
     def delete(self, tid):
         cursor = self.conn.cursor()
         query = "DELETE FROM team WHERE id = %s;"
-        cursor.execute(query, (tid))
+        cursor.execute(query, [tid])
         return
 
     def getBySport(self, sport_name):
         cursor = self.conn.cursor()
         query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE sportname = %s ORDER BY team_name;"
-        cursor.execute(query, sport_name)
+        cursor.execute(query, [sport_name])
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
@@ -77,7 +77,7 @@ class TeamRepository:
     def getByName(self, team_name):
         cursor = self.conn.cursor()
         query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s ORDER BY sportname;"
-        cursor.execute(query, team_name)
+        cursor.execute(query, [team_name])
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
@@ -89,7 +89,7 @@ class TeamRepository:
     def getByNameAndSport(self, team_name, sport_name):
         cursor = self.conn.cursor()
         query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s AND sportname = %s;"
-        cursor.execute(query, team_name, sport_name)
+        cursor.execute(query, [team_name], [sport_name])
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
