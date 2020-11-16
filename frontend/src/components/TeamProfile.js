@@ -1,7 +1,9 @@
 import React, {useState, useContext} from 'react'
-import { Container, Row, Col, Nav, Card } from 'react-bootstrap'
+import { Container, Row, Col, Nav, Card, Button } from 'react-bootstrap'
 import {AuthContext} from './AuthContext';
 import TeamStatisticsContent from './team_statistics/TeamStatisticsContent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBalanceScale } from '@fortawesome/free-solid-svg-icons';
 
 function ManagerContent() {
     return (
@@ -88,6 +90,9 @@ function TeamProfile() {
             <Row>
                 <Col>
                     <h1>Los Coquis</h1>
+                </Col>
+                <Col className="m-2 d-flex justify-content-end">
+                    <Button>Compare <FontAwesomeIcon icon={faBalanceScale}/></Button>
                 </Col>
             </Row>
             <Row>
