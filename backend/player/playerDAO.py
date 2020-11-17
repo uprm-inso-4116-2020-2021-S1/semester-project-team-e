@@ -23,18 +23,25 @@ class PlayerDAO(DAO):
     def get(self, player_id):
         query = AttributeFinder.generic_attribute_find_query(PlayerDAO._DUMMY_PLAYER, {'player_id' : player_id})
         print(query)        
-        return self.execute_query_and_fetch(query)
+        self.execute_query_and_fetch(query)
+        return self.close_and_return_result()
+
+    def get_by_attribute(self, player_args: dict):
+        query = AttributeFinder.generic_attribute_find_query(PlayerDAO._DUMMY_PLAYER, player_args)
+        print(query)
+        self.execute_query_and_fetch(query)
+        return self.close_and_return_result()
 
     def add(self, player_info: Dict):
-        print(player_info)
+        # print(player_info)
         add_query = 'insert into player (player_name, height, weight, team_name, sport_name) values(?, ?, ?, ?, ?)'
-        print(add_query)
-        print(extract_attribs(player_info, Player.PLAYER_DB_ADD_FORMAT))
+        # print(add_query)
+        # print(extract_attribs(player_info, Player.PLAYER_DB_ADD_FORMAT))
         self.cursor.execute(add_query, extract_attribs(player_info, Player.PLAYER_DB_ADD_FORMAT))        
         self.close_and_return_result()
         if self.cursor.lastrowid:
             last_player_id = self.cursor.lastrowid
-            print(last_player_id)
+            # print(last_player_id)
             return last_player_id
         else:
             return None

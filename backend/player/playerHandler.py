@@ -1,6 +1,7 @@
 import json
 from typing import List, Dict
 from player.player import Player
+from player_statistics.soccerPlayerStatistics import SoccerPlayerStatistic
 from player.playerRepository import PlayerRepository
 from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
 
@@ -13,10 +14,10 @@ class PlayerHandler:
 
     def getAll(self):
         players: list
-        players = []
+        players = []        
         for player in PlayerRepository().getAll():
-            players.append(player.__dict__)
-        return jsonify(Players = players)     
+            players.append(player)
+        return jsonify(Players = PlayerRepository().getAll())     
 
     def add(self, json_obj: Dict):
         for entry in json_obj.keys():
@@ -57,12 +58,32 @@ class PlayerHandler:
 
     def search(self, args: Dict):        
         player_rep = PlayerRepository()        
-        try:
-            return jsonify(player_rep.getPlayerByAttributes(args)), OK
-        except:
-            return jsonify(Error='Invalid player attributes for search.'), NOT_FOUND
+        # try:
+        return jsonify(player_rep.getPlayerByAttributes(args)), OK
+        # except Exception as e:
+            # print(e)
+            # return jsonify(Error='Invalid player attributes for search.'), NOT_FOUND
 
     def compare_players(player_1, player_2):
+        # TODO do it mai dude
         pass
+
+
+    def getAllPlayerSoccerStatistics(self):
+        player_individual_stats = PlayerRepository().getAllPlayerStatistics()
+        print(player_individual_stats)
+        for idx, item in enumerate(player_individual_stats):
+            item: SoccerPlayerStatistic
+            player_individual_stats[idx] = item.to_dictionary()
+            
+        return jsonify(SoccerPlayerStatistic = player_individual_stats), OK
+
+    def getSoccerPlayerStatisticById(self, id):
+        player_stat: SoccerPlayerStatistic
+        player_stat = PlayerRepository().getPlayerStatById(id)
+        if player_stat:
+            return jsonify(SoccerPlayerStatistic = player_stat.to_dictionary()), OK
+        else:
+            return jsonify(Error = 'No player found by that id.'), NOT_FOUND
 
 

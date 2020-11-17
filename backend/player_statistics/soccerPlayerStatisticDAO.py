@@ -29,7 +29,7 @@ class SoccerPlayerStatisticDAO(DAO):
         self.close_and_return_result()
         if self.cursor.lastrowid:
             last_stat_id = self.cursor.lastrowid
-            print(last_stat_id)
+            # print(last_stat_id)
             return last_stat_id
         else:
             return None
@@ -56,8 +56,7 @@ class SoccerPlayerStatisticDAO(DAO):
     def get_by_attribute(self, json_recv_data):
         select_query = SoccerPlayerStatistic.search_by_atr(json_recv_data)
         print(select_query)
-        self.execute_query_and_fetch(select_query)
-        print('result!!!!! ->  ', self.result)
+        self.execute_query_and_fetch(select_query)        
         return self.close_and_return_result()
         
         

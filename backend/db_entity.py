@@ -1,14 +1,34 @@
+import mariadb
+
+
 
 
 class DB_Entity:
+
+
+    @staticmethod
+    def _get_column_names(target_table: str):
+        col_query = 'select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=\'' + target_table + '\''
+        conn = mariadb.connect(**{'host':'localhost','user':'inso4116', 'password':'letmein', 'database':'sports_tracker'})
+        c_cursor = conn.cursor()        
+        c_cursor.execute(col_query)        
+        result = c_cursor.fetchall()             
+        conn.close()        
+        pret_ls = []        
+        for entry in result:
+            for val in entry:
+                if val:
+                    pret_ls.append(val)
+        return pret_ls
+
 
     @staticmethod
     def _create_dict_format(key_ls: list, val_ls: list):
         ''' zip function: "am i joke to you"'''
         ret_dict = {}
-        if len(key_ls) != len(val_ls):
+        if len(key_ls) != len(val_ls):            
             print('Bad list length.')
-            raise ValueError
+            raise ValueError(len(key_ls), ' vs ', len(val_ls))
         for idx, entry in enumerate(key_ls):
             ret_dict[entry] = val_ls[idx] 
         return ret_dict
@@ -41,12 +61,10 @@ class DB_Entity:
         return ret_str
 
     @staticmethod
-    def _fix_instance_names_to_db(name_dict: dict, entity_dict: dict) -> None:
-        print(name_dict)
-        print(entity_dict)
+    def _fix_instance_names_to_db(name_dict: dict, entity_dict: dict) -> None:        
         for db_name, db_val in name_dict.items():
             if entity_dict.get(db_name, None):
-                entity_dict[db_name] = entity_dict[db_val]
+                entity_dict[db_val] = entity_dict[db_name]
                 entity_dict.pop(db_name)
 
     @staticmethod
@@ -75,14 +93,14 @@ class DB_Entity:
             if atr in front_end_data_dict.keys():
                 valid_front_end_dict[atr] = front_end_data_dict[atr]
         # dictionary should countain valid key entries, everything else should have been dropped
-        print(attribute_key_list)
-        print(database_name_mappings)
+        # print(attribute_key_list)
+        # print(database_name_mappings)
         for idx, entry in enumerate(attribute_key_list):
-            print(entry)
+            # print(entry)
             if entry in database_name_mappings.keys():
-                print(entry)
+                # print(entry)
                 attribute_key_list[idx] = database_name_mappings[entry]
-        print(attribute_key_list)
+        # print(attribute_key_list)
 
         # fix attribute names first
         DB_Entity._fix_instance_names_to_db(database_name_mappings, front_end_data_dict)

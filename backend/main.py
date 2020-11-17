@@ -78,7 +78,25 @@ def getPlayerByID(id):
         
 
 @app.route('/player/compare,<int:player_1>,<int:player_2>')
-def comaprePlayer():
+def comaprePlayer(player_1, player_2):
     # return PlayerHandler().compare(request.args)
     return PlayerHandler().compare_players(player_1, player_2)
 
+@app.route('/player/soccer', methods = [GET, POST])
+def getAllPlayerStatistics():
+    if request.method == GET:
+        return PlayerHandler().getAllPlayerSoccerStatistics()
+    elif request.method == POST and request.args:
+        return PlayerHandler().add(request.args)
+
+@app.route('/player/soccer<int:stat_id>', methods = [GET, PUT, DELETE])
+def getSoccerPlayerStatistic(stat_id):
+    if request.method == GET:
+        return PlayerHandler().getSoccerPlayerStatisticById(stat_id)
+
+    elif request.method == PUT:
+        # TODO implement
+        return None
+    elif request.method == DELETE:
+        # TODO implement
+        return None

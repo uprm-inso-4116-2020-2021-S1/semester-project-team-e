@@ -143,12 +143,12 @@ class AttributeFinder:
             # print(value, type(value))
             if idx == 0:
                 if isinstance(value, str):
-                    ret_str += f'{key} like {value}'
+                    ret_str += f'{key} like \'{value}\''
                 else:
                     ret_str += f'{key} = {value}'
             else:
                 if isinstance(value, str):
-                    ret_str += f' or {key} like {value}'
+                    ret_str += f' or {key} like \'{value}\''
                 else:
                     ret_str += f' or {key} = {value}'
 
@@ -246,6 +246,19 @@ class DAO:
         except Exception as e:
             print(e)
         return self.result
+
+    
+    def _get_column_names(self, target_table: str):
+        col_query = 'select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=\'' + target_table + '\''
+        self.execute_query_and_fetch(col_query)        
+        self.close_and_return_result()
+        pret_ls = []
+        for entry in self.result:
+            for val in entry:
+                if val:
+                    pret_ls.append(val)
+        return pret_ls
+
 
 
         

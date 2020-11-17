@@ -8,32 +8,31 @@ from dao.dummy_data import player_dat
 from handler.utils import PLAYER_FORMAT, SOCCER_STATS_FORMAT, PLAYER_DB_FORMAT, AttributeFinder
 
 
+
+
 class PlayerRepository:
     
     def getAll(self):
-        player_list = PlayerDAO().get_all()
-        player_list = to_specified_format(player_list, PLAYER_FORMAT[:-1])
-        # print(player_list)
-        player_sports_stats = SoccerPlayerStatisticDAO().getAll()
+        player_list = PlayerDAO().get_all()        
+        player_list = to_specified_format(player_list, PLAYER_FORMAT[:-1])        
+        player_cont = []
         for idx, player in enumerate(player_list):            
-            player_info = player
-            player_stat_info = None
-
-            # TODO Implement the part with the player stats
-            player_list[idx] = Player(**player_info)
-        return player_list       
+            player = self.get(player['player_id'])            
+            if player:
+                player_cont.append(vars(player))
+        return player_cont       
 
     def get(self, player_id):
         player_id = int(player_id)     
-        player = PlayerDAO().get(player_id)
-        print(player)
+        player = PlayerDAO().get(player_id)        
         if player:
             player_socc_stat = SoccerPlayerStatisticDAO().get_by_attribute({'player_id' : player_id})
             if player_socc_stat:
-                print(player_socc_stat)
-
-            return Player(**(to_specified_format(player, PLAYER_FORMAT)[0]))
-            
+                for idx, stat in enumerate(player_socc_stat):                    
+                    _, player_socc_stat[idx] = SoccerPlayerStatistic.build_stat(stat)                
+            current_player = Player(**(to_specified_format(player, PLAYER_FORMAT)[0]))
+            current_player.player_sport_stats =  {'SoccerPlayerStatistics' : player_socc_stat}
+            return current_player            
         else:
             return None    
 
@@ -44,34 +43,25 @@ class PlayerRepository:
     def edit(self, player_info):
         player_info = player_info.to_specified_db_format(Player.PLAYER_UPDATE_FORMAT)
         return PlayerDAO().edit(player_info)
-        # return Player(**player_dat[1])
+        
 
     def delete(self, player_id):
         return PlayerDAO().delete(player_id)
-        # return Player(**player_dat[0])
+        
     
     def getPlayerByAttributes(self, attributes):
-        query = AttributeFinder.generic_attribute_find_query(SoccerPlayerStatistic._DUMMY_SOCCER_STAT, attributes)
-        print(f'Query in get player by attribute is: {query}')
-        player = PlayerDAO().get(attributes)
-        # if player:
+        query = AttributeFinder.generic_attribute_find_query(SoccerPlayerStatistic(), attributes)
+        # print(f'Query in get player by attribute is: {query}')
+        player = PlayerDAO().get_by_attribute(attributes)
+        # print(player)
         # TODO Termina esto
-        return None
+        return player
 
     def getAllPlayerStatistics(self):
-        return None
+        player_stats = SoccerPlayerStatisticDAO().getAll()
+        player_stats = to_specified_format(player_stats, SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT)
+        for idx, stat in enumerate(player_stats):
+            player_stats[idx], _ = SoccerPlayerStatistic.build_stat(stat.values())
+        return player_stats
 
-    def getPlayerStatById(self, stat_id):
-            return None    
 
-    def addPlayerStat(self, player_stat ):
-        return None
-
-    def editPlayerStat(self, player_stat):
-        return None
-
-    def deletePlayerStat(self, player_stat_id):
-        return None
-    
-    def getPlayerStatByAttributes(self, attributes):
-        return None
