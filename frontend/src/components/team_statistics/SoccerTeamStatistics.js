@@ -73,27 +73,27 @@ function SoccerTeamForm(props) {
     );
 }
 
+function ReusableLineChart(props) {
+    return (
+        <LineChart className="mx-auto"
+            width={500}
+            height={300}
+            data={props.data}
+            margin={{
+            top: 5, right: 30, left: 20, bottom: 5,
+            }}
+        >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="year" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey={props.dataKey} stroke={props.stroke} activeDot={{ r: 8 }} strokeWidth={2}/>
+        </LineChart>
+    );
+}
+
 function SoccerTeamStatistics(props) {
     const COLORS = ['#00C49F', '#ff7300', '#0088FE'];
-
-    const ReusableLineChart = (props) => {
-        return (
-            <LineChart className="mx-auto"
-                width={500}
-                height={300}
-                data={props.data}
-                margin={{
-                top: 5, right: 30, left: 20, bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey={props.dataKey} stroke={props.stroke} activeDot={{ r: 8 }} strokeWidth={2}/>
-            </LineChart>
-        );
-    }
 
     return (
         <div>

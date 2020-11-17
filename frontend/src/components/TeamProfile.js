@@ -1,9 +1,11 @@
 import React, {useState, useContext} from 'react'
-import { Container, Row, Col, Nav, Card, Button } from 'react-bootstrap'
+import { Container, Row, Col, Nav, Card, Button, Modal } from 'react-bootstrap'
 import {AuthContext} from './AuthContext';
 import TeamStatisticsContent from './team_statistics/TeamStatisticsContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBalanceScale } from '@fortawesome/free-solid-svg-icons';
+import TeamPreview from './TeamPreview';
+import TeamCompare from './TeamCompare';
 
 function ManagerContent() {
     return (
@@ -68,6 +70,31 @@ function TeamProfile() {
 
     let [tab, setActiveTab] = useState(tabs.STATISTICS);
     const [state, setState] = useContext(AuthContext);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const CompareModal = () => {
+        return (
+        <Modal size="lg" show={show} onHide={handleClose} backdrop="static">
+            <Modal.Header closeButton>
+                <Modal.Title>Compare Team:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <TeamCompare team={{teamName: "Los coquis", teamID: 2}}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={handleClose}>
+                    Save Changes
+                </Button>
+            </Modal.Footer>
+        </Modal>
+        );
+    }
 
     let content;
     switch (tab) {
@@ -86,13 +113,14 @@ function TeamProfile() {
 
     return (
         <Container>
+            <CompareModal/>
             <div>
             <Row>
                 <Col>
                     <h1>Los Coquis</h1>
                 </Col>
                 <Col className="m-2 d-flex justify-content-end">
-                    <Button>Compare <FontAwesomeIcon icon={faBalanceScale}/></Button>
+                    <Button onClick={() => handleShow()}>Compare <FontAwesomeIcon icon={faBalanceScale}/></Button>
                 </Col>
             </Row>
             <Row>

@@ -16,7 +16,7 @@ function Teams() {
             <Container>
                 <Searchbar title="Teams" placeholder="Search Teams"/>
                 {dummyData.map(team => (
-                    <TeamPreview key={team.teamID} teamName={team.teamName} teamID={team.teamID} teamMemberLength={team.teamMemberLength}/>
+                    <TeamPreview key={team.teamID} noLink={false} teamName={team.teamName} teamID={team.teamID} teamMemberLength={team.teamMemberLength}/>
                 ))}
             </Container>   
         </div>

@@ -7,8 +7,12 @@ import {faFutbol} from '@fortawesome/free-solid-svg-icons';
 function TeamPreview(props) {
     const {teamID, teamName, teamMemberLength} = props;
 
+    const CardType = (props) => {
+        return (props.noLink ? <Card className="my-3">{props.children}</Card>
+                                  : <Card as={Link} to={"team/" + teamID}  className="my-3" style={{textDecoration: 'none'}}>{props.children}</Card>)};
+
     return (
-        <Card as={Link} to={"team/" + teamID}  className="my-3" style={{textDecoration: 'none'}}>
+        <CardType noLink={props.noLink}>
              <Card.Header>
                 <h5>   <FontAwesomeIcon icon={faFutbol} className="mr-1"/> {teamName}</h5>
                 <hr/>
@@ -18,7 +22,7 @@ function TeamPreview(props) {
                     </Col>
                 </Row>
              </Card.Header>
-         </Card>
+         </CardType>
     )
 }
 
