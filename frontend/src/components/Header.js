@@ -11,7 +11,7 @@ function Header() {
     const UserNameDropDown= (props) => {
         return (
             <NavDropdown alignRight title={props.username}  id="username-dropdown">
-                 <NavDropdown.Item>My Teams</NavDropdown.Item>
+                 <NavDropdown.Item as={Link} to="/myteams">My Teams</NavDropdown.Item>
                  <NavDropdown.Item onClick={() => setState({})}>Logout</NavDropdown.Item>
              </NavDropdown>
         );
