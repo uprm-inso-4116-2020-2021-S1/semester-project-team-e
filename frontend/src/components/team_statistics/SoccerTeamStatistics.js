@@ -11,31 +11,27 @@ function SoccerTeamForm(props) {
             <Modal.Body>
                 <Form> 
                     <Form.Group controlId="year">
-                        <Form.Label>Year:</Form.Label> 
-                        <Form.Control as="select">
-                            <option>2015</option>
-                            <option>2016</option>
-                            <option>2017</option>
-                            <option>2018</option>
-                            <option>2019</option>
-                            <option>2020</option>
-                            <option>2021</option>
-                        </Form.Control>
+                        <Form.Label>Date:</Form.Label> 
+                        <Form.Control type="date"/>
                     </Form.Group>
-                    <Form.Row>
-                        <Form.Group as={Col} controlId="wins">
-                            <Form.Label>Wins:</Form.Label>
-                            <Form.Control placeholder="0"/>
+                    <fieldset>
+                        <Form.Group >
+                            <Form.Label>
+                                Match Result:
+                            </Form.Label>
+                            <Row>
+                                <Col>
+                                    <Form.Check type="radio" label="Won" name="formHorizontalRadios" id="formHorizontalRadios1"/>
+                                </Col>
+                                <Col>
+                                    <Form.Check type="radio" label="Lost" name="formHorizontalRadios" id="formHorizontalRadios2"/>
+                                </Col>
+                                 <Col>
+                                    <Form.Check type="radio" label="Draw" name="formHorizontalRadios" id="formHorizontalRadios2"/>
+                                </Col>
+                            </Row>
                         </Form.Group>
-                        <Form.Group as={Col} controlId="losses">
-                            <Form.Label>Losses:</Form.Label>
-                            <Form.Control placeholder="0"/>
-                        </Form.Group>
-                        <Form.Group as={Col} controlId="draws">
-                            <Form.Label>Draws:</Form.Label>
-                            <Form.Control placeholder="0"/>
-                        </Form.Group>
-                    </Form.Row>
+                    </fieldset>
                     <Form.Group controlId="goals_for">
                         <Form.Label>Goals for:</Form.Label>
                         <Form.Control placeholder="0"/>
@@ -44,12 +40,28 @@ function SoccerTeamForm(props) {
                         <Form.Label>Goals Allowed:</Form.Label>
                         <Form.Control placeholder="0"/>
                     </Form.Group>
-                    <Form.Group controlId="goal_difference">
-                        <Form.Label>Goal Difference:</Form.Label>
+                    <Form.Group controlId="shots">
+                        <Form.Label>Shots:</Form.Label>
                         <Form.Control placeholder="0"/>
                     </Form.Group>
-                    <Form.Group controlId="points">
-                        <Form.Label>Points:</Form.Label>
+                    <Form.Group controlId="shots_on_goal">
+                        <Form.Label>Shots on Goal:</Form.Label>
+                        <Form.Control placeholder="0"/>
+                    </Form.Group>
+                    <Form.Group controlId="saves">
+                        <Form.Label>Saves:</Form.Label>
+                        <Form.Control placeholder="0"/>
+                    </Form.Group>
+                    <Form.Group controlId="passes">
+                        <Form.Label>Passes:</Form.Label>
+                        <Form.Control placeholder="0"/>
+                    </Form.Group>
+                    <Form.Group controlId="possesions">
+                        <Form.Label>Possesions:</Form.Label>
+                        <Form.Control placeholder="0"/>
+                    </Form.Group>
+                    <Form.Group controlId="fouls">
+                        <Form.Label>Fouls:</Form.Label>
                         <Form.Control placeholder="0"/>
                     </Form.Group>
                     <Button type="submit" variant="primary" onClick={props.handleClose}>
@@ -63,6 +75,25 @@ function SoccerTeamForm(props) {
 
 function SoccerTeamStatistics(props) {
     const COLORS = ['#00C49F', '#ff7300', '#0088FE'];
+
+    const ReusableLineChart = (props) => {
+        return (
+            <LineChart className="mx-auto"
+                width={500}
+                height={300}
+                data={props.data}
+                margin={{
+                top: 5, right: 30, left: 20, bottom: 5,
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="year" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey={props.dataKey} stroke={props.stroke} activeDot={{ r: 8 }} strokeWidth={2}/>
+            </LineChart>
+        );
+    }
 
     return (
         <div>
@@ -104,11 +135,11 @@ function SoccerTeamStatistics(props) {
         </Row>
         <Row className="m-2">
             <Col>
-                <h3>Goal Averages:</h3>
+                <h3>Averages:</h3>
                 <BarChart
                     width={500}
                     height={300}
-                    data={props.goalAverages}
+                    data={props.averages}
                     margin={{
                     top: 5, right: 30, left: 20, bottom: 5,
                     }}
@@ -117,30 +148,48 @@ function SoccerTeamStatistics(props) {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
                     <Bar dataKey="average" fill="#82ca9d" />
                 </BarChart>
             </Col>
             <Col>
-                <h3>Yearly Goals:</h3>
-                <LineChart className="mx-auto"
-                    width={500}
-                    height={300}
-                    data={props.yearlyGoals}
-                    margin={{
-                    top: 5, right: 30, left: 20, bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="year" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="goals" stroke="#8884d8" activeDot={{ r: 8 }} strokeWidth={2}/>
-                    <Line type="monotone" dataKey="goalDifference" stroke="#82ca9d" strokeWidth={2}/>
-                    <Line type="monotone" dataKey="goalFor" stroke="#ff7300" strokeWidth={2}/>
-                    <Line type="monotone" dataKey="goalAllowed" strokeWidth={2}/>
-                </LineChart>
+                <h3>Goals for:</h3>
+                <ReusableLineChart data={props.goalsFor} dataKey="goals_for" stroke="#ff7300"/>
+            </Col>
+        </Row>
+        <Row className="m-2">
+            <Col>
+                <h3>Goals allowed:</h3>
+                <ReusableLineChart data={props.goalsAllowed} dataKey="goals_allowed" stroke="#00C49F"/>
+            </Col>
+            <Col>
+                <h3>Shots:</h3>
+                <ReusableLineChart data={props.shots} dataKey="shots" stroke="#8884d8"/>
+            </Col>
+        </Row>
+        <Row className="m-2">
+            <Col>
+                <h3>Shots on Goal:</h3>
+                <ReusableLineChart data={props.shotsOnGoal} dataKey="shots_on_goal" stroke="#ff7300"/>
+            </Col>
+            <Col>
+                <h3>Saves:</h3>
+                <ReusableLineChart data={props.saves} dataKey="saves" stroke="#00C49F"/>
+            </Col>
+        </Row>
+        <Row className="m-2">
+            <Col>
+                <h3>Passes:</h3>
+                <ReusableLineChart data={props.passes} dataKey="passes" stroke="#82ca9d"/>
+            </Col>
+            <Col>
+                <h3>Possesions:</h3>
+                <ReusableLineChart data={props.possesions} dataKey="possesions" stroke="#ff7300"/>
+            </Col>
+        </Row>
+        <Row className="m-2">
+            <Col>
+                <h3>Fouls:</h3>
+                <ReusableLineChart data={props.fouls} dataKey="fouls" stroke="#00C49F"/>
             </Col>
         </Row>
         </div>
