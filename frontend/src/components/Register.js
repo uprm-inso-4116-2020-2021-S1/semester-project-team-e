@@ -7,14 +7,21 @@ import axios from 'axios';
 function Login() {
       const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
+      const [fullName, setFullName] = useState("");
+      const [username, setUsername] = useState("");
 
       function validateForm() {
         return email.length > 0 && password.length > 0;
       }
 
+      // function handleSubmit(event) {
+      //   event.preventDefault();
+      // }
         function handleSubmit(event){
             event.preventDefault();
             axios.post(`/register`, {
+                username: username,
+                full_name: fullName,
                 email: email,
                 password: password
             })
@@ -25,9 +32,8 @@ function Login() {
           })
 
         }
-
       const styles = {
-        loginBox:{
+        registerBox:{
             borderRadius:4,
             backgroundColor:'#ffffff',
             boxShadow:'0 30px 60px 0 rgba(0,0,0,0.3)',
@@ -35,7 +41,7 @@ function Login() {
             paddingTop:20,
             paddingBottom:20
         },
-        loginButton:{
+        registerButton:{
             backgroundColor:'#0a1325',
             color:'#ffffff',
             padding:"10px"
@@ -43,8 +49,8 @@ function Login() {
       };
   return (
     <div className="Login" style={{ padding: '60px 0',width:'400px', margin: '0 auto' }}>
-      <Form onSubmit={handleSubmit} style={styles.loginBox}>
-      <h4 className="text-center">Login</h4>
+      <Form onSubmit={handleSubmit} style={styles.registerBox}>
+      <h4 className="text-center">Register</h4>
         <Form.Group size="text" controlId="email" style={{padding:"10px"}}>
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -52,6 +58,22 @@ function Login() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </Form.Group>
+          <Form.Group size="text" controlId="formName" style={{padding:"10px"}}>
+          <Form.Label>Full Name</Form.Label>
+          <Form.Control
+            autoFocus
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group size="text" controlId="formUsername" style={{padding:"10px"}}>
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            autoFocus
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </Form.Group>
         <Form.Group size="text" controlId="password" style={{padding:"10px"}}>
@@ -62,18 +84,9 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()} style={styles.loginButton}>
-          Login
+        <Button block size="lg" type="submit" disabled={!validateForm()}  style={styles.registerButton}>
+          Register
         </Button>
-          <div className="mt-4">
-            <div className="d-flex justify-content-center links">
-                <a class="link" style={styles.link} href="#">Forgot your password?</a>
-            </div>
-            <div className="d-flex justify-content-center links">
-                Don't have an account?
-                <Link className="nav-link" style={styles.link} to="/register" className="ml-2" >Sign Up</Link>
-            </div>
-          </div>
       </Form>
     </div>
   )

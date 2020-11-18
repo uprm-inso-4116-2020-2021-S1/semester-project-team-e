@@ -2,6 +2,8 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Login from './components/Login';
+import Register from './components/Register';
 import Home from './components/Home';
 import Teams from './components/Teams';
 import Players from './components/Players';
@@ -32,10 +34,10 @@ function App() {
               <PlayerProfile/>
             </Route>
             <Route path="/login">
-              <Home title="Login"/>
+              <Login/>
             </Route>
             <Route path="/register">
-              Register
+              <Register/>
             </Route>
           </Switch>
           {/* <Footer/> */}

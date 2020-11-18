@@ -20,7 +20,7 @@ def home():
     return 'Home page'
 
 # Register routes
-@app.route('/register/manager', methods = [POST])
+@app.route('/register', methods = [POST])
 def registerManager():
     return ManagerHandler().register(request.json)
 

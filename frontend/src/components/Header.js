@@ -27,6 +27,7 @@ function Header() {
 
     let username;
     username = state.name ? <UserNameDropDown username={state.name}/> :  <Link to="/login" onClick={() => setState(state =>({...state, name:'Sammy'}))}>Login</Link>
+    //username = state.username ? <UserNameDropDown username={state.username}/> :  <Link to="/login" onClick={() => setState(state =>({...state, name: state.username}))}>Login</Link>
 
     return (
         <Navbar sticky="top" bg="dark" variant="dark">
