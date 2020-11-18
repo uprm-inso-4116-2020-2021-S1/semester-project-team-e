@@ -7,6 +7,7 @@ class Team():
         self.sportStatistic = []
         self.managers = []
 
+
     def serialize(self):
         return {'team' : self.team_id,
                 'team_name' : self.team_name,

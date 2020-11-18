@@ -100,9 +100,9 @@ def addTeamStatistics():
         return TeamHandler().addTeamStat(request.json)
 
 @app.route('/teamstatistics/<int:statid>', methods=[PUT, DELETE])
-def addTeamStatistics():
+def updateTeamStatistics():
     if request.method == PUT:
-        return TeamHandler().addTeamStat(id, request.json)
+        return TeamHandler().addTeamStat(request.json)
     else:
         return TeamHandler().addTeamStat(id)
 
