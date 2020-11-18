@@ -1,70 +1,79 @@
 import React from 'react';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap'
 import { LineChart, Line, BarChart,Bar, PieChart, Pie, Cell, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
+import {useForm, Controller} from 'react-hook-form';
 
 function SoccerTeamForm(props) {
+    const { control, handleSubmit } = useForm();
+    const onSubmit = data => {console.log(data); props.handleClose()};
+
     return (
         <Modal show={props.show} onHide={props.handleClose} animation="false">
             <Modal.Header closeButton>
                 <Modal.Title>New statistic entry</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form> 
+                <Form onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group controlId="year">
                         <Form.Label>Date:</Form.Label> 
-                        <Form.Control type="date"/>
+                        <Controller as={Form.Control} type="date" name="date" control={control}/>
                     </Form.Group>
                     <fieldset>
-                        <Form.Group >
+                        <Form.Group>
                             <Form.Label>
                                 Match Result:
                             </Form.Label>
-                            <Row>
-                                <Col>
-                                    <Form.Check type="radio" label="Won" name="formHorizontalRadios" id="formHorizontalRadios1"/>
-                                </Col>
-                                <Col>
-                                    <Form.Check type="radio" label="Lost" name="formHorizontalRadios" id="formHorizontalRadios2"/>
-                                </Col>
-                                 <Col>
-                                    <Form.Check type="radio" label="Draw" name="formHorizontalRadios" id="formHorizontalRadios2"/>
-                                </Col>
-                            </Row>
+                            <Controller
+                                as = {
+                                    <Row>
+                                        <Col>
+                                            <Form.Check type="radio" label="Won" name="formHorizontalRadios" id="formHorizontalRadios1" value="won"/>
+                                        </Col>
+                                        <Col>
+                                            <Form.Check type="radio" label="Lost" name="formHorizontalRadios" id="formHorizontalRadios2" value="lost"/>
+                                        </Col>
+                                        <Col>
+                                            <Form.Check type="radio" label="Draw" name="formHorizontalRadios" id="formHorizontalRadios2" value="draw"/>
+                                        </Col>
+                                    </Row>}
+                                name="match_result"
+                                control={control}
+                            ></Controller>
                         </Form.Group>
                     </fieldset>
                     <Form.Group controlId="goals_for">
                         <Form.Label>Goals for:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="goals_for" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="goals_allowed">
                         <Form.Label>Goals Allowed:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="goals_allowed" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="shots">
                         <Form.Label>Shots:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="shots" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="shots_on_goal">
                         <Form.Label>Shots on Goal:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="shots_on_goal" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="saves">
                         <Form.Label>Saves:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control}  name="saves" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="passes">
                         <Form.Label>Passes:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="passes" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="possesions">
                         <Form.Label>Possesions:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="possesions" control={control}  defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="fouls">
                         <Form.Label>Fouls:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} name="fouls" control={control} defaultValue="0"/>
                     </Form.Group>
-                    <Button type="submit" variant="primary" onClick={props.handleClose}>
+                    <Button type="submit" variant="primary">
                         Submit
                     </Button>
                 </Form>

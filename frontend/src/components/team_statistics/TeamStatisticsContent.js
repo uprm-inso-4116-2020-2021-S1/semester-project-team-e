@@ -7,6 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 function TeamStatisticsContent(props) {
     const [show, setShow] = useState(false);
 
+    // Look up use callback
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 

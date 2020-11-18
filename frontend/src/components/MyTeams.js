@@ -3,7 +3,7 @@ import {Container, Col, Row, Button} from 'react-bootstrap';
 import Searchbar from '../components/Searchbar';
 import TeamPreview from '../components/TeamPreview';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {faPlus, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 function MyTeams() {
     const dummyData = [
@@ -23,7 +23,14 @@ function MyTeams() {
                     </Col>
                 </Row>
                 {dummyData.map(team => (
-                    <TeamPreview key={team.teamID} teamName={team.teamName} teamID={team.teamID} teamMemberLength={team.teamMemberLength}/>
+                    <Row key={team.teamID}>
+                        <Col>
+                            <TeamPreview  teamName={team.teamName} teamID={team.teamID} teamMemberLength={team.teamMemberLength}/>
+                        </Col>                        
+                        <Col xs="auto" className="align-self-center">
+                            <Button variant="light"><FontAwesomeIcon icon={faTrash}/></Button>
+                        </Col>
+                    </Row>
                 ))}
             </Container>    
         </div>

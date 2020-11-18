@@ -12,7 +12,7 @@ function Header() {
         return (
             <NavDropdown alignRight title={props.username}  id="username-dropdown">
                  <NavDropdown.Item as={Link} to="/myteams">My Teams</NavDropdown.Item>
-                 <NavDropdown.Item onClick={() => setState({})}>Logout</NavDropdown.Item>
+                 <NavDropdown.Item as={Link} to="/" onClick={() => setState({})}>Logout</NavDropdown.Item>
              </NavDropdown>
         );
     }
