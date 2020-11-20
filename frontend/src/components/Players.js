@@ -8,7 +8,7 @@ function Players() {
         <div>
             <Container>
                 <Searchbar title="Players" placeholder="Search Players"/>
-                <PlayerPreview playerID={2} playerName={"Jerry Bassat"} position={"Goalie"} />
+                <PlayerPreview playerID={2} playerName={"Mario Diaz"} position={"Goalie"} />
             </Container>
         </div>
     )

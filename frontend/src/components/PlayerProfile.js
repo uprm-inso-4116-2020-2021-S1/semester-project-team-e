@@ -13,7 +13,7 @@ function PlayerProfile() {
             <div>
             <Row>
                 <Col>
-                    <h1>Jerry Bassat</h1>
+                    <h1>Mario Diaz</h1>
                 </Col>
                 <Col className="m-2 d-flex justify-content-end">
                     <Button>Compare <FontAwesomeIcon icon={faBalanceScale}/></Button>
