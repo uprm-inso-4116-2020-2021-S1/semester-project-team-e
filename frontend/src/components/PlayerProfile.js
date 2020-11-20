@@ -1,7 +1,9 @@
 import React, {useContext} from 'react';
-import { Container, Row, Col, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Button } from 'react-bootstrap';
 import {AuthContext} from './AuthContext';
 import PlayerStatisticsContent from './player_statistics/PlayerStatisticsContent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBalanceScale } from '@fortawesome/free-solid-svg-icons';
 
 function PlayerProfile() {
     const [state, setState] = useContext(AuthContext);
@@ -11,7 +13,10 @@ function PlayerProfile() {
             <div>
             <Row>
                 <Col>
-                    <h1>Jerry Bassat</h1>
+                    <h1>Mario Diaz</h1>
+                </Col>
+                <Col className="m-2 d-flex justify-content-end">
+                    <Button>Compare <FontAwesomeIcon icon={faBalanceScale}/></Button>
                 </Col>
             </Row>
             <Row>

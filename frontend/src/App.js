@@ -10,6 +10,7 @@ import Players from './components/Players';
 import TeamProfile from './components/TeamProfile';
 import PlayerProfile from './components/PlayerProfile';
 import {AuthProvider} from './components/AuthContext';
+import MyTeams from './components/MyTeams';
 
 function App() {
   return (
@@ -38,6 +39,9 @@ function App() {
             </Route>
             <Route path="/register">
               <Register/>
+            </Route>
+            <Route path="/myteams">
+              <MyTeams/>
             </Route>
           </Switch>
           {/* <Footer/> */}

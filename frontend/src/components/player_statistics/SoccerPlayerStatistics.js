@@ -1,61 +1,69 @@
 import React from 'react';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { LineChart, Line, BarChart,Bar, PieChart, Pie, Cell, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
+import {useForm, Controller} from 'react-hook-form';
 
 function SoccerPlayerForm(props) {
+    const {control, handleSubmit} = useForm();
+    const onSubmit = data => {console.log(data); props.handleClose();};
+
     return (
         <Modal show={props.show} onHide={props.handleClose} animation="false">
             <Modal.Header closeButton>
                 <Modal.Title>New statistic entry</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form> 
+                <Form onSubmit={handleSubmit(onSubmit)}> 
                     <Form.Group controlId="Date">
                         <Form.Label>Date:</Form.Label> 
-                        <Form.Control type="date" />
+                        <Controller as={Form.Control} type="date" name="date" control={control}/>
                     </Form.Group>
                     <fieldset>
                         <Form.Group >
                             <Form.Label>
                                 Halve Number:
                             </Form.Label>
-                            <Row>
-                                <Col>
-                                    <Form.Check type="radio" label="1" name="formHorizontalRadios" id="formHorizontalRadios1"/>
-                                </Col>
-                                <Col>
-                                    <Form.Check type="radio" label="2" name="formHorizontalRadios" id="formHorizontalRadios2"/>
-                                </Col>
-                            </Row>
+                            <Controller
+                                as={ <Row>
+                                        <Col>
+                                            <Form.Check type="radio" label="1" name="formHorizontalRadios" id="formHorizontalRadios1" value="1"/>
+                                        </Col>
+                                        <Col>
+                                            <Form.Check type="radio" label="2" name="formHorizontalRadios" id="formHorizontalRadios2" value="2"/>
+                                        </Col>
+                                    </Row>}
+                                name="halve_number"
+                                control={control}
+                            />
                         </Form.Group>
                     </fieldset>
                     <Form.Row>
                         <Form.Group as={Col} controlId="yellow_cards">
                             <Form.Label>Yellow Cards:</Form.Label>
-                            <Form.Control placeholder="0"/>
+                            <Controller as={Form.Control} placeholder="0" name="yellow_cards" control={control} defaultValue="0"/>
                         </Form.Group>
                         <Form.Group as={Col} controlId="red_cards">
                             <Form.Label>Red Cards:</Form.Label>
-                            <Form.Control placeholder="0"/>
+                            <Controller as={Form.Control} placeholder="0" name="red_cards" control={control} defaultValue="0"/>
                         </Form.Group>
                     </Form.Row>
                     <Form.Group controlId="goals">
                         <Form.Label>Goals:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} placeholder="0" name="goals" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="assists">
                         <Form.Label>Assists:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} placeholder="0" name="assists" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="saves">
                         <Form.Label>Saves:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} placeholder="0" name="saves" control={control} defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="takles_won">
                         <Form.Label>Tackles Won:</Form.Label>
-                        <Form.Control placeholder="0"/>
+                        <Controller as={Form.Control} placeholder="0" name="tackles_won" control={control} defaultValue="0"/>
                     </Form.Group>
-                    <Button type="submit" variant="primary" onClick={props.handleClose}>
+                    <Button type="submit" variant="primary">
                         Submit
                     </Button>
                 </Form>
