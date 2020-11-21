@@ -13,6 +13,7 @@ from handler.utils import PLAYER_FORMAT, SOCCER_STATS_FORMAT, PLAYER_DB_FORMAT, 
 class PlayerRepository:
     
     def getAll(self):
+        # Pending Revision
         player_list = PlayerDAO().get_all()        
         player_list = to_specified_format(player_list, PLAYER_FORMAT[:-1])        
         player_cont = []
@@ -23,6 +24,7 @@ class PlayerRepository:
         return player_cont       
 
     def get(self, player_id):
+        # Pending Revision
         player_id = int(player_id)     
         player = PlayerDAO().get(player_id)        
         if player:
@@ -37,19 +39,23 @@ class PlayerRepository:
             return None    
 
     def add(self, player: Player):
+        # Pending Revision
         player_json = player.to_db_format()
         return PlayerDAO().add(player_json)
 
     def edit(self, player_info):
+        # Pending Revision
         player_info = player_info.to_specified_db_format(Player.PLAYER_UPDATE_FORMAT)
         return PlayerDAO().edit(player_info)
         
 
     def delete(self, player_id):
+        # Pending Revision
         return PlayerDAO().delete(player_id)
         
     
     def getPlayerByAttributes(self, attributes):
+        # Pending Revision
         query = AttributeFinder.generic_attribute_find_query(SoccerPlayerStatistic(), attributes)
         # print(f'Query in get player by attribute is: {query}')
         player = PlayerDAO().get_by_attribute(attributes)
@@ -58,6 +64,7 @@ class PlayerRepository:
         return player
 
     def getAllPlayerStatistics(self):
+        # Pending Revision
         player_stats = SoccerPlayerStatisticDAO().getAll()
         player_stats = to_specified_format(player_stats, SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT)
         for idx, stat in enumerate(player_stats):

@@ -13,6 +13,7 @@ class PlayerHandler:
     player_dummy = Player()
 
     def getAll(self):
+        # Pending Revision
         players: list
         players = []        
         for player in PlayerRepository().getAll():
@@ -20,6 +21,7 @@ class PlayerHandler:
         return jsonify(Players = PlayerRepository().getAll())     
 
     def add(self, json_obj: Dict):
+        # Pending Revision
         for entry in json_obj.keys():
             if entry not in PlayerHandler.player_dummy.__dict__.keys():
                 return jsonify(Error='Unexpected attributes in post.'), BAD_REQUEST
@@ -29,6 +31,7 @@ class PlayerHandler:
                 return jsonify(Player=player.__dict__), CREATED
 
     def edit(self, json_obj: Dict, player_id: int):
+        # Pending Revision
         # TODO Fix this, no tiene el id que se quiere editar o decide si lo buscas internamente                
         for entry in json_obj.keys():
             if entry not in PlayerHandler.player_dummy.__dict__.keys():
@@ -40,6 +43,7 @@ class PlayerHandler:
                 return jsonify(Player=vars(PlayerRepository().get(player_id))), OK
 
     def delete(self, player_id):
+        # Pending Revision
         player: Player
         player = PlayerRepository().get(player_id)
         PlayerRepository().delete(player_id)
@@ -49,6 +53,7 @@ class PlayerHandler:
             return jsonify(Error='No Player found with that id.'), NOT_FOUND
 
     def get(self, player_id):
+        # Pending Revision
         player: Player
         player = PlayerRepository().get(player_id)
         if player:
@@ -57,6 +62,7 @@ class PlayerHandler:
             return jsonify(Error='No Player found.'), NOT_FOUND
 
     def search(self, args: Dict):        
+        # Pending Revision
         player_rep = PlayerRepository()        
         # try:
         return jsonify(player_rep.getPlayerByAttributes(args)), OK
@@ -65,11 +71,13 @@ class PlayerHandler:
             # return jsonify(Error='Invalid player attributes for search.'), NOT_FOUND
 
     def compare_players(player_1, player_2):
+        # Pending Revision
         # TODO do it mai dude
         pass
 
 
     def getAllPlayerSoccerStatistics(self):
+        # Pending Revision
         player_individual_stats = PlayerRepository().getAllPlayerStatistics()
         print(player_individual_stats)
         for idx, item in enumerate(player_individual_stats):
@@ -79,6 +87,7 @@ class PlayerHandler:
         return jsonify(SoccerPlayerStatistic = player_individual_stats), OK
 
     def getSoccerPlayerStatisticById(self, id):
+        #  Pending Revision
         player_stat: SoccerPlayerStatistic
         player_stat = PlayerRepository().getPlayerStatById(id)
         if player_stat:
