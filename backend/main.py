@@ -114,12 +114,20 @@ def getUsers():
 
 @app.route('/manager/<int:userid>', methods = [GET, PUT, DELETE])
 def getUserByID(userid):
-    if request.method == PUT:
-        return ManagerHandler().edit(userid, request.json)
-    elif request.method == DELETE:
-        return ManagerHandler().delete(userid)
+    manager = get_jwt_identity()
+    if manager:
+        if request.method == PUT:
+            return ManagerHandler().edit(userid, request.json)
+        elif request.method == DELETE:
+            return ManagerHandler().delete(userid)
     else:
         return ManagerHandler().get(userid)
+
+# @app.route('/manager/<int:teamid>', methods = [POST])
+# def addManagertoTeam(teamid):
+#     # manager = get_jwt_identity()
+#     # if manager:
+#         return ManagerHandler().addManagertoTeam(teamid, request.json)
 
 #Team Records routes
 @app.route('/teamrecord', methods = [POST])

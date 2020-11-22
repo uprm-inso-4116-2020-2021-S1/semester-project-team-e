@@ -10,7 +10,7 @@ class ManagerHandler:
         if json['username'] and json['email'] and json['password'] and json['full_name']:
             if not ManagerDAO().getByUsername(json['username']):
                 json['password'] = sha256_crypt.hash(json['password']) 
-                new_manager = Manager(0, json['username'], json['password'], json['full_name'], json['email'])
+                new_manager = Manager(0, 0, json['username'], json['password'], json['full_name'], json['email'])
                 manager = ManagerDAO().add(new_manager)
                 return jsonify(isAuth = True, UserID = manager.user_id, Username = manager.username), CREATED
             else:
@@ -31,8 +31,8 @@ class ManagerHandler:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
     def edit(self, userid, json):
-        if json['username'] and json['email'] and json['full_name']:
-            user = Manager(userid, json['username'], json['email'], 0, json['full_name'])
+        if json['team_id'] and json['username'] and json['email'] and json['full_name']:
+            user = Manager(userid, json['team_id'], json['username'], json['email'], 0, json['full_name'])
             manager = ManagerDAO().edit(user)
             return jsonify(Manager=manager.serialize()), OK
         else:
@@ -49,3 +49,12 @@ class ManagerHandler:
     def get(self, userid):
         manager = ManagerDAO().get(userid)
         return jsonify(Manager=[manager.serialize()]), OK
+
+    # def addManagertoTeam(self, teamid, json):
+    #     if json['userid'] and json['username'] and json['email'] and json['full_name']:
+    #         new_manager = Manager(0, json['username'], 0, json['full_name'], json['email'])
+    #         print(json['userid'], json['username'], json['email'], json['full_name'])
+    #         manager = ManagerDAO.addManagertoTeam(teamid, new_manager)
+    #         return jsonify(Manager=manager.serialize()), OK
+    #     else:
+    #         return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
