@@ -26,7 +26,8 @@ class TeamHandler:
     def edit(self, tid, json):
         if tid and json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(tid, json['team_name'], json['team_info'], json['sport_name'])
-            teams = TeamRepository().edit(new_team)
+            teams\
+                = TeamRepository().edit(new_team)
             return jsonify(Teams=[team.serialize() for team in teams]), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
@@ -78,7 +79,7 @@ class TeamHandler:
         return jsonify(SoccerTeam=stat.__dict__), OK
 
     def editTeamStat(self, statid, json):
-        if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
+        if statid and json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
             new_teamStat = SoccerTeam(statid, json['team_id'], json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
             stat = SoccerTeamDAO().edit(new_teamStat)
             return jsonify(SoccerTeam=stat.__dict__), OK

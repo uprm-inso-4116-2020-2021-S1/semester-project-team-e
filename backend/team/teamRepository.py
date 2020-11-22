@@ -27,7 +27,7 @@ class TeamRepository:
     def get(self, tid):
         cursor = self.conn.cursor()
         query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team.id = %s;"
-        cursor.execute(query, [tid])
+        cursor.execute(query, (tid,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
@@ -101,7 +101,7 @@ class TeamRepository:
     def getByNameAndSport(self, team_name, sport_name):
         cursor = self.conn.cursor()
         query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s AND sportname = %s;"
-        cursor.execute(query, team_name, sport_name)
+        cursor.execute(query, (team_name, sport_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
