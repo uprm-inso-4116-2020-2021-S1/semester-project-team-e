@@ -7,6 +7,8 @@ from handler.utils import intoJSON
 from soccerTeam.soccerTeamStatistics import SoccerTeam
 # from backend.team.services import compareTeam
 from soccerTeam.soccerTeamDAO import SoccerTeamDAO
+from Records.teamRecords import TeamRecords
+from Records.recordsDAO import RecordsDAO
 
 
 class TeamHandler:
@@ -78,9 +80,29 @@ class TeamHandler:
         return jsonify(SoccerTeam=stat.__dict__), OK
 
     def editTeamStat(self, statid, json):
-        if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
+        if statid and json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
             new_teamStat = SoccerTeam(statid, json['team_id'], json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
             stat = SoccerTeamDAO().edit(new_teamStat)
             return jsonify(SoccerTeam=stat.__dict__), OK
         else:
             return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def addTeamRecord(self, json):
+        if json['team_id'] and json['wins'] and json['loss'] and json['draw'] and json['year']:
+                new_teamRecord = TeamRecords(0, json['team_id'], json['wins'], json['loss'], json['draw'], json['year'])
+                record = RecordsDAO().add(new_teamRecord)
+                return jsonify(TeamRecords=record.__dict__), OK
+        else:
+            return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def editTeamRecord(self, recordid, json):
+        if json['team_id'] and json['wins'] and json['loss'] and json['draw'] and json['year']:
+                new_teamRecord = TeamRecords(recordid, json['team_id'], json['wins'], json['loss'], json['draw'], json['year'])
+                record = RecordsDAO().edit(new_teamRecord)
+                return jsonify(TeamRecords=record.__dict__), OK
+        else:
+            return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def deleteTeamRecord(self, recordid):
+        record = RecordsDAO().delete(recordid)
+        return jsonify(TeamRecords=record.__dict__), OK
