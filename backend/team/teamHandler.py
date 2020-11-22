@@ -7,6 +7,8 @@ from handler.utils import intoJSON
 from soccerTeam.soccerTeamStatistics import SoccerTeam
 # from backend.team.services import compareTeam
 from soccerTeam.soccerTeamDAO import SoccerTeamDAO
+from Records.teamRecords import TeamRecords
+from Records.recordsDAO import RecordsDAO
 
 
 class TeamHandler:
@@ -26,8 +28,7 @@ class TeamHandler:
     def edit(self, tid, json):
         if tid and json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(tid, json['team_name'], json['team_info'], json['sport_name'])
-            teams\
-                = TeamRepository().edit(new_team)
+            teams = TeamRepository().edit(new_team)
             return jsonify(Teams=[team.serialize() for team in teams]), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
@@ -85,3 +86,23 @@ class TeamHandler:
             return jsonify(SoccerTeam=stat.__dict__), OK
         else:
             return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def addTeamRecord(self, json):
+        if json['team_id'] and json['wins'] and json['loss'] and json['draw'] and json['year']:
+                new_teamRecord = TeamRecords(0, json['team_id'], json['wins'], json['loss'], json['draw'], json['year'])
+                record = RecordsDAO().add(new_teamRecord)
+                return jsonify(TeamRecords=record.__dict__), OK
+        else:
+            return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def editTeamRecord(self, recordid, json):
+        if json['team_id'] and json['wins'] and json['loss'] and json['draw'] and json['year']:
+                new_teamRecord = TeamRecords(recordid, json['team_id'], json['wins'], json['loss'], json['draw'], json['year'])
+                record = RecordsDAO().edit(new_teamRecord)
+                return jsonify(TeamRecords=record.__dict__), OK
+        else:
+            return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST
+
+    def deleteTeamRecord(self, recordid):
+        record = RecordsDAO().delete(recordid)
+        return jsonify(TeamRecords=record.__dict__), OK
