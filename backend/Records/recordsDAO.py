@@ -8,9 +8,9 @@ class RecordsDAO:
 
     def getall(self):
         cursor = self.conn.cursor()
-        query = "SELECT team_records.id, team_id, win, loss, draw, year FROM (team_records JOIN team_sport ON teamSportID = team_sport.id"
+        query = "SELECT team_records.id, team_id, win, loss, draw, year FROM (team_records JOIN team_sport ON teamSportID = team_sport.id)"
         cursor.execute(query)
-        result = cursor.fetchall
+        result = cursor.fetchall()
         records_tup = [record for record in result]
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         return records_obj
@@ -24,18 +24,18 @@ class RecordsDAO:
 
     def getbyyear(self, year):
         cursor = self.conn.cursor()
-        query = "SELECT team_records.id, team_id, win, loss, draw, year FROM (team_records JOIN team_sport ON teamSportID = team_sport.id WHERE year = ? ORDER BY team_id"
+        query = "SELECT team_records.id, team_id, win, loss, draw, year FROM (team_records JOIN team_sport ON teamSportID = team_sport.id) WHERE year = ? ORDER BY team_id"
         cursor.execute(query, (year,))
-        result = cursor.fetchall
+        result = cursor.fetchall()
         records_tup = [record for record in result]
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         return records_obj
 
-    def getbyteamid(self, teamid):
+    def getByTeamID(self, teamid):
         cursor = self.conn.cursor()
-        query = "SELECT team_records.id, team_id, win, loss, draw, year FROM (team_records JOIN team_sport ON teamSportID = team_sport.id WHERE team_id = ? ORDER BY year"
+        query = "SELECT team_records.id, team_id, win, loss, draw, year FROM (team_records JOIN team_sport ON teamSportID = team_sport.id) WHERE team_id = ? ORDER BY year"
         cursor.execute(query, (teamid,))
-        result = cursor.fetchall
+        result = cursor.fetchall()
         records_tup = [record for record in result]
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         return records_obj

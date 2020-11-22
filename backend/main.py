@@ -37,10 +37,10 @@ def login():
 @app.route('/team', methods = [GET, POST])
 @jwt_optional
 def addTeam():
-    manager = get_jwt_identity()
-    if manager:
-        if request.method == POST:
-            return TeamHandler().add(request.json)
+    # manager = get_jwt_identity()
+    # if manager:
+    if request.method == POST:
+        return TeamHandler().add(request.json)
     else:
         if request.args:
             return TeamHandler().search(request.args)

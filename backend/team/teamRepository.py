@@ -6,6 +6,7 @@ from manager.managerRepository import ManagerDAO
 from soccerTeam.soccerTeamDAO import SoccerTeamDAO
 from soccerTeam.soccerTeamStatistics import SoccerTeam
 from handler import utils
+from Records.recordsDAO import RecordsDAO
 
 class TeamRepository:
     def __init__(self):
@@ -22,6 +23,7 @@ class TeamRepository:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def get(self, tid):
@@ -34,6 +36,7 @@ class TeamRepository:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def add(self, team):
@@ -84,6 +87,7 @@ class TeamRepository:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getByName(self, team_name):
@@ -96,6 +100,7 @@ class TeamRepository:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getByNameAndSport(self, team_name, sport_name):
@@ -108,6 +113,7 @@ class TeamRepository:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getAvgStats(self, tid):
