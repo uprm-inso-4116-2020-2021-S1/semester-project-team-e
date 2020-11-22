@@ -13,7 +13,7 @@ class TeamRepository:
 
     def getAll(self):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) ORDER BY team_name;"
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) ORDER BY team_name"
         cursor.execute(query)
         result = cursor.fetchall()
         team_tup = [team for team in result]
@@ -26,7 +26,7 @@ class TeamRepository:
 
     def get(self, tid):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team.id = %s;"
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team.id = ?"
         cursor.execute(query, (tid,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
@@ -76,8 +76,8 @@ class TeamRepository:
 
     def getBySport(self, sport_name):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE sportname = %s ORDER BY team_name;"
-        cursor.execute(query, [sport_name])
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE sportname = ? ORDER BY team_name"
+        cursor.execute(query, (sport_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
@@ -88,8 +88,8 @@ class TeamRepository:
 
     def getByName(self, team_name):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s ORDER BY sportname;"
-        cursor.execute(query, [team_name])
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = ? ORDER BY sportname"
+        cursor.execute(query, (team_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
@@ -100,7 +100,7 @@ class TeamRepository:
 
     def getByNameAndSport(self, team_name, sport_name):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s AND sportname = %s;"
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = ? AND sportname = ?"
         cursor.execute(query, (team_name, sport_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]

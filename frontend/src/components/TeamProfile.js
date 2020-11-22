@@ -1,7 +1,12 @@
 import React, {useState, useContext} from 'react'
-import { Container, Row, Col, Nav, Card } from 'react-bootstrap'
+import { Container, Row, Col, Nav, Card, Button, Modal } from 'react-bootstrap'
 import {AuthContext} from './AuthContext';
 import TeamStatisticsContent from './team_statistics/TeamStatisticsContent';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBalanceScale, faPlus } from '@fortawesome/free-solid-svg-icons';
+import TeamPreview from './TeamPreview';
+import TeamCompare from './TeamCompare';
+import PlayerPreview from './PlayerPreview';
 
 function ManagerContent() {
     return (
@@ -30,31 +35,30 @@ function ManagerContent() {
     )
 }
 
-function PlayersContent() {
+function PlayersContent(props) {
+    const AddPlayerBtn = () => {
+        if (props.state.name) {
+            return (
+                <Row className="m-2 d-flex justify-content-end">
+                    <Button>
+                        Add Player <FontAwesomeIcon icon={faPlus}/>
+                    </Button>
+                </Row>
+            );
+        } else {
+            return(
+                <div></div>
+            );
+        }
+    }
+
     return (
-        <Col className="m-2">
-                <Card className="my-3">
-                    <Card.Img variant="top" src="" fluid/>
-                    <Card.Header>Jose Martinez</Card.Header>
-                    <Card.Body>
-                        <Card.Text>
-                            <p>Age:</p>
-                            <p>Position:</p>
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-                <Card className="my-3">
-                    <Card.Img variant="top" src="" fluid/>
-                    <Card.Header>Mario Diaz</Card.Header>
-                    <Card.Body>
-                        <Card.Text>
-                            <p>Age:</p>
-                            <p>Position:</p>
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-        </Col>
-    )
+        <Container className="m-2">
+            <AddPlayerBtn/>
+            <PlayerPreview playerID={2} playerName={"Mario Diaz"} position={"Goalie"}/>
+            <PlayerPreview playerID={2} playerName={"Jose Joestar"} position={"Goalie"}/>
+        </Container>
+    );
 }
 
 function TeamProfile() {
@@ -66,6 +70,31 @@ function TeamProfile() {
 
     let [tab, setActiveTab] = useState(tabs.STATISTICS);
     const [state, setState] = useContext(AuthContext);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const CompareModal = () => {
+        return (
+        <Modal size="lg" show={show} onHide={handleClose} backdrop="static">
+            <Modal.Header closeButton>
+                <Modal.Title>Compare Team:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <TeamCompare team={{teamName: "Los coquis", teamID: 2}}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={handleClose}>
+                    Save Changes
+                </Button>
+            </Modal.Footer>
+        </Modal>
+        );
+    }
 
     let content;
     switch (tab) {
@@ -76,7 +105,7 @@ function TeamProfile() {
             content = <ManagerContent/>
             break;
         case tabs.PLAYERS:
-            content = <PlayersContent/>
+            content = <PlayersContent state={state}/>
             break;
         default:
             break;
@@ -84,10 +113,14 @@ function TeamProfile() {
 
     return (
         <Container>
+            <CompareModal/>
             <div>
             <Row>
                 <Col>
                     <h1>Los Coquis</h1>
+                </Col>
+                <Col className="m-2 d-flex justify-content-end">
+                    <Button onClick={() => handleShow()}>Compare <FontAwesomeIcon icon={faBalanceScale}/></Button>
                 </Col>
             </Row>
             <Row>
