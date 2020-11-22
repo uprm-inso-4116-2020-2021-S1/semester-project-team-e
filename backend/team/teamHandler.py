@@ -18,22 +18,23 @@ class TeamHandler:
     def add(self, json):
         if json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(0, json['team_name'], json['team_info'], json['sport_name'])
-            team = TeamRepository().add(new_team)
-            return jsonify(Team = team.serialize()), CREATED
+            teams = TeamRepository().add(new_team)
+            return jsonify(Teams=[team.serialize() for team in teams]), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
     def edit(self, tid, json):
-        if json['team_name'] and json['team_info'] and json['sport_name']:
+        if tid and json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(tid, json['team_name'], json['team_info'], json['sport_name'])
-            team = TeamRepository().edit(new_team)
-            return jsonify(Teams = team.serialize()), OK 
+            teams = TeamRepository().edit(new_team)
+            return jsonify(Teams=[team.serialize() for team in teams]), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
     def delete(self, tid):
-        team = TeamRepository().delete(tid)
-        return jsonify(Teams = team.serialize()), OK
+        teams = []
+        teams = TeamRepository().delete(tid)
+        return jsonify(Teams=[team.serialize() for team in teams]), OK
 
     def get(self, tid):
         teams = TeamRepository().get(tid)
