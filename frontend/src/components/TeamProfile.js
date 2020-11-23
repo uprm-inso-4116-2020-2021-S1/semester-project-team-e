@@ -153,7 +153,7 @@ function TeamProfile() {
             let content;
             switch (tab) {
                 case tabs.STATISTICS:
-                        content = <TeamStatisticsContent state={state} statistics={statistics}/>
+                        content = <TeamStatisticsContent state={state} statistics={statistics} id={id}/>
                     break;
                 case tabs.MANAGER:
                     content = <ManagerContent managers={teamData.managers}/>

@@ -48,8 +48,13 @@ class SoccerTeamDAO:
         # adds new entry for a team statistic and returns its statid
         def add(self, soccerTeam):
             cursor = self.conn.cursor()
-            query = "INSERT INTO soccer_team_statistics(team_sport_id, goals_for, goals_allowed, shots, shots_on_goal, saves, passes, possession, fouls, date) values(%s, %s, %s, %s, %s, %s, %s, %s) returning id;"
-            result = cursor.execute(query, (soccerTeam.team_id, soccerTeam.goals_for, soccerTeam.goals_allowed, soccerTeam.shots, soccerTeam.shots_on_goal, soccerTeam.saves, soccerTeam.passes, soccerTeam.possession, soccerTeam.fouls, soccerTeam.date))
+            cursor.execute("SELECT id FROM team_sport WHERE team_id=?", (soccerTeam.team_id,))
+            team_sport_id = cursor.fetchone()[0]
+            query = "INSERT INTO soccer_team_statistics(team_sport_id, goals_for, goals_allowed, shots, shots_on_goal, saves, passes, possession, fouls, date) values(?,?,?,?,?,?,?,?,?,?)"
+            cursor.execute(query, (team_sport_id, soccerTeam.goals_for, soccerTeam.goals_allowed, soccerTeam.shots, soccerTeam.shots_on_goal, soccerTeam.saves, soccerTeam.passes, soccerTeam.possession, soccerTeam.fouls, soccerTeam.date))
+            result = cursor.lastrowid
+            cursor.close()
+            self.conn.commit()
             return result
 
         # deletes a team statistic record (search by year? or team?)

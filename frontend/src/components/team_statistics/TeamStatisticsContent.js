@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function TeamStatisticsContent(props) {
-    const {statistics, state} = props;
+    const {id, statistics, state} = props;
 
     const [show, setShow] = useState(false);
 
@@ -31,7 +31,7 @@ function TeamStatisticsContent(props) {
 
     const StatisticForm = () => {
         return (
-           <SoccerTeamForm handleClose={handleClose} show={show}/> 
+           <SoccerTeamForm handleClose={handleClose} show={show} id={id}/> 
         );
     }
 
