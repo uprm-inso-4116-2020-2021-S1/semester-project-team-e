@@ -87,6 +87,7 @@ function TeamProfile() {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [teamData, setTeamData] = useState({});
+    const [statistics, setStatistics] = useState([]);
 
     useEffect(() => {
         const fetchTeamData = async () => {
@@ -97,6 +98,7 @@ function TeamProfile() {
                         setIsError(true);
                     } else {
                         setTeamData(response.data.Teams[0]);
+                        setStatistics(response.data.Teams[0].team_statistics)
                         setIsError(false);
                     }})
                 .catch(() => setIsError(true));
@@ -151,7 +153,7 @@ function TeamProfile() {
             let content;
             switch (tab) {
                 case tabs.STATISTICS:
-                    content = <TeamStatisticsContent state={state} statistics={teamData.team_statistics}/>
+                        content = <TeamStatisticsContent state={state} statistics={statistics}/>
                     break;
                 case tabs.MANAGER:
                     content = <ManagerContent managers={teamData.managers}/>

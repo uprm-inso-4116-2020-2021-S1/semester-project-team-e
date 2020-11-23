@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function TeamStatisticsContent(props) {
+    const {statistics, state} = props;
+
     const [show, setShow] = useState(false);
 
     // Look up use callback
@@ -12,7 +14,7 @@ function TeamStatisticsContent(props) {
     const handleShow = () => setShow(true);
 
     const AddStatisticBtn = () => {
-        if (props.state.name) {
+        if (state.name) {
             return (
                 <Row className="m-2 d-flex justify-content-end">
                     <Button onClick={handleShow}>
@@ -38,16 +40,6 @@ function TeamStatisticsContent(props) {
         { name: 'Loses', value: 2 }, 
         { name: 'Draws', value: 1 }, 
     ];
-    const goalAveragesDummy = [
-        {name:'Goal Allowed', average: 7}, 
-        {name:'Goals for', average: 6}, 
-        {name: 'Shots', average: 12},
-        {name: 'Shots on goal', average: 10},
-        {name: 'Saves', average: 5},
-        {name: 'Passes', average: 20},
-        {name: 'Posessions', average: 15},
-        {name: 'Fouls', average: 3},
-    ];
     const yearlyPerformanceDummy= [
         {year: 2016, wins: 3, losses: 2, draws: 1}, 
         {year: 2017, wins: 2, losses: 2, draws: 0}, 
@@ -55,80 +47,76 @@ function TeamStatisticsContent(props) {
         {year: 2019, wins: 4, losses: 2, draws: 1},
         {year: 2020, wins: 2, losses: 3, draws: 0},
     ];
-    const goalsForDummy = [
-        {year: 2016, goals_for: 5}, 
-        {year: 2017, goals_for: 2}, 
-        {year: 2018, goals_for: 3}, 
-        {year: 2019, goals_for: 6}, 
-        {year: 2020, goals_for: 4}, 
-    ];
-    const goalsAllowedDummy= [
-        {year: 2016, goals_allowed: 13}, 
-        {year: 2017, goals_allowed: 9}, 
-        {year: 2018, goals_allowed: 7}, 
-        {year: 2019, goals_allowed: 8}, 
-        {year: 2020, goals_allowed: 14}, 
-    ];
-    const shotsDummy= [
-        {year: 2016, shots: 11}, 
-        {year: 2017, shots: 5}, 
-        {year: 2018, shots: 7}, 
-        {year: 2019, shots: 12}, 
-        {year: 2020, shots: 8}, 
-    ];
-    const shotsOnGoalDummy= [
-        {year: 2016, shots_on_goal: 10}, 
-        {year: 2017, shots_on_goal: 3}, 
-        {year: 2018, shots_on_goal: 6}, 
-        {year: 2019, shots_on_goal: 8}, 
-        {year: 2020, shots_on_goal: 12}, 
-    ];
-    const savesDummy= [
-        {year: 2016, saves: 7}, 
-        {year: 2017, saves: 2}, 
-        {year: 2018, saves: 2}, 
-        {year: 2019, saves: 5}, 
-        {year: 2020, saves: 6}, 
-    ];
-    const passesDummy= [
-        {year: 2016, passes: 7}, 
-        {year: 2017, passes: 5}, 
-        {year: 2018, passes: 3}, 
-        {year: 2019, passes: 7}, 
-        {year: 2020, passes: 4}, 
-    ];
-    const possesionsDummy= [
-        {year: 2016, possesions: 6}, 
-        {year: 2017, possesions: 3}, 
-        {year: 2018, possesions: 4}, 
-        {year: 2019, possesions: 6}, 
-        {year: 2020, possesions: 4}, 
-    ];
-    const foulsDummy= [
-        {year: 2016, fouls: 7}, 
-        {year: 2017, fouls: 9}, 
-        {year: 2018, fouls: 5}, 
-        {year: 2019, fouls: 5}, 
-        {year: 2020, fouls: 11}, 
-    ];
+
+    let content;
+    if (statistics.length === 0) {
+        content = <Container align="center" className="m-2">
+                       <h1>No Statistics found...</h1>
+                  </Container>
+    } else {
+        let goalsFor =[], goalsAllowed = [], passes = [], possesions = [], saves = [], shots = [], shotsOnGoal = [], fouls = [];
+        let averages = [
+                {name:'Goal Allowed', average: 0}, 
+                {name:'Goals for', average: 0}, 
+                {name: 'Shots', average: 0},
+                {name: 'Shots on goal', average: 0},
+                {name: 'Saves', average: 0},
+                {name: 'Passes', average: 0},
+                {name: 'Posessions', average: 0},
+                {name: 'Fouls', average: 0},
+            ];
+
+        statistics.forEach((statistic) => {
+            const date = new Date(Date.parse(statistic.date));
+            const year = date.getFullYear();
+
+            goalsFor.push({year: year, goals_for: statistic.goals_for});
+            averages[1].average += statistic.goals_for;
+
+            goalsAllowed.push({year: year, goals_allowed: statistic.goals_allowed});
+            averages[0].average += statistic.goals_allowed;
+
+            passes.push({year: year, passes: statistic.passes});
+            averages[5].average += statistic.passes;
+
+            possesions.push({year: year, possesions: statistic.possession});
+            averages[6].average += statistic.possession;
+
+            saves.push({year: year, saves: statistic.saves});
+            averages[4].average += statistic.saves;
+
+            shots.push({year: year, shots: statistic.shots});
+            averages[2].average += statistic.shots;
+
+            shotsOnGoal.push({year: year, shots_on_goal: statistic.shots_on_goal});
+            averages[3].average += statistic.shots_on_goal;
+
+            fouls.push({year: year, fouls: statistic.fouls});
+            averages[7].average += statistic.fouls;
+        })
+
+        averages.forEach(stat => stat.average /= statistics.length)
+
+        content = <SoccerTeamStatistics 
+                    yearlyPerformance={yearlyPerformanceDummy} 
+                    overallPerformance={overallPerformanceDummy} 
+                    averages={averages} 
+                    goalsFor={goalsFor}
+                    goalsAllowed={goalsAllowed}
+                    shots={shots}
+                    shotsOnGoal={shotsOnGoal}
+                    saves={saves}
+                    passes={passes}
+                    possesions={possesions}
+                    fouls={fouls}
+                  />
+    }
 
     return (
         <Container>
             <StatisticForm/>
             <AddStatisticBtn/>
-            <SoccerTeamStatistics 
-                yearlyPerformance={yearlyPerformanceDummy} 
-                overallPerformance={overallPerformanceDummy} 
-                averages={goalAveragesDummy} 
-                goalsFor={goalsForDummy}
-                goalsAllowed={goalsAllowedDummy}
-                shots={shotsDummy}
-                shotsOnGoal={shotsOnGoalDummy}
-                saves={savesDummy}
-                passes={passesDummy}
-                possesions={possesionsDummy}
-                fouls={foulsDummy}
-            />
+            {content}
         </Container>
     )
 }
