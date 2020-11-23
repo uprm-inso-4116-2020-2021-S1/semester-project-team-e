@@ -70,7 +70,7 @@ class PlayerHandler:
             # print(e)
             # return jsonify(Error='Invalid player attributes for search.'), NOT_FOUND
 
-    def compare_players(player_1, player_2):
+    def compare_players(self, player_1, player_2):
         # Pending Revision
         # TODO do it mai dude
         pass
