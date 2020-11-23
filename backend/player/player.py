@@ -60,3 +60,8 @@ class Player:
             db_dict[entry] = inst_values[entry]
 
         return db_dict
+
+
+    @staticmethod
+    def search_by_atr(recvd: dict):
+        pass

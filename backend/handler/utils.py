@@ -227,8 +227,10 @@ class DAO:
         self.result = None
 
     def close_and_return_result(self):
+        ''' Closes connection and returns result obtained if valid, otherwise returns None'''
         self.current_connection.close()
-        return self.result
+        return self.get_valid_result()
+        
 
     def execute_query(self, query: str, args: List) -> None:
         if args:
@@ -258,6 +260,13 @@ class DAO:
                 if val:
                     pret_ls.append(val)
         return pret_ls
+
+    def get_valid_result(self):
+        ''' Returns result of operation if any, otherwise returns None '''
+        if self.result:
+            return self.result
+        else:
+            return None
 
 
 

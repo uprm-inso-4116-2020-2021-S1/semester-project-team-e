@@ -60,11 +60,16 @@ class SoccerPlayerStatistic(PlayerStatistic):
 
     @staticmethod
     def db_format(value_ls: list):
-        return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT, value_ls)
+        return dict(zip(SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT, value_ls))
+        # return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT, value_ls)
 
     @staticmethod
-    def db_edit_format(value_ls: list):
-        return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_UPDATE_FORMAT, value_ls)
+    def db_edit_format(value_ls: list):                
+        raise NotImplementedError
+    #     key_ls = SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT
+    #     # Assuming soccer player statistic id is given we can re append it last
+    #     key_ls.append(key_ls[0])        
+    #     return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_UPDATE_FORMAT, value_ls)
 
     @staticmethod
     def create_add_query(info_dict: dict):

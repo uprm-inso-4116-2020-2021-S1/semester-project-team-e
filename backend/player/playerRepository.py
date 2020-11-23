@@ -13,18 +13,19 @@ from handler.utils import PLAYER_FORMAT, SOCCER_STATS_FORMAT, PLAYER_DB_FORMAT, 
 class PlayerRepository:
     
     def getAll(self):
-        # Pending Revision
-        player_list = PlayerDAO().get_all()        
-        player_list = to_specified_format(player_list, PLAYER_FORMAT[:-1])        
+        ''' Only gets all Players ''' 
+        p_dao = PlayerDAO()
+        player_keys = p_dao._get_column_names()      
+        player_list = p_dao.get_all()        
+        player_list = to_specified_format(player_list, player_keys)        
         player_cont = []
         for idx, player in enumerate(player_list):            
-            player = self.get(player['player_id'])            
+            player = self.get(player['id'])            
             if player:
                 player_cont.append(vars(player))
         return player_cont       
 
-    def get(self, player_id):
-        # Pending Revision
+    def getPlayerByID(self, player_id):
         player_id = int(player_id)     
         player = PlayerDAO().get(player_id)        
         if player:
@@ -38,7 +39,23 @@ class PlayerRepository:
         else:
             return None    
 
-    def add(self, player: Player):
+    def getPlayerAndStats(self, player_id):
+        ''' Only gets player by id and any sport statistics with the player id ''' 
+        # TODO unfinished, only gets soccer stats refactor
+        player_id = int(player_id)     
+        player = PlayerDAO().get(player_id)        
+        if player:
+            player_socc_stat = SoccerPlayerStatisticDAO().get_by_attribute({'player_id' : player_id})
+            if player_socc_stat:
+                for idx, stat in enumerate(player_socc_stat):                    
+                    _, player_socc_stat[idx] = SoccerPlayerStatistic.build_stat(stat)                
+            current_player = Player(**(to_specified_format(player, PLAYER_FORMAT)[0]))
+            current_player.player_sport_stats =  {'SoccerPlayerStatistics' : player_socc_stat}
+            return current_player            
+        else:
+            return None    
+
+    def addPlayer(self, player: Player):
         # Pending Revision
         player_json = player.to_db_format()
         return PlayerDAO().add(player_json)
