@@ -4,3 +4,21 @@ class Team():
         self.team_name = team_name
         self.team_info = team_info
         self.sport_name = sport_name
+        self.sportStatistic = []
+        self.teamRecords = []
+        self.managers = []
+
+
+    def serialize(self):
+        return {'team' : self.team_id,
+                'team_name' : self.team_name,
+                'team_info' : self.team_info,
+                'sport_name' : self.sport_name,
+                'team_statistics' : [ stat.__dict__ for stat in self.sportStatistic ],
+                'team_Records': [stat.__dict__ for stat in self.teamRecords],
+                'managers' : [ manager.serialize() for manager in self.managers ]
+                }
+
+
+
+
