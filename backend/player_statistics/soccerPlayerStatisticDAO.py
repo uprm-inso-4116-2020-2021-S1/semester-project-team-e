@@ -3,9 +3,6 @@ from handler.utils import DAO
 from player_statistics.soccerPlayerStatistics import SoccerPlayerStatistic
 
 
-
-
-
 class SoccerPlayerStatisticDAO(DAO):
 
     

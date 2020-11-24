@@ -21,18 +21,6 @@ class DB_Entity:
                     pret_ls.append(val)
         return pret_ls
 
-
-    @staticmethod
-    def _create_dict_format(key_ls: list, val_ls: list):
-        ''' zip function: "am i joke to you"'''
-        ret_dict = {}
-        if len(key_ls) != len(val_ls):            
-            print('Bad list length.')
-            raise ValueError(len(key_ls), ' vs ', len(val_ls))
-        for idx, entry in enumerate(key_ls):
-            ret_dict[entry] = val_ls[idx] 
-        return ret_dict
-
     @staticmethod
     # TODO esto no creo que se esta usando atm
     def _find_attribute(attribute_key: str, entity_atr_list: list):

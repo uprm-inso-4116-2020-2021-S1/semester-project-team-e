@@ -3,11 +3,6 @@ from datetime import date
 from player_statistics.playerStatistics import PlayerStatistic
 from db_entity import DB_Entity
 
-
-
-
-# 'soccer_individual_statistics'
-
 class SoccerPlayerStatistic(PlayerStatistic):
 
     DATABASE_TABLE_NAME = 'soccer_individual_statistics'
@@ -23,15 +18,6 @@ class SoccerPlayerStatistic(PlayerStatistic):
     SOCCER_PLAYER_STATISTIC_FORMAT = DB_Entity._get_column_names(DATABASE_TABLE_NAME)
     
 
-    SOCCER_PLAYER_STATISTIC_DB_FORMAT = [
-        # TODO ver que vas a hacer con el nombre de date y year que aparecen distintos en el codigo y en la base de datos
-    ]
-
-    SOCCER_PLAYER_UPDATE_FORMAT = [
-        # TODO
-    ]
-    
-    
 
     # TODO cambiar el db para que el stat sea determinado solo con el player id y removerle el id
     def __init__(self, id = None, player_id=None, position=None, date=None, halve_number=None, games_played=None, saves=None, goals_scored=None, assists=None, tackles_won=None, passes_completed=None, red_cards=None, yellow_cards=None):
@@ -63,13 +49,13 @@ class SoccerPlayerStatistic(PlayerStatistic):
         return dict(zip(SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT, value_ls))
         # return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT, value_ls)
 
-    @staticmethod
-    def db_edit_format(value_ls: list):                
-        raise NotImplementedError
-    #     key_ls = SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT
-    #     # Assuming soccer player statistic id is given we can re append it last
-    #     key_ls.append(key_ls[0])        
-    #     return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_UPDATE_FORMAT, value_ls)
+    # @staticmethod
+    # def db_edit_format(value_ls: list):                
+    #     raise NotImplementedError
+    # #     key_ls = SoccerPlayerStatistic.SOCCER_PLAYER_STATISTIC_FORMAT
+    # #     # Assuming soccer player statistic id is given we can re append it last
+    # #     key_ls.append(key_ls[0])        
+    # #     return SoccerPlayerStatistic._create_dict_format(SoccerPlayerStatistic.SOCCER_PLAYER_UPDATE_FORMAT, value_ls)
 
     @staticmethod
     def create_add_query(info_dict: dict):

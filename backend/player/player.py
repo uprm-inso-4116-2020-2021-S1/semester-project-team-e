@@ -1,17 +1,13 @@
 from player_statistics.playerStatistics import PlayerStatistic
+from db_entity import DB_Entity
 
 
-class Player:
+class Player(DB_Entity):
+
+    CLASS_NAME = 'Player'
+    DATABASE_TABLE_NAME = 'player'
     
-    PLAYER_DB_FORMAT = [        
-        'player_id',
-        'player_name',
-        'height',
-        'weight',
-        'team_name',
-        'sport_name',
-        'team_sport_id',    
-    ]    
+    PLAYER_DB_FORMAT = DB_Entity._get_column_names(DATABASE_TABLE_NAME)
 
     PLAYER_UPDATE_FORMAT = [
         'player_name',
@@ -65,3 +61,8 @@ class Player:
     @staticmethod
     def search_by_atr(recvd: dict):
         pass
+
+
+    @staticmethod
+    def search_by_atr(front_end_dict: dict):                                                     # This last bit with the dictionary could be eliminated later
+        return Player.get_by_attribute(Player.PLAYER_DB_FORMAT, front_end_dict, Player.CLASS_NAME, {})

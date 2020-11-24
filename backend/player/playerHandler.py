@@ -10,8 +10,6 @@ from flask import jsonify
 
 class PlayerHandler:
     
-    player_dummy = Player()
-
     def getAll(self):
         # Pending Revision
         players: list
