@@ -6,6 +6,7 @@ from manager.managerRepository import ManagerDAO
 from soccerTeam.soccerTeamDAO import SoccerTeamDAO
 from soccerTeam.soccerTeamStatistics import SoccerTeam
 from handler import utils
+from Records.recordsDAO import RecordsDAO
 
 class TeamRepository:
     def __init__(self):
@@ -13,7 +14,7 @@ class TeamRepository:
 
     def getAll(self):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) ORDER BY team_name;"
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) ORDER BY team_name"
         cursor.execute(query)
         result = cursor.fetchall()
         team_tup = [team for team in result]
@@ -22,18 +23,20 @@ class TeamRepository:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def get(self, tid):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team.id = %s;"
-        cursor.execute(query, [tid])
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team.id = ?"
+        cursor.execute(query, (tid,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def add(self, team):
@@ -76,26 +79,28 @@ class TeamRepository:
 
     def getBySport(self, sport_name):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE sportname = %s ORDER BY team_name;"
-        cursor.execute(query, [sport_name])
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE sportname = ? ORDER BY team_name"
+        cursor.execute(query, (sport_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getByName(self, team_name):
         cursor = self.conn.cursor()
-        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = %s ORDER BY sportname;"
-        cursor.execute(query, [team_name])
+        query = "SELECT team.id, team_name, info, sportname FROM ((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) WHERE team_name = ? ORDER BY sportname"
+        cursor.execute(query, (team_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getByNameAndSport(self, team_name, sport_name):
@@ -108,6 +113,7 @@ class TeamRepository:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
     def getAvgStats(self, tid):

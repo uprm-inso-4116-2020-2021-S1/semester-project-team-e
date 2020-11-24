@@ -8,9 +8,9 @@ from flask_jwt_extended import create_access_token
 class ManagerHandler:
     def register(self, json):
         if json['username'] and json['email'] and json['password'] and json['full_name']:
-            if not ManagerDAO().get(json['username']):
+            if not ManagerDAO().getByUsername(json['username']):
                 json['password'] = sha256_crypt.hash(json['password']) 
-                new_manager = Manager(0, json['email'], json['username'], json['password'], json['full_name'])
+                new_manager = Manager(0, json['username'], json['password'], json['full_name'], json['email'])
                 manager = ManagerDAO().add(new_manager)
                 return jsonify(isAuth = True, UserID = manager.user_id, Username = manager.username), CREATED
             else:
@@ -41,3 +41,11 @@ class ManagerHandler:
     def delete(self, userid):
         manager = ManagerDAO().delete(userid)
         return jsonify(Manager=manager.serialize()), OK
+
+    def getAll(self):
+        managers = ManagerDAO().getAll()
+        return jsonify(Manager=[manager.serialize() for manager in managers]), OK
+
+    def get(self, userid):
+        manager = ManagerDAO().get(userid)
+        return jsonify(Manager=[manager.serialize()]), OK

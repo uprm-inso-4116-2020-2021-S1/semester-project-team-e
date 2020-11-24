@@ -1,5 +1,5 @@
 class Manager:
-    def __init__(self, user_id, email, username, password, full_name):
+    def __init__(self, user_id, username, password, full_name, email):
         self.user_id = user_id
         self.username = username
         self.email = email
