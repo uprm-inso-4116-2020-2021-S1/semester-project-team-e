@@ -94,10 +94,10 @@ def comaprePlayer():
     return 'Compare two player'
 
 #statistics routes
-@app.route('/teamstatistics', methods=[POST])
-def addTeamStatistics():
+@app.route('/team/<int:tid>/statistics', methods=[POST])
+def addTeamStatistics(tid):
     if request.method == POST:
-        return TeamHandler().addTeamStat(request.json)
+        return TeamHandler().addTeamStat(tid, request.json)
 
 @app.route('/teamstatistics/<int:statid>', methods=[PUT, DELETE])
 def getTeamStatisticsByID(statid):

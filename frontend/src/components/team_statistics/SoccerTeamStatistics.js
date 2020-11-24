@@ -1,11 +1,47 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import { Row, Col, Button, Modal, Form } from 'react-bootstrap'
 import { LineChart, Line, BarChart,Bar, PieChart, Pie, Cell, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
 import {useForm, Controller} from 'react-hook-form';
+import axios from 'axios';
 
 function SoccerTeamForm(props) {
     const { control, handleSubmit } = useForm();
-    const onSubmit = data => {console.log(data); props.handleClose()};
+    const [statistic, setStatistic] = useState({});
+    const [matchResult, setMatchResult] = useState({});
+    const isInitialMount = useRef(true);
+
+    useEffect(() =>{
+        const addStatistics = async () => {
+            await axios.post(`http://localhost:5000/team/${props.id}/statistics`, statistic)
+                .then((response) => {})
+                .catch((error) => {} )
+        }
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            addStatistics();
+        }
+    }, [statistic]);
+
+    const transformData = (data) => {
+        data.fouls = parseInt(data.fouls);
+        data.goals_for = parseInt(data.goals_for);
+        data.goals_allowed = parseInt(data.goals_allowed);
+        data.passes = parseInt(data.passes);
+        data.possession = parseInt(data.possession);
+        data.saves = parseInt(data.saves);
+        data.shots = parseInt(data.shots);
+        data.shots_on_goal = parseInt(data.shots_on_goal);
+    }
+
+    const onSubmit = data => {
+        transformData(data);
+        setMatchResult({date: data.date, match_result: data.match_result});
+        delete data.match_result;
+        setStatistic(data);
+        console.log(data); 
+        props.handleClose()
+    };
 
     return (
         <Modal show={props.show} onHide={props.handleClose} animation="false">
@@ -67,7 +103,7 @@ function SoccerTeamForm(props) {
                     </Form.Group>
                     <Form.Group controlId="possesions">
                         <Form.Label>Possesions:</Form.Label>
-                        <Controller as={Form.Control} name="possesions" control={control}  defaultValue="0"/>
+                        <Controller as={Form.Control} name="possession" control={control}  defaultValue="0"/>
                     </Form.Group>
                     <Form.Group controlId="fouls">
                         <Form.Label>Fouls:</Form.Label>
