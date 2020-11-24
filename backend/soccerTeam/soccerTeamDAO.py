@@ -50,6 +50,7 @@ class SoccerTeamDAO:
         # adds new entry for a team statistic and returns its statid
         def add(self, soccerTeam):
             cursor = self.conn.cursor()
+
             query = "SELECT id FROM team_sport WHERE team_id = ?"
             cursor.execute(query, (soccerTeam.team_id,))
             team_sportid = cursor.fetchone()[0]

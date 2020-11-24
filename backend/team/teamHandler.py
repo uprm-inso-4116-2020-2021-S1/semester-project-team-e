@@ -67,11 +67,13 @@ class TeamHandler:
         else:
             return jsonify(Error = 'Malformed query string'), NOT_FOUND
 
-    def addTeamStat(self, json):                                                                                        #only team statistic part json, only works for 1 sport, have to incorporate team statistic factory for more sports
-        if json['team_id'] and json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
-            new_teamStat = SoccerTeam(0, json['team_id'], json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
+    def addTeamStat(self, tid, json):                                                                                        #only team statistic part json, only works for 1 sport, have to incorporate team statistic factory for more sports
+        print(json)
+        # if json['goals_for'] and json['goals_allowed'] and json['shots'] and json['shots_on_goal'] and json['saves'] and json['passes'] and json['possession'] and json['fouls'] and json['date']:
+        if ('goals_for' in json) and ('goals_allowed' in json) and ('shots' in json) and ('shots_on_goal' in json) and ('saves' in json) and ('passes' in json) and ('possession' in json) and ('date' in json):
+            new_teamStat = SoccerTeam(0, tid, json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
             stat = SoccerTeamDAO().add(new_teamStat)
-            return jsonify(SoccerTeam = stat.__dict__), CREATED
+            return jsonify(StatID= stat), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
