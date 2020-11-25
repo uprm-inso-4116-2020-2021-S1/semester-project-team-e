@@ -57,12 +57,3 @@ class ManagerHandler:
             return jsonify(Teams = [team.serialize() for team in teams]), OK
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
-
- # def addManagertoTeam(self, teamid, json):
-    #     if json['userid'] and json['username'] and json['email'] and json['full_name']:
-    #         new_manager = Manager(0, json['username'], 0, json['full_name'], json['email'])
-    #         print(json['userid'], json['username'], json['email'], json['full_name'])
-    #         manager = ManagerDAO.addManagertoTeam(teamid, new_manager)
-    #         return jsonify(Manager=manager.serialize()), OK
-    #     else:
-    #         return jsonify(Error='Unexpected attributes in post'), BAD_REQUEST

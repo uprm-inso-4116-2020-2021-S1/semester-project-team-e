@@ -142,12 +142,6 @@ def getUserByID(userid):
 def getMyTeams():
     return ManagerHandler().getMyTeams(request.json)
 
-# @app.route('/manager/<int:teamid>', methods = [POST])
-# def addManagertoTeam(teamid):
-#     # manager = get_jwt_identity()
-#     # if manager:
-#         return ManagerHandler().addManagertoTeam(teamid, request.json)
-
 #Team Records routes
 @app.route('/teamrecord', methods = [POST])
 def addTeamRecord():

@@ -63,9 +63,3 @@ class ManagerDAO:
         self.conn.commit()
         return
 
-    # def addManagertoTeam(self, teamid, user):
-    #     cursor = self.conn.cusror()
-    #     query = "INSERT INTO manages(user_id, team_id) VALUES(?, ?)"
-    #     cursor.execute(query, (user.user_id, teamid,))
-    #     self.conn.commit()
-    #     return user
