@@ -79,8 +79,10 @@ class TeamRepository:
         cursor = self.conn.cursor()
         query1 = "DELETE FROM team_sport WHERE team_id = ?"
         cursor.execute(query1, (tid,))
-        query2 = "DELETE FROM team WHERE id = ?"
-        cursor.execute(query2, (tid,))
+        query3 = "DELETE FROM manages WHERE id = (SELECT id FROM manages WHERE team_id = ?)"
+        cursor.execute(query3, (tid,))
+        query3 = "DELETE FROM team WHERE id = ?"
+        cursor.execute(query3, (tid,))
         self.conn.commit()
         cursor.close()
         return team_obj

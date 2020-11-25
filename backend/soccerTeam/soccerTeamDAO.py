@@ -21,6 +21,7 @@ class SoccerTeamDAO:
             query = "SELECT soccer_team_statistics.id, team_id, goals_for, goals_allowed, shots, shots_on_goal, saves, passes, possession, fouls, date FROM (soccer_team_statistics JOIN team_sport ON team_sport_id = team_sport.id) WHERE soccer_team_statistics.id = ?"
             cursor.execute(query, (statid,))
             teamStat = cursor.fetchone()
+            print(teamStat)
             return SoccerTeam(teamStat[0], teamStat[1], teamStat[2], teamStat[3], teamStat[4], teamStat[5], teamStat[6], teamStat[7],teamStat[8], teamStat[9], teamStat[10])
 
         def getByTeamid(self, tid):

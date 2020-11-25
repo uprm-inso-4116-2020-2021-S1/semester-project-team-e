@@ -73,7 +73,7 @@ class TeamHandler:
         if ('goals_for' in json) and ('goals_allowed' in json) and ('shots' in json) and ('shots_on_goal' in json) and ('saves' in json) and ('passes' in json) and ('possession' in json) and ('date' in json):
             new_teamStat = SoccerTeam(0, tid, json['goals_for'], json['goals_allowed'], json['shots'], json['shots_on_goal'], json['saves'], json['passes'], json['possession'], json['fouls'], json['date'])
             stat = SoccerTeamDAO().add(new_teamStat)
-            return jsonify(StatID= stat), CREATED
+            return jsonify(SoccerTeam=stat.__dict__), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST
 
