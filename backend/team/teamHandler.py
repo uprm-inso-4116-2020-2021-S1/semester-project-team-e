@@ -18,9 +18,9 @@ class TeamHandler:
         return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def add(self, json):
-        if json['team_name'] and json['team_info'] and json['sport_name']:
+        if json['username'] and json['team_name'] and json['team_info'] and json['sport_name']:
             new_team = Team(0, json['team_name'], json['team_info'], json['sport_name'])
-            teams = TeamRepository().add(new_team)
+            teams = TeamRepository().add(new_team, json['username'])
             return jsonify(Teams=[team.serialize() for team in teams]), CREATED
         else:
             return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST

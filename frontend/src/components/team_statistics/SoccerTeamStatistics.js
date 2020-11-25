@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import { Row, Col, Button, Modal, Form } from 'react-bootstrap'
+import { Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { LineChart, Line, BarChart,Bar, PieChart, Pie, Cell, Legend , CartesianGrid, XAxis, YAxis, Tooltip, } from 'recharts';
 import {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
