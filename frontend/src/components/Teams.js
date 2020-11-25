@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useContext, useEffec} from 'react';
 import {Container} from 'react-bootstrap';
 import Searchbar from '../components/Searchbar';
 import TeamPreview from '../components/TeamPreview';
@@ -11,40 +11,56 @@ function Teams() {
     const [teamsData, setTeamsData] = useState({});
 
     useEffect(() => {
-        const fetchTeamData = async () => {
-            setIsLoading(true)
-            await axios.get(`http://localhost:5000/team`)
+        const getTeams = async () => {
+            setIsLoading(true);
+            await axios.post('http://localhost:5000/teams', {username: state.name})
                 .then((response) => {
                     setTeamsData(response.data.Teams);
                     setIsError(false);
-                    })
+                })
                 .catch(() => setIsError(true));
-            setIsLoading(false)
+            setIsLoading(false);
         }
-
-        fetchTeamData();
     }, []);
-    var teamList = [];
-    for(i=0; i < teamsData.length; i++){
-      teamList.push({ teamName: teamsData.teamName, teamID: teamsData.teamID, sportName: teamsData.teamSports, teamMemberLength: teamsData.teamMemberLength});
-    }
-    // const dummyData = [
-    //     { teamName: 'Los Coquis', teamID: 2, sportName: 'soccer', teamMemberLength: 8},
-    //     { teamName: 'Bravos de Ponce', teamID: 3, sportName: 'soccer', teamMemberLength: 12},
-    //     { teamName: 'Cangrejeros', teamID: 4, sportName: 'soccer', teamMemberLength: 10},
-    //     { teamName: 'Gurabo FC', teamID: 6, sportName: 'soccer', teamMemberLength: 14},
-    // ]
 
-    return (
-        <div>
-            <Container>
-                <Searchbar title="Teams" placeholder="Search Teams"/>
-                {teamList.map(team => (
-                    <TeamPreview key={team.teamID} noLink={false} teamName={team.teamName} teamID={team.teamID} teamMemberLength={team.teamMemberLength}/>
-                ))}
+    if (isLoading) {
+        return (
+            <Container align="center">
+                <h1>Loading...</h1>
+                <Spinner animation="border"/>
             </Container>
-        </div>
-    )
+        )
+    } else {
+        if (isError) {
+            return (
+                <Container>
+                    <Col align="center" className="my-3">
+                        <FontAwesomeIcon icon={faFrown} size="9x"/>
+                        <h1>Something went wrong...</h1>
+                    </Col>
+                </Container>
+            )
+        } else {
+            if (myTeams.length === 0) {
+                return (
+                    <Container align="center" className="m-2">
+                        <h1>No teams found...</h1>
+                    </Container>
+                )
+            } else {
+                return (
+                    <div>
+                        <Container>
+                            <Searchbar title="Teams" placeholder="Search Teams"/>
+                            {teamsData.map(team => (
+                                <TeamPreview key={team.team} noLink={false} teamName={team.team_name} teamID={team.team} teamMemberLength={0}/>
+                            ))}
+                        </Container>
+                    </div>
+                )
+            }
+        }
+    }
 }
 
 export default Teams
