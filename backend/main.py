@@ -136,6 +136,10 @@ def getUserByID(userid):
     else:
         return ManagerHandler().get(userid)
 
+@app.route('/manager/myteams', methods = [POST])
+def getMyTeams():
+    return ManagerHandler().getMyTeams(request.json)
+
 #Team Records routes
 @app.route('/teamrecord', methods = [POST])
 def addTeamRecord():

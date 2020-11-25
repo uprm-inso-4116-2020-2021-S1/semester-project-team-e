@@ -4,6 +4,7 @@ from passlib.hash import sha256_crypt
 from manager.managerRepository import ManagerDAO
 from manager.manager import Manager
 from flask_jwt_extended import create_access_token
+from team.teamRepository import TeamRepository
 
 class ManagerHandler:
     def register(self, json):
@@ -49,3 +50,10 @@ class ManagerHandler:
     def get(self, userid):
         manager = ManagerDAO().get(userid)
         return jsonify(Manager=[manager.serialize()]), OK
+
+    def getMyTeams(self, json):
+        if 'username' in json:
+            teams = TeamRepository().getByManager(json['username'])
+            return jsonify(Teams = [team.serialize() for team in teams]), OK
+        else:
+            return jsonify(Error = 'Unexpected attributes in post'), BAD_REQUEST

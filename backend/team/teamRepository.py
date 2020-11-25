@@ -19,6 +19,7 @@ class TeamRepository:
         result = cursor.fetchall()
         team_tup = [team for team in result]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        cursor.close()
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
@@ -32,6 +33,7 @@ class TeamRepository:
         cursor.execute(query, (tid,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        cursor.close()
         for team in team_obj:
             dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
@@ -39,7 +41,7 @@ class TeamRepository:
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
 
-    def add(self, team):
+    def add(self, team, username):
         cursor = self.conn.cursor()
         query = "INSERT INTO team(team_name, info) values(?, ?)"
         cursor.execute(query, (team.team_name, team.team_info,))
@@ -49,8 +51,12 @@ class TeamRepository:
         sportid = cursor.fetchone()[0]
         query3 = "INSERT INTO team_sport(team_id, sport_id) values(?, ?)"
         cursor.execute(query3, (teamid, sportid,))
-        self.conn.commit()
         team_obj = self.get(teamid)
+        cursor.execute("SELECT id FROM user WHERE username = ?", (username,))
+        userId = cursor.fetchone()[0]
+        cursor.execute("insert into manages(user_id, team_id) values (?,?)", (userId, team_obj[0].team_id,))
+        self.conn.commit()
+        cursor.close()
         return team_obj
 
     def edit(self, team):
@@ -63,6 +69,7 @@ class TeamRepository:
         query3 = "UPDATE team_sport SET team_id = ?, sport_id = ? WHERE team_id = ?"
         cursor.execute(query3, (team.team_id, sportid, team.team_id,))
         self.conn.commit()
+        cursor.close()
         team_obj = self.get(team.team_id)
         return team_obj
 
@@ -75,6 +82,7 @@ class TeamRepository:
         query2 = "DELETE FROM team WHERE id = ?"
         cursor.execute(query2, (tid,))
         self.conn.commit()
+        cursor.close()
         return team_obj
 
     def getBySport(self, sport_name):
@@ -83,6 +91,7 @@ class TeamRepository:
         cursor.execute(query, (sport_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        cursor.close()
         for team in team_obj:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
@@ -96,6 +105,7 @@ class TeamRepository:
         cursor.execute(query, (team_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        cursor.close()
         for team in team_obj:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
@@ -109,12 +119,27 @@ class TeamRepository:
         cursor.execute(query, (team_name, sport_name,))
         team_tup = cursor.fetchall()
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        cursor.close()
         for team in team_obj:
             dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         return team_obj
+
+    def getByManager(self, username):
+        cursor = self.conn.cursor()
+        query = "SELECT team.id, team_name, info, sportname FROM ((((team JOIN team_sport ON team.id = team_id) JOIN sport ON sport_id = sport.id) join manages on team.id = manages.team_id) join user on user_id = user.id) where username = ?"
+        cursor.execute(query, (username,))
+        team_tup = cursor.fetchall()
+        team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
+        cursor.close()
+        for team in team_obj:
+            dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
+            team.sportStatistic = dao.getByTeamid(team.team_id)
+            team.managers = ManagerDAO().getByTeamID(team.team_id)
+            team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+        return team_obj 
 
     def getAvgStats(self, tid):
         return next(avg_stat[1:] for avg_stat in SoccerTeamDAO.getByid(tid))
