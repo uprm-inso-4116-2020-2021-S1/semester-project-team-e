@@ -40,6 +40,16 @@ class RecordsDAO:
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         return records_obj
 
+    def getByTeamIDAndYear(self, teamid, year):
+        cursor = self.conn.cursor()
+        query = "SELECT team_records.id FROM (team_records JOIN team_sport ON teamSportID = team_sport.id) WHERE year = ? AND team_id = ?"
+        cursor.execute(query, (year, teamid,))
+        record = cursor.fetchone()[0]
+        if record == None:
+            return False
+        else:
+            return record
+
     def add(self, teamRecords):
         cursor = self.conn.cursor()
         query = "SELECT id FROM team_sport WHERE team_id = ?"
@@ -67,3 +77,24 @@ class RecordsDAO:
         records_obj = self.get(TeamRecords.records_id)
         self.conn.commit()
         return records_obj
+
+    def addWinToRecord(self, recordid):
+        cursor = self.conn.cursor()
+        query = "UPDATE team_records SET win = win + 1 WHERE id = ?"
+        cursor.execute(query, (recordid,))
+        self.conn.commit()
+        return
+
+    def addLossToRecord(self, recordid):
+        cursor = self.conn.cursor()
+        query = "UPDATE team_records SET loss = loss + 1 WHERE id = ?"
+        cursor.execute(query, (recordid,))
+        self.conn.commit()
+        return
+
+    def addDrawToRecord(self, recordid):
+        cursor = self.conn.cursor()
+        query = "UPDATE team_records SET draw = draw + 1 WHERE id = ?"
+        cursor.execute(query, (recordid,))
+        self.conn.commit()
+        return

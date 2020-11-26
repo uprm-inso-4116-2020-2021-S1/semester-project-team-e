@@ -1,5 +1,8 @@
+from datetime import datetime
 from soccerTeam.soccerTeamStatistics import SoccerTeam
 from handler import utils
+from Records.teamRecords import TeamRecords
+from Records.recordsDAO import RecordsDAO
 
 class SoccerTeamDAO:
 
@@ -49,9 +52,8 @@ class SoccerTeamDAO:
             return [ SoccerTeam(teamStat[0], teamStat[1], teamStat[2], teamStat[3], teamStat[4], teamStat[5], teamStat[6], teamStat[7],teamStat[8], teamStat[9], teamStat[10]) for teamStat in team]
 
         # adds new entry for a team statistic and returns its statid
-        def add(self, soccerTeam):
+        def add(self, soccerTeam, int):
             cursor = self.conn.cursor()
-
             query = "SELECT id FROM team_sport WHERE team_id = ?"
             cursor.execute(query, (soccerTeam.team_id,))
             team_sportid = cursor.fetchone()[0]
@@ -60,6 +62,19 @@ class SoccerTeamDAO:
             statid = cursor.lastrowid
             stat_obj = self.get(statid)
             self.conn.commit()
+            date = datetime.strptime(soccerTeam.date, "%Y-%m-%d")
+            year = date.year
+            if RecordsDAO().getByTeamIDAndYear(soccerTeam.team_id, year):
+                pass
+            else:
+                RecordsDAO().add(TeamRecords(0, soccerTeam.team_id, 0, 0, 0, year))
+            recordid = RecordsDAO().getByTeamIDAndYear(soccerTeam.team_id, year)
+            if int == 0:
+                RecordsDAO().addWinToRecord(recordid)
+            elif int == 1:
+                RecordsDAO().addLossToRecord(recordid)
+            elif int == 2:
+                RecordsDAO().addDrawToRecord(recordid)
             return stat_obj
 
         # deletes a team statistic record (search by year? or team?)
