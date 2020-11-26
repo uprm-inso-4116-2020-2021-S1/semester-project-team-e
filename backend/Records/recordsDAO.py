@@ -14,6 +14,7 @@ class RecordsDAO:
         records_tup = [record for record in result]
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         cursor.close()
+        self.conn.close()
         return records_obj
 
     def get(self, recordid):
@@ -32,6 +33,7 @@ class RecordsDAO:
         records_tup = [record for record in result]
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         cursor.close()
+        self.conn.close()
         return records_obj
 
     def getByTeamID(self, teamid):
@@ -42,6 +44,7 @@ class RecordsDAO:
         records_tup = [record for record in result]
         records_obj = [TeamRecords(record[0], record[1], record[2], record[3], record[4], record[5]) for record in records_tup]
         cursor.close()
+        self.conn.close()
         return records_obj
 
     def getByTeamIDAndYear(self, teamid, year):
@@ -50,6 +53,7 @@ class RecordsDAO:
         cursor.execute(query, (year, teamid,))
         record = cursor.fetchone()[0]
         cursor.close()
+        self.conn.close()
         if record == None:
             return False
         else:

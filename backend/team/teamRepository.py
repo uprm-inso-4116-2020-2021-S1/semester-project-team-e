@@ -25,6 +25,7 @@ class TeamRepository:
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         cursor.close()
+        self.conn.close()
         return team_obj
 
     def get(self, tid):
@@ -105,6 +106,7 @@ class TeamRepository:
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         cursor.close()
+        self.conn.close()
         return team_obj
 
     def getByName(self, team_name):
@@ -119,6 +121,7 @@ class TeamRepository:
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         cursor.close()
+        self.conn.close()
         return team_obj
 
     def getByNameAndSport(self, team_name, sport_name):
@@ -133,6 +136,7 @@ class TeamRepository:
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         cursor.close()
+        self.conn.close()
         return team_obj
 
     def getByManager(self, username):
@@ -147,6 +151,7 @@ class TeamRepository:
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
         cursor.close()
+        self.conn.close()
         return team_obj 
 
     def getAvgStats(self, tid):
