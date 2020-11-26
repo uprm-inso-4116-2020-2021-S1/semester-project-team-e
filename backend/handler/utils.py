@@ -157,16 +157,18 @@ DATABASECONFIG = {
     'user' : 'inso4116',
     'password' : 'letmein',
     'database' : 'sports_tracker',
+    'port' : 3306,
 }
 
 def connectDB():
+    # global conn
     try:
-        conn = mariadb.connect(**DATABASECONFIG
-            # host= 'localhost',
-            # user= 'inso4116',
-            # password= 'letmein',
-            # database= 'sports_tracker',
-            # port = 3306
+        conn = mariadb.connect(
+            host= 'localhost',
+            user= 'inso4116',
+            password= 'letmein',
+            database= 'sports_tracker',
+            port = 3306
         )
     except Exception as e:
         print(f"Error connecting to MariaDB Platform: {e}")

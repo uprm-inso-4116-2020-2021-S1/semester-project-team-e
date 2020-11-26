@@ -14,6 +14,7 @@ class ManagerDAO:
         result = cursor.fetchall()
         manager_tupl = [manager for manager in result]
         manager_obj = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in manager_tupl]
+        cursor.close()
         return manager_obj
 
     def get(self, userid):
@@ -21,7 +22,9 @@ class ManagerDAO:
         query = "SELECT id, username, password, full_name, email FROM user WHERE id = ?"
         cursor.execute(query, (userid,))
         manager = cursor.fetchone()
+        cursor.close()
         return Manager(manager[0], manager[1], manager[2], manager[3], manager[4])
+
 
     def getByUsername(self, username):
         cursor = self.conn.cursor()
@@ -29,6 +32,7 @@ class ManagerDAO:
         cursor.execute(query, (username,))
         result = cursor.fetchall()
         managers = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in result]
+        cursor.close()
         return managers
 
     def getByTeamID(self, tid):
@@ -37,6 +41,7 @@ class ManagerDAO:
         cursor.execute(query, (tid,))
         result = cursor.fetchall()
         managers = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in result]
+        cursor.close()
         return managers
 
     def add(self, manager):
@@ -46,20 +51,28 @@ class ManagerDAO:
         managerid = cursor.lastrowid
         result = self.get(managerid)
         self.conn.commit()
+        cursor.close()
+        self.conn.close()
         return result
 
     def delete(self, user_id):
+        self.conn = utils.connectDB()
         cursor = self.conn.cursor()
         result = self.get(user_id)
         query = "DELETE FROM user WHERE id = ?"
         cursor.execute(query, (user_id,))
         self.conn.commit()
+        cursor.close()
+        self.conn.close()
         return result
 
     def edit(self, manager):
+        self.conn = utils.connectDB()
         cursor = self.conn.cursor()
         query = "UPDATE user SET email = %s, full_name = %s;"
         cursor.execute(query, (manager.email, manager.full_name))
         self.conn.commit()
+        cursor.close()
+        self.conn.close()
         return
 
