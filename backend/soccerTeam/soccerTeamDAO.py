@@ -18,6 +18,7 @@ class SoccerTeamDAO:
             stat_tup = [stat for stat in result]
             stat_obj = [SoccerTeam(stat[0], stat[1], stat[2], stat[3], stat[4], stat[5], stat[6], stat[7],stat[8], stat[9], stat[10]) for stat in stat_tup]
             cursor.close()
+            self.conn.close()
             return stat_obj
 
         def get(self, statid):
@@ -34,6 +35,7 @@ class SoccerTeamDAO:
             cursor.execute(query, (tid,))
             stats = cursor.fetchall()
             cursor.close()
+            self.conn.close()
             return [ SoccerTeam(teamStat[0], teamStat[1], teamStat[2], teamStat[3], teamStat[4], teamStat[5], teamStat[6], teamStat[7],teamStat[8], teamStat[9], teamStat[10]) for teamStat in stats]
 
         #returns a teams statistics from that year (cant make the logic to recieve team_name right now is using team id)
@@ -43,6 +45,7 @@ class SoccerTeamDAO:
             cursor.execute(query, (team_name, date,))
             team = cursor.fetchall()
             cursor.close()
+            self.conn.close()
             return [ SoccerTeam(teamStat[0], teamStat[1], teamStat[2], teamStat[3], teamStat[4], teamStat[5], teamStat[6], teamStat[7],teamStat[8], teamStat[9], teamStat[10]) for teamStat in team]
 
         # returns all teams' statistics from that year ordered by teams
@@ -52,6 +55,7 @@ class SoccerTeamDAO:
             cursor.execute(query, (date,))
             team = cursor.fetchall()
             cursor.close()
+            self.conn.close()
             return [ SoccerTeam(teamStat[0], teamStat[1], teamStat[2], teamStat[3], teamStat[4], teamStat[5], teamStat[6], teamStat[7],teamStat[8], teamStat[9], teamStat[10]) for teamStat in team]
 
         # adds new entry for a team statistic and returns its statid

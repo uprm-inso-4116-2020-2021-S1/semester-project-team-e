@@ -15,6 +15,7 @@ class ManagerDAO:
         manager_tupl = [manager for manager in result]
         manager_obj = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in manager_tupl]
         cursor.close()
+        self.conn.close()
         return manager_obj
 
     def get(self, userid):
@@ -42,6 +43,7 @@ class ManagerDAO:
         result = cursor.fetchall()
         managers = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in result]
         cursor.close()
+        self.conn.close()
         return managers
 
     def add(self, manager):
