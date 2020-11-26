@@ -9,13 +9,21 @@ from soccerTeam.soccerTeamStatistics import SoccerTeam
 from soccerTeam.soccerTeamDAO import SoccerTeamDAO
 from Records.teamRecords import TeamRecords
 from Records.recordsDAO import RecordsDAO
+from soccerTeam.TeamSpecificationPattern import SoccerTeamSpecification
 
 
 class TeamHandler:
 
     def getAll(self):
         teams = TeamRepository().getAll()
-        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
+        validTeams = list()
+        for team in teams:
+            if SoccerTeamSpecification().isValidTeam(team):
+                validTeams.append(team)
+            else:
+                pass
+        return jsonify(Teams = [ team.serialize() for team in validTeams ]), OK
+        # return jsonify(Teams=[team.serialize() for team in teams]), OK
 
     def add(self, json):
         if json['username'] and json['team_name'] and json['team_info'] and json['sport_name']:
@@ -40,7 +48,14 @@ class TeamHandler:
 
     def get(self, tid):
         teams = TeamRepository().get(tid)
-        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
+        validTeams = list()
+        for team in teams:
+            if SoccerTeamSpecification().isValidTeam(team):
+                validTeams.append(team)
+            else:
+                pass
+        return jsonify(Teams=[team.serialize() for team in validTeams]), OK
+        # return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def search(self, args):
         team_name = args.get("keyword")
@@ -54,8 +69,15 @@ class TeamHandler:
         elif (len(args) == 1) and sport_name:
             teams = repository.getBySport(sport_name)
         else:
-            return jsonify(Error = 'Malformed query string'), NOT_FOUND
-        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
+            return jsonify(Error='Malformed query string'), NOT_FOUND
+        validTeams = list()
+        for team in teams:
+            if SoccerTeamSpecification().isValidTeam(team):
+                validTeams.append(team)
+            else:
+                pass
+        return jsonify(Teams=[team.serialize() for team in validTeams]), OK
+        # return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
 
     def compare(self, args):
