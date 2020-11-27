@@ -1,7 +1,6 @@
-import React, {useState, useContext, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {Redirect} from 'react-router-dom';
 import {Container, Col, Row, Button, Modal, Form, Spinner} from 'react-bootstrap';
-import Searchbar from '../components/Searchbar';
 import TeamPreview from '../components/TeamPreview';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faTrash, faFrown} from '@fortawesome/free-solid-svg-icons';
@@ -63,11 +62,6 @@ function MyTeams() {
             // deleteTeam();
         // }
     // }, [teamIdToDelete])
-
-    const dummyData = [
-        { teamName: 'Los Coquis', teamID: 2, sportName: 'soccer', teamMemberLength: 8},
-        { teamName: 'Gurabo FC', teamID: 6, sportName: 'soccer', teamMemberLength: 14},
-    ];
 
     const AddTeamForm = () => {
         const {control, handleSubmit} = useForm();
