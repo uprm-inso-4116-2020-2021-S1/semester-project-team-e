@@ -57,9 +57,9 @@ class PlayerHandler:
     def get(self, player_id):
         # Pending Revision
         player: Player
-        player = PlayerRepository().get(player_id)
+        player = PlayerRepository().getPlayerAndStats(player_id)
         if player:
-            return jsonify(Player=player.__dict__), OK
+            return jsonify(Player=player), OK
         else:
             return jsonify(Error='No Player found.'), NOT_FOUND
 
