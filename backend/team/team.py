@@ -15,7 +15,7 @@ class Team():
                 'team_info' : self.team_info,
                 'sport_name' : self.sport_name,
                 'team_statistics' : [ stat.__dict__ for stat in self.sportStatistic ],
-                'team_Records': [stat.__dict__ for stat in self.teamRecords],
+                'team_Records': [records.__dict__ for records in self.teamRecords],
                 'managers' : [ manager.serialize() for manager in self.managers ]
                 }
 
