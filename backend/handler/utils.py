@@ -140,7 +140,7 @@ class DAO(object):
         raise NotImplementedError
 
     @classmethod
-    def get(cls, self):
+    def get(cls, self, entity_id):
         raise NotImplementedError
     
     @classmethod

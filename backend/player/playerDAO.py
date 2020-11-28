@@ -18,7 +18,7 @@ class PlayerDAO(DAO):
 
     def get(self, player_id):        
         select_query = Player.search_by_atr({'id' : player_id})
-        self.execute_query_and_fetch()
+        self.execute_query_and_fetch(select_query)
         return self.close_and_return_result()        
         
 
@@ -51,6 +51,11 @@ class PlayerDAO(DAO):
     def delete(self, player_id: int):
         delete_query = 'delete from player where id = ?'
         self.cursor.execute(delete_query, (player_id,))
+        return self.close_and_return_result()
+
+    def getAllPlayerId(self) -> None:
+        select_query = 'select id from player'
+        self.execute_query_and_fetch(select_query)
         return self.close_and_return_result()
         
         

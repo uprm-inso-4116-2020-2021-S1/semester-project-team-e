@@ -10,13 +10,17 @@ from flask import jsonify
 
 class PlayerHandler:
     
-    def getAll(self):
-        # Pending Revision
-        players: list
-        players = []        
-        for player in PlayerRepository().getAll():
-            players.append(player)
-        return jsonify(Players = PlayerRepository().getAll())     
+    def getAll(self):        
+        players = []
+        players_id = PlayerRepository()._getAllPlayerIds()
+        print(players_id)
+        if players_id:
+            for p_id in players_id:
+                print(p_id)
+                plyr = PlayerRepository().getPlayerAndStats(p_id)
+                if plyr:
+                    players.append(plyr)        
+        return jsonify(Players = players)     
 
     def add(self, json_obj: Dict):
         # Pending Revision

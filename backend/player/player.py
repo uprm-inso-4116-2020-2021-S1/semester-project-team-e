@@ -58,11 +58,11 @@ class Player(DB_Entity):
         return db_dict
 
 
-    @staticmethod
-    def search_by_atr(recvd: dict):
-        pass
+    # @staticmethod
+    # def search_by_atr(recvd: dict):
+    #     pass
 
 
     @staticmethod
     def search_by_atr(front_end_dict: dict):                                                     # This last bit with the dictionary could be eliminated later
-        return Player.get_by_attribute(Player.PLAYER_DB_FORMAT, front_end_dict, Player.CLASS_NAME, {})
+        return Player.get_by_attribute(Player.PLAYER_DB_FORMAT, front_end_dict, Player.DATABASE_TABLE_NAME, {})
