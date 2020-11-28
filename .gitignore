@@ -25,3 +25,14 @@ backend/player_statistics/__pycache__/playerDAO.cpython-38.pyc
 backend/player_statistics/__pycache__/playerStatistics.cpython-38.pyc
 backend/player_statistics/__pycache__/soccerPlayerStatisticDAO.cpython-38.pyc
 backend/player_statistics/__pycache__/soccerPlayerStatistics.cpython-38.pyc
+backend/.vscode/launch.json
+backend/manager/__pycache__/manager.cpython-38.pyc
+backend/manager/__pycache__/managerHandler.cpython-38.pyc
+backend/manager/__pycache__/managerRepository.cpython-38.pyc
+backend/Records/__pycache__/recordsDAO.cpython-38.pyc
+backend/Records/__pycache__/teamRecords.cpython-38.pyc
+backend/soccerTeam/__pycache__/__init__.cpython-38.pyc
+backend/soccerTeam/__pycache__/soccerTeamDAO.cpython-38.pyc
+backend/soccerTeam/__pycache__/soccerTeamStatistics.cpython-38.pyc
+backend/soccerTeam/__pycache__/TeamStatisticFactory.cpython-38.pyc
+backend/team/__pycache__/teamServices.cpython-38.pyc
