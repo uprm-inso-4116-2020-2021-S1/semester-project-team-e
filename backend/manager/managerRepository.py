@@ -32,9 +32,12 @@ class ManagerDAO:
         query = "SELECT user.id, username, password, full_name, email FROM user WHERE username = ?"
         cursor.execute(query, (username,))
         result = cursor.fetchall()
-        managers = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in result]
-        cursor.close()
-        return managers
+        if result:
+            managers = [Manager(manager[0], manager[1], manager[2], manager[3], manager[4]) for manager in result]
+            return managers[0]
+        else:
+            return None
+
 
     def getByTeamID(self, tid):
         cursor = self.conn.cursor()
