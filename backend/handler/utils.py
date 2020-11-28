@@ -157,9 +157,11 @@ DATABASECONFIG = {
     'user' : 'inso4116',
     'password' : 'letmein',
     'database' : 'sports_tracker',
+    'port' : 3306,
 }
 
 def connectDB():
+    global conn
     try:
         conn = mariadb.connect(**DATABASECONFIG
             # host= 'localhost',

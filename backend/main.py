@@ -68,22 +68,22 @@ def compareTeam():
 @app.route('/player', methods = [GET, POST])
 def addPlayer():
     if request.method == POST:
-        return PlayerHandler().add(request.get_json())        
+        return PlayerHandler().add(request.get_json())
     elif request.args:
-        return PlayerHandler().search(request.args)                        
+        return PlayerHandler().search(request.args)
     else:
         return PlayerHandler().getAll()
-        
+
 
 @app.route('/player<int:id>', methods = [GET, PUT, DELETE])
 def getPlayerByID(id):
     if request.method == PUT:
-        return PlayerHandler().edit(request.get_json(), id)        
+        return PlayerHandler().edit(request.get_json(), id)
     elif request.method == DELETE:
         return PlayerHandler().delete(id)
     else:
         return PlayerHandler().get(id)
-        
+
 
 @app.route('/player/compare,<int:player_1>,<int:player_2>')
 def comaprePlayer(player_1, player_2):
@@ -129,12 +129,18 @@ def getUsers():
 
 @app.route('/manager/<int:userid>', methods = [GET, PUT, DELETE])
 def getUserByID(userid):
-    if request.method == PUT:
-        return ManagerHandler().edit(userid, request.json)
-    elif request.method == DELETE:
-        return ManagerHandler().delete(userid)
+    manager = get_jwt_identity()
+    if manager:
+        if request.method == PUT:
+            return ManagerHandler().edit(userid, request.json)
+        elif request.method == DELETE:
+            return ManagerHandler().delete(userid)
     else:
         return ManagerHandler().get(userid)
+
+@app.route('/manager/myteams', methods = [POST])
+def getMyTeams():
+    return ManagerHandler().getMyTeams(request.json)
 
 #Team Records routes
 @app.route('/teamrecord', methods = [POST])

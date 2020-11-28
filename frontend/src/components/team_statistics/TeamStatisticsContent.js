@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { Container, Row, Button} from 'react-bootstrap'
+import React, {useState} from 'react';
+import { Container, Row, Button} from 'react-bootstrap';
 import {SoccerTeamStatistics, SoccerTeamForm} from './SoccerTeamStatistics';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
