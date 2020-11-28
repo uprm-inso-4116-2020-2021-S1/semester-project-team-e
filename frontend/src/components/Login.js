@@ -1,30 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import axios from 'axios';
+import {useForm, Controller} from 'react-hook-form';
+import {AuthContext} from './AuthContext';
 
 function Login() {
-      const [email, setEmail] = useState("");
-      const [password, setPassword] = useState("");
-
-      function validateForm() {
-        return email.length > 0 && password.length > 0;
-      }
-
-        function handleSubmit(event){
-            event.preventDefault();
-            axios.post(`/register`, {
-                email: email,
-                password: password
-            })
-              .then(res => {
-                console.log(res);
-                console.log(res.data);
-                console.log(res.status);
-          })
-
-        }
+      const [state, setState] = useContext(AuthContext);
+      const [loginData, setLoginData] = useState({});
+      const [wrongLogin, setWrongLogin] = useState(false);
+      const { control, handleSubmit } = useForm();
+      const isInitialMount = useRef(true);
 
       const styles = {
         loginBox:{
@@ -41,41 +28,64 @@ function Login() {
             padding:"10px"
         }
       };
+
+      const onSubmit = data => {
+        setLoginData(data);
+      }
+
+      useEffect(() => {
+        const login = async () => {
+          await axios.post('http://localhost:5000/login', loginData)
+            .then((response) => {
+              setState({name:loginData.username, token:response.data.access_token});
+            })
+            .catch(() => {
+              setWrongLogin(true);
+            });
+        };
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            login();
+        }
+      },[loginData])
+
+
   return (
     <div className="Login" style={{ padding: '60px 0',width:'400px', margin: '0 auto' }}>
-      <Form onSubmit={handleSubmit} style={styles.loginBox}>
+    {state.name && state.token && <Redirect to="/"/>}
+      <Form onSubmit={handleSubmit(onSubmit)} style={styles.loginBox}>
       <h4 className="text-center">Login</h4>
         <Form.Group size="text" controlId="email" style={{padding:"10px"}}>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
+          <Form.Label>Username:</Form.Label>
+          <Controller as={Form.Control}
             autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="username"
+            control={control}
+            defaultValue=""
           />
         </Form.Group>
         <Form.Group size="text" controlId="password" style={{padding:"10px"}}>
           <Form.Label>Password</Form.Label>
-          <Form.Control
+          <Controller as={Form.Control}
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            control={control}
+            defaultValue=""
           />
         </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()} style={styles.loginButton}>
+        { wrongLogin && <div style={{color: "red"}} className="d-flex justify-content-center">Wrong username or password</div> }
+        <Button block size="lg" type="submit" style={styles.loginButton}>
           Login
         </Button>
           <div className="mt-4">
             <div className="d-flex justify-content-center links">
-                <a class="link" style={styles.link} href="#">Forgot your password?</a>
-            </div>
-            <div className="d-flex justify-content-center links">
                 Don't have an account?
-                <Link className="nav-link" style={styles.link} to="/register" className="ml-2" >Sign Up</Link>
+                <Link style={styles.link} to="/register" className="ml-2" >Sign Up</Link>
             </div>
           </div>
       </Form>
-    </div>
+     </div>
   )
 }
 

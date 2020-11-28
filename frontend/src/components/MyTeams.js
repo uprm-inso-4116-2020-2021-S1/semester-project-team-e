@@ -1,7 +1,6 @@
-import React, {useState, useContext, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {Redirect} from 'react-router-dom';
 import {Container, Col, Row, Button, Modal, Form, Spinner} from 'react-bootstrap';
-import Searchbar from '../components/Searchbar';
 import TeamPreview from '../components/TeamPreview';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlus, faTrash, faFrown} from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +16,7 @@ function MyTeams() {
     const [isError, setIsError] = useState(false);
     const [myTeams, setMyTeams] = useState([]);
     const [newTeam, setNewTeam] = useState({});
-    // const [teamIdToDelete, setTeamIdToDelete] = useState(70);
+    const [teamIdToDelete, setTeamIdToDelete] = useState();
     const isInitialMount = useRef(true);
 
     const handleClose = () => setShow(false);
@@ -36,9 +35,17 @@ function MyTeams() {
         }
 
         const addTeam = async () => {
+            axios.defaults.headers.post['Authorization'] = `Bearer  ${state.token}`;
             await axios.post('http://localhost:5000/team', newTeam)
                 .then((response) => {})
                 .catch((error) => {})
+        }
+
+         const deleteTeam = async () => {
+            axios.defaults.headers.delete['Authorization'] = `Bearer  ${state.token}`;
+            await axios.delete(`http://localhost:5000/team/${teamIdToDelete}`)
+                .then((response) => {})
+                .catch(() => setIsError(true));
         }
 
         if (isInitialMount.current) {
@@ -49,25 +56,6 @@ function MyTeams() {
             getMyTeams();
         }
     }, [newTeam]);
-
-    // useEffect(() => {
-        // const deleteTeam = async () => {
-            // await axios.delete(`http://localhost:5000/team/${teamIdToDelete}`)
-                // .then((response) => {})
-                // .catch(() => setIsError(true));
-        // }
-
-        // if (isInitialMount.current) {
-            // isInitialMount.current = false;
-        // } else {
-            // deleteTeam();
-        // }
-    // }, [teamIdToDelete])
-
-    const dummyData = [
-        { teamName: 'Los Coquis', teamID: 2, sportName: 'soccer', teamMemberLength: 8},
-        { teamName: 'Gurabo FC', teamID: 6, sportName: 'soccer', teamMemberLength: 14},
-    ];
 
     const AddTeamForm = () => {
         const {control, handleSubmit} = useForm();
@@ -151,7 +139,7 @@ function MyTeams() {
                     return (
                         myTeams.map(team => (
                             <Row key={team.team}>
-                                <Col>
+                                <Col onClick={(team) => {console.log(team.team)}}>
                                     <TeamPreview teamName={team.team_name} teamID={team.team} teamMemberLength={0}/>
                                 </Col>                        
                                 <Col xs="auto" className="align-self-center">
