@@ -60,9 +60,19 @@ class PlayerRepository:
         return PlayerDAO().add(player)
 
     def editPlayer(self, player_info):
-        # Pending Revision
+        ''' Replaces given player with the player specified '''
+        if player_info.get('id', None):
+            player_info['player_id'] = player_info['id']
+            player_info.pop('id')
+        player_info = Player(**player_info)
+        player_info: Player        
         player_info = player_info.to_specified_db_format(Player.PLAYER_UPDATE_FORMAT)
-        return PlayerDAO().edit(player_info)
+        p_dao = PlayerDAO()
+        player_result = PlayerDAO().edit(player_info)
+        if player_result:
+            return player_result
+        else:
+            return None
         
 
     def deletePlayer(self, player_id):        
@@ -103,6 +113,7 @@ class PlayerRepository:
             return None
 
     def getPlayerStatisticsByPlayerId(self, player_id):
+        ''' Gets stats by player id '''
         stat_ls = []
         for sport, stat_type in INDIVIDUAL_DB_STATISTICS.items():
             stat_name = stat_type[TABLE_NAME_INDEX]
@@ -130,6 +141,20 @@ class PlayerRepository:
             return info_ls
         else:
             return []
+
+    # def getStatByPId(self, player_id):
+    #     stat_ls = []
+    #     for sport, stat_type in INDIVIDUAL_DB_STATISTICS.items():
+    #         stat_name = stat_type[TABLE_NAME_INDEX]
+    #         stat_type = stat_type[DAO_TYPE]            
+    #         receive_ls = self._genericGetByPlayerIdTable(stat_type, player_id)
+    #         if receive_ls:
+    #             entity_keys = DAO()._get_column_names(stat_name)
+    #             receive_ls = to_specified_format(receive_ls, entity_keys)                
+    #             stat_dict = {INDIVIDUAL_DB_STATISTICS[sport][ENTITY_TYPE] : receive_ls}
+    #             stat_ls.append(stat_dict)
+    #     return stat_ls
+
    
 
     def _genericGetByPlayerIdTable(self, entity_dao: DAO, player_id: int) -> list:

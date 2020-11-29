@@ -3,7 +3,7 @@ from typing import List, Dict
 from player.player import Player
 from player_statistics.soccerPlayerStatistics import SoccerPlayerStatistic
 from player.playerRepository import PlayerRepository
-from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
+from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND, CONFLICT
 
 from flask import jsonify
 
@@ -30,16 +30,18 @@ class PlayerHandler:
                 return jsonify(Player_Id=PlayerRepository().addPlayer(json_obj)), CREATED
 
     def edit(self, json_obj: Dict, player_id: int):
-        # Pending Revision
-        # TODO Fix this, no tiene el id que se quiere editar o decide si lo buscas internamente                
         for entry in json_obj.keys():
-            if entry not in PlayerHandler.player_dummy.__dict__.keys():
+            if entry not in Player.PLAYER_DB_FORMAT:
                 return jsonify(Error='Unexpected attributes in post.'), BAD_REQUEST
             else:
-                player: Player
-                player = Player(**json_obj)                
-                print(f'After the edit was made: {PlayerRepository().edit(player)}')
-                return jsonify(Player=vars(PlayerRepository().get(player_id))), OK
+                player = json_obj                                
+                PlayerRepository().editPlayer(json_obj)
+                updated_player = PlayerRepository().getPlayerByID(player_id)
+                if updated_player:
+                    return jsonify(Player=updated_player), OK
+                else:
+                    return jsonify(Error='Can\'t verify the updated ocurred.'), NOT_FOUND
+        return jsonify(Error='Could not complete operation.'), CONFLICT
 
     def delete(self, player_id):        
         player: Player
@@ -80,6 +82,13 @@ class PlayerHandler:
             return jsonify(SoccerPlayerStatistic = player_stat), OK
         else:
             return jsonify(Error = 'No player found by that id.'), NOT_FOUND
+
+    def getPlayerStatisticById(self, player_id):
+        try:
+            return jsonify(PlayerStatistic=PlayerRepository().getPlayerStatisticsByPlayerId(player_id)), OK
+        except:
+            return jsonify(Error='Could not complete requested action.'), CONFLICT
+
 
 
     

@@ -15,8 +15,8 @@ class Player(DB_Entity):
         'weight',
         'team_name',
         'sport_name',
-        # 'team_sport_id',
-        'player_id'
+        'team_sport_id',
+        'id'
     ]
 
     PLAYER_DB_ADD_FORMAT = [        

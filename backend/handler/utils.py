@@ -13,7 +13,7 @@ CREATED = 201
 ACCEPTED = 202
 NOT_FOUND = 404
 BAD_REQUEST = 400
-
+CONFLICT = 409
 
 SOCCER_STATS_FORMAT = [
     'player_id',
@@ -88,9 +88,21 @@ class DAO(object):
     def __init__(self):
         self.current_connection: mariadb._mariadb.connection
         self.current_connection = mariadb.connect(**DAO.DATABASECONFIG)
-        self.current_connection.autocommit = True
+        self.current_connection.autocommit = True        
         self.cursor = self.current_connection.cursor()
         self.result = None
+        
+        
+        
+
+    def _disable_foreign_key(self):        
+        self.cursor.execute('SET SESSION foreign_key_checks=OFF;')
+    
+    def _enable_foreign_key(self):
+        self.cursor.execute('SET SESSION foreign_key_checks=ON;')
+        
+        
+        
 
     def close_and_return_result(self):
         ''' Closes connection and returns result obtained if valid, otherwise returns None'''
@@ -98,11 +110,12 @@ class DAO(object):
         return self.get_valid_result()
         
 
-    def execute_query(self, query: str, args: List) -> None:
+    def execute_query(self, query: str, args: List) -> None:        
         if args:
             self.cursor.execute(query, tuple(args))    
         else:
             self.cursor.execute(query)
+        
         
     def execute_query_and_fetch(self, query: str, args: List=None):
         if args:
@@ -148,6 +161,7 @@ class DAO(object):
         raise NotImplementedError
 
 
+
 def intoJSON(obj):
   return json.dumps(obj, default=lambda o: o.__dict__)
 
@@ -173,3 +187,5 @@ def connectDB():
     except Exception as e:
         print(f"Error connecting to MariaDB Platform: {e}")
     return conn
+
+

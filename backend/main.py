@@ -93,17 +93,17 @@ def comaprePlayer(player_1, player_2):
     # return PlayerHandler().compare(request.args)
     return PlayerHandler().compare_players(player_1, player_2)
 
-@app.route('/player/soccer', methods = [GET, POST])
+@app.route('/player/statistics', methods = [GET, POST])
 def getAllPlayerStatistics():
     if request.method == GET:
         return PlayerHandler().getAllPlayerSoccerStatistics()
     elif request.method == POST and request.args:
         return PlayerHandler().add(request.args)
 
-@app.route('/player/soccer<int:stat_id>', methods = [GET, PUT, DELETE])
+@app.route('/player/stat<int:stat_id>', methods = [GET, PUT, DELETE])
 def getSoccerPlayerStatistic(stat_id):
     if request.method == GET:
-        return PlayerHandler().getSoccerPlayerStatisticById(stat_id)
+        return PlayerHandler().getPlayerStatisticById(stat_id)
     elif request.method == PUT:
         # TODO implement
         return None

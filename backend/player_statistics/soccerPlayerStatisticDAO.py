@@ -13,7 +13,8 @@ class SoccerPlayerStatisticDAO(DAO):
         return self.result
 
     def get(self, stat_id):
-        get_query = 'select * from soccer_individual_statistics where id = ?'
+        # get_query = 'select * from soccer_individual_statistics where id = ?'
+        get_query = 'select * from soccer_individual_statistics where player_id = ?'
         self.execute_query_and_fetch(get_query, [stat_id])
         return self.close_and_return_result()
 

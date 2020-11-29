@@ -41,8 +41,10 @@ class PlayerDAO(DAO):
         
 
     def edit(self, player_info: Dict):
-        edit_query = 'update player set player_name = ?, height = ?, weight = ?, team_name = ?, sport_name = ? where id = ?'
+        self._disable_foreign_key()
+        edit_query = 'update player set player_name = ?, height = ?, weight = ?, team_name = ?, sport_name = ?, team_sport_id = ? where id = ?'
         self.cursor.execute(edit_query, (extract_attribs(player_info, Player.PLAYER_UPDATE_FORMAT)))        
+        self._enable_foreign_key()
         self.close_and_return_result()        
         return self.result      
 

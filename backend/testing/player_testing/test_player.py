@@ -81,8 +81,17 @@ LINKS = [
 
 if __name__=='__main__':    
     # main()
-    lnk = HOST + '/player/soccer2'
-    p_name = {'player_name' : 'udyr', 'id' : 14}
+    # lnk = HOST + '/player13'
+    lnk = HOST + '/player/stat14'
+    player_to_edit = {
+            'id' : 13,            
+            'player_name' : 'Luis Markez',
+            'height' : 4.6,
+            'weight' : 169,
+            'team_name' : 'Destroyers',
+            'sport_name' : 'Soccer',
+            'team_sport_id' : 2
+        }
     print(get(lnk).content)
 
     # main() # Esto es para 

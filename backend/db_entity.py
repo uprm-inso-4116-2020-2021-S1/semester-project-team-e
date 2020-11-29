@@ -36,9 +36,10 @@ class DB_Entity:
             key, value = item_pair
             # print(value, type(value))            
             number_check: str
-            number_check = value.replace('.', '')
-            if number_check.isnumeric():
-                value = float(value)
+            if isinstance(value, str):                
+                number_check = value.replace('.', '')
+                if number_check.isnumeric():
+                    value = float(value)
         
             if idx == 0:
                 if isinstance(value, str):
