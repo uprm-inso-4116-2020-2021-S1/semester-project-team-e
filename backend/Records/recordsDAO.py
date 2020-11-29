@@ -51,13 +51,13 @@ class RecordsDAO:
         cursor = self.conn.cursor()
         query = "SELECT team_records.id FROM (team_records JOIN team_sport ON teamSportID = team_sport.id) WHERE year = ? AND team_id = ?"
         cursor.execute(query, (year, teamid,))
-        record = cursor.fetchone()[0]
+        record = cursor.fetchone()
         cursor.close()
         self.conn.close()
         if record == None:
             return False
         else:
-            return record
+            return record[0]
 
     def add(self, teamRecords):
         self.conn = utils.connectDB()

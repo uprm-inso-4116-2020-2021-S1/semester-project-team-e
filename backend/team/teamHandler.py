@@ -49,13 +49,13 @@ class TeamHandler:
     def get(self, tid):
         teams = TeamRepository().get(tid)
         validTeams = list()
-        for team in teams:
-            if SoccerTeamSpecification().isValidTeam(team):
-                validTeams.append(team)
-            else:
-                pass
-        return jsonify(Teams=[team.serialize() for team in validTeams]), OK
-        # return jsonify(Teams = [ team.serialize() for team in teams ]), OK
+        # for team in teams:
+            # if SoccerTeamSpecification().isValidTeam(team):
+                # validTeams.append(team)
+            # else:
+                # pass
+        # return jsonify(Teams=[team.serialize() for team in validTeams]), OK
+        return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def search(self, args):
         team_name = args.get("keyword")

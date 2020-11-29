@@ -31,7 +31,7 @@ function TeamStatisticsContent(props) {
 
     const StatisticForm = () => {
         return (
-           <SoccerTeamForm handleClose={handleClose} show={show} id={id}/> 
+           <SoccerTeamForm handleClose={handleClose} show={show} id={id} reload={props.reload}/> 
         );
     }
 

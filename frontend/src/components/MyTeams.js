@@ -38,7 +38,7 @@ function MyTeams() {
             axios.defaults.headers.post['Authorization'] = `Bearer  ${state.token}`;
             await axios.post('http://localhost:5000/team', newTeam)
                 .then((response) => {})
-                .catch((error) => {})
+                .catch((error) => {});
         }
 
          const deleteTeam = async () => {
