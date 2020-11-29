@@ -1,8 +1,8 @@
 from datetime import datetime
-from soccerTeam.soccerTeamStatistics import SoccerTeam
-from handler import utils
-from Records.teamRecords import TeamRecords
-from Records.recordsDAO import RecordsDAO
+from backend.soccerTeam.soccerTeamStatistics import SoccerTeam
+from backend.handler import utils
+from backend.Records.teamRecords import TeamRecords
+from backend.Records.recordsDAO import RecordsDAO
 
 class SoccerTeamDAO:
 

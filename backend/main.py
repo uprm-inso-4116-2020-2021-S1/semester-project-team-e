@@ -68,21 +68,21 @@ def compareTeam():
 @app.route('/player', methods = [GET, POST])
 def addPlayer():
     if request.method == POST:
-        return PlayerHandler().add(request.get_json())
-    elif request.args:
-        return PlayerHandler().search(request.args)
+        return PlayerHandler().add(request.json)
+    # elif request.args:
+    #     return PlayerHandler().search(request.args)
     else:
         return PlayerHandler().getAll()
 
 
-@app.route('/player<int:id>', methods = [GET, PUT, DELETE])
-def getPlayerByID(id):
+@app.route('/player/<int:pid>', methods = [GET, PUT, DELETE])
+def getPlayerByID(pid):
     if request.method == PUT:
-        return PlayerHandler().edit(request.get_json(), id)
+        return PlayerHandler().edit(request.get_json(), pid)
     elif request.method == DELETE:
-        return PlayerHandler().delete(id)
+        return PlayerHandler().delete(pid)
     else:
-        return PlayerHandler().get(id)
+        return PlayerHandler().get(pid)
 
 
 @app.route('/player/compare,<int:player_1>,<int:player_2>')
@@ -92,22 +92,22 @@ def comaprePlayer(player_1, player_2):
 
 @app.route('/player/soccer', methods = [GET, POST])
 def getAllPlayerStatistics():
-    if request.method == GET:
+    if request.method == POST:
+        return PlayerHandler().addPlayerStatistic(request.json)
+    else:
         return PlayerHandler().getAllPlayerSoccerStatistics()
-    elif request.method == POST and request.args:
-        return PlayerHandler().add(request.args)
 
 @app.route('/player/soccer<int:stat_id>', methods = [GET, PUT, DELETE])
 def getSoccerPlayerStatistic(stat_id):
     if request.method == GET:
         return PlayerHandler().getSoccerPlayerStatisticById(stat_id)
-
     elif request.method == PUT:
         # TODO implement
         return None
     elif request.method == DELETE:
         # TODO implement
         return None
+
 #statistics routes
 @app.route('/team/<int:tid>/statistics', methods=[POST])
 def addTeamStatistics(tid):

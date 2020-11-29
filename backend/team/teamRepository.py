@@ -1,12 +1,15 @@
 #import mariadb
-from dao.dummy_data import team_dummy_data, tid_count, soccer_team_avg_dummy_data
-from team.team import Team
-from soccerTeam.TeamStatisticFactory import TeamStatisticDAOFactory
-from manager.managerRepository import ManagerDAO
-from soccerTeam.soccerTeamDAO import SoccerTeamDAO
-from soccerTeam.soccerTeamStatistics import SoccerTeam
-from handler import utils
-from Records.recordsDAO import RecordsDAO
+from backend.dao.dummy_data import team_dummy_data, tid_count, soccer_team_avg_dummy_data
+from backend.player_statistics.soccerPlayerStatisticDAO import SoccerPlayerStatisticDAO
+from backend.team.team import Team
+from backend.soccerTeam.TeamStatisticFactory import TeamStatisticDAOFactory
+from backend.manager.managerRepository import ManagerDAO
+from backend.soccerTeam.soccerTeamDAO import SoccerTeamDAO
+from backend.soccerTeam.soccerTeamStatistics import SoccerTeam
+from backend.handler import utils
+from backend.Records.recordsDAO import RecordsDAO
+from backend.player.playerDAO import PlayerDAO
+
 
 class TeamRepository:
     def __init__(self):
@@ -20,10 +23,12 @@ class TeamRepository:
         team_tup = [team for team in result]
         team_obj = [Team(team[0], team[1], team[2], team[3]) for team in team_tup]
         for team in team_obj:
-            dao =  TeamStatisticDAOFactory().getDAO(team.sport_name)
+            dao = TeamStatisticDAOFactory().getDAO(team.sport_name)
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+            team.players = PlayerDAO().getByTeamID(team.team_id)
+            team.playerStatistics = SoccerPlayerStatisticDAO().getByTeamID(team.team_id)
         cursor.close()
         self.conn.close()
         return team_obj
@@ -39,6 +44,8 @@ class TeamRepository:
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+            team.players = PlayerDAO().getByTeamID(team.team_id)
+            team.playerStatistics = SoccerPlayerStatisticDAO().getByTeamID(team.team_id)
         cursor.close()
         return team_obj
 
@@ -105,6 +112,8 @@ class TeamRepository:
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+            team.players = PlayerDAO().getByTeamID(team.team_id)
+            team.playerStatistics = SoccerPlayerStatisticDAO().getByTeamID(team.team_id)
         cursor.close()
         self.conn.close()
         return team_obj
@@ -120,6 +129,8 @@ class TeamRepository:
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+            team.players = PlayerDAO().getByTeamID(team.team_id)
+            team.playerStatistics = SoccerPlayerStatisticDAO().getByTeamID(team.team_id)
         cursor.close()
         self.conn.close()
         return team_obj
@@ -135,6 +146,8 @@ class TeamRepository:
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+            team.players = PlayerDAO().getByTeamID(team.team_id)
+            team.playerStatistics = SoccerPlayerStatisticDAO().getByTeamID(team.team_id)
         cursor.close()
         self.conn.close()
         return team_obj
@@ -150,6 +163,8 @@ class TeamRepository:
             team.sportStatistic = dao.getByTeamid(team.team_id)
             team.managers = ManagerDAO().getByTeamID(team.team_id)
             team.teamRecords = RecordsDAO().getByTeamID(team.team_id)
+            team.players = PlayerDAO().getByTeamID(team.team_id)
+            team.playerStatistics = SoccerPlayerStatisticDAO().getByTeamID(team.team_id)
         cursor.close()
         self.conn.close()
         return team_obj 

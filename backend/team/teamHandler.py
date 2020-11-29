@@ -1,15 +1,15 @@
 from flask import jsonify
-from handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
-from team.teamRepository import TeamRepository
-from team.team import Team
-from team.teamServices import TeamService
-from handler.utils import intoJSON
-from soccerTeam.soccerTeamStatistics import SoccerTeam
+from backend.handler.utils import CREATED, OK, BAD_REQUEST, NOT_FOUND
+from backend.team.teamRepository import TeamRepository
+from backend.team.team import Team
+from backend.team.teamServices import TeamService
+from backend.handler.utils import intoJSON
+from backend.soccerTeam.soccerTeamStatistics import SoccerTeam
 # from backend.team.services import compareTeam
-from soccerTeam.soccerTeamDAO import SoccerTeamDAO
-from Records.teamRecords import TeamRecords
-from Records.recordsDAO import RecordsDAO
-from soccerTeam.TeamSpecificationPattern import SoccerTeamSpecification
+from backend.soccerTeam.soccerTeamDAO import SoccerTeamDAO
+from backend.Records.teamRecords import TeamRecords
+from backend.Records.recordsDAO import RecordsDAO
+from backend.soccerTeam.TeamSpecificationPattern import SoccerTeamSpecification
 
 
 class TeamHandler:
@@ -48,13 +48,13 @@ class TeamHandler:
 
     def get(self, tid):
         teams = TeamRepository().get(tid)
-        validTeams = list()
-        for team in teams:
-            if SoccerTeamSpecification().isValidTeam(team):
-                validTeams.append(team)
-            else:
-                pass
-        return jsonify(Teams=[team.serialize() for team in validTeams]), OK
+        # validTeams = list()
+        # for team in teams:
+        #     if SoccerTeamSpecification().isValidTeam(team):
+        #         validTeams.append(team)
+        #     else:
+        #         pass
+        return jsonify(Teams=[team.serialize() for team in teams]), OK
         # return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
     def search(self, args):
@@ -70,13 +70,13 @@ class TeamHandler:
             teams = repository.getBySport(sport_name)
         else:
             return jsonify(Error='Malformed query string'), NOT_FOUND
-        validTeams = list()
-        for team in teams:
-            if SoccerTeamSpecification().isValidTeam(team):
-                validTeams.append(team)
-            else:
-                pass
-        return jsonify(Teams=[team.serialize() for team in validTeams]), OK
+        # validTeams = list()
+        # for team in teams:
+        #     if SoccerTeamSpecification().isValidTeam(team):
+        #         validTeams.append(team)
+        #     else:
+        #         pass
+        return jsonify(Teams=[team.serialize() for team in teams]), OK
         # return jsonify(Teams = [ team.serialize() for team in teams ]), OK
 
 
