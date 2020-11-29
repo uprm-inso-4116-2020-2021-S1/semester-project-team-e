@@ -96,7 +96,7 @@ def comaprePlayer(player_1, player_2):
 @app.route('/player/statistics', methods = [GET, POST])
 def getAllPlayerStatistics():
     if request.method == GET:
-        return PlayerHandler().getAllPlayerSoccerStatistics()
+        return PlayerHandler().getAllPlayerStatistics()
     elif request.method == POST and request.args:
         return PlayerHandler().add(request.args)
 

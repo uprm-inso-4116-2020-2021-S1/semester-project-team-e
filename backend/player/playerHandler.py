@@ -69,7 +69,7 @@ class PlayerHandler:
         else:
             return jsonify(Error='No player found...'), NOT_FOUND
     
-    def getAllPlayerSoccerStatistics(self):
+    def getAllPlayerStatistics(self):
         ''' Gets all players individual soccer statistics '''
         player_individual_stats = PlayerRepository().getAllPlayerStatistics()
         return jsonify(SoccerPlayerStatistic = player_individual_stats), OK

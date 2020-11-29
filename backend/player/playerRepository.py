@@ -142,21 +142,6 @@ class PlayerRepository:
         else:
             return []
 
-    # def getStatByPId(self, player_id):
-    #     stat_ls = []
-    #     for sport, stat_type in INDIVIDUAL_DB_STATISTICS.items():
-    #         stat_name = stat_type[TABLE_NAME_INDEX]
-    #         stat_type = stat_type[DAO_TYPE]            
-    #         receive_ls = self._genericGetByPlayerIdTable(stat_type, player_id)
-    #         if receive_ls:
-    #             entity_keys = DAO()._get_column_names(stat_name)
-    #             receive_ls = to_specified_format(receive_ls, entity_keys)                
-    #             stat_dict = {INDIVIDUAL_DB_STATISTICS[sport][ENTITY_TYPE] : receive_ls}
-    #             stat_ls.append(stat_dict)
-    #     return stat_ls
-
-   
-
     def _genericGetByPlayerIdTable(self, entity_dao: DAO, player_id: int) -> list:
         entity_dao: DAO
         info_ls = entity_dao().get_by_attribute({'player_id': player_id})
