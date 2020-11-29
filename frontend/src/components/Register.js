@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
-function Login() {
+function Register() {
       const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
       const [fullName, setFullName] = useState("");
@@ -19,7 +19,7 @@ function Login() {
       // }
         function handleSubmit(event){
             event.preventDefault();
-            axios.post(`/register`, {
+            axios.post(`http:://localhost:5000/register`, {
                 username: username,
                 full_name: fullName,
                 email: email,
@@ -92,4 +92,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Register

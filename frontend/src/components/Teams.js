@@ -1,26 +1,71 @@
-import React from 'react';
-import {Container} from 'react-bootstrap';
+import React, {useState, useContext, useEffect} from 'react';
+import {Container, Spinner, Col} from 'react-bootstrap';
 import Searchbar from '../components/Searchbar';
 import TeamPreview from '../components/TeamPreview';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faFrown} from '@fortawesome/free-solid-svg-icons';
+import {AuthContext} from './AuthContext';
+import axios from 'axios';
 
 function Teams() {
-    const dummyData = [
-        { teamName: 'Los Coquis', teamID: 2, sportName: 'soccer', teamMemberLength: 8},
-        { teamName: 'Bravos de Ponce', teamID: 3, sportName: 'soccer', teamMemberLength: 12},
-        { teamName: 'Cangrejeros', teamID: 4, sportName: 'soccer', teamMemberLength: 10},
-        { teamName: 'Gurabo FC', teamID: 6, sportName: 'soccer', teamMemberLength: 14},
-    ]
+    const [state, setState] = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const [teamsData, setTeamsData] = useState([]);
 
-    return (
-        <div>
-            <Container>
-                <Searchbar title="Teams" placeholder="Search Teams"/>
-                {dummyData.map(team => (
-                    <TeamPreview key={team.teamID} noLink={false} teamName={team.teamName} teamID={team.teamID} teamMemberLength={team.teamMemberLength}/>
-                ))}
-            </Container>   
-        </div>
-    )
+    useEffect(() => {
+        const getTeams = async () => {
+            setIsLoading(true);
+            await axios.get('http://localhost:5000/team')
+                .then((response) => {
+                    setTeamsData(response.data.Teams);
+                    setIsError(false);
+                    console.log(teamsData);
+                })
+                .catch(() => setIsError(true));
+            setIsLoading(false);
+        }
+        getTeams();
+    }, [setTeamsData]);
+
+    if (isLoading) {
+        return (
+            <Container align="center">
+                <h1>Loading...</h1>
+                <Spinner animation="border"/>
+            </Container>
+        )
+    } else {
+        if (isError) {
+            return (
+                <Container>
+                    <Col align="center" className="my-3">
+                        <FontAwesomeIcon icon={faFrown} size="9x"/>
+                        <h1>Something went wrong...</h1>
+                    </Col>
+                </Container>
+            )
+        } else {
+            if (teamsData.length === 0) {
+                return (
+                    <Container align="center" className="m-2">
+                        <h1>No teams found...</h1>
+                    </Container>
+                )
+            } else {
+                return (
+                    <div>
+                        <Container>
+                            <Searchbar title="Teams" placeholder="Search Teams"/>
+                            {teamsData.map(team => (
+                                <TeamPreview key={team.team} noLink={false} teamName={team.team_name} teamID={team.team} teamMemberLength={0}/>
+                            ))}
+                        </Container>
+                    </div>
+                )
+            }
+        }
+    }
 }
 
 export default Teams
