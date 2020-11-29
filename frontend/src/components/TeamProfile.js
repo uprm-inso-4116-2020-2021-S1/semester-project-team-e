@@ -141,6 +141,7 @@ function TeamProfile() {
     const [isError, setIsError] = useState(false);
     const [teamData, setTeamData] = useState({});
     const [statistics, setStatistics] = useState([]);
+    const [records, setRecords] = useState([]);
     const [isReload, setIsReload] = useState(0);
 
     useEffect(() => {
@@ -152,7 +153,8 @@ function TeamProfile() {
                         setIsError(true);
                     } else {
                         setTeamData(response.data.Teams[0]);
-                        setStatistics(response.data.Teams[0].team_statistics)
+                        setStatistics(response.data.Teams[0].team_statistics);
+                        setRecords(response.data.Teams[0].team_Records);
                         setIsError(false);
                     }})
                 .catch(() => setIsError(true));
@@ -207,7 +209,7 @@ function TeamProfile() {
             let content;
             switch (tab) {
                 case tabs.STATISTICS:
-                        content = <TeamStatisticsContent state={state} statistics={statistics} id={id} reload={setIsReload}/>
+                        content = <TeamStatisticsContent state={state} statistics={statistics} records={records} id={id} reload={setIsReload}/>
                     break;
                 case tabs.MANAGER:
                     content = <ManagerContent managers={teamData.managers}/>

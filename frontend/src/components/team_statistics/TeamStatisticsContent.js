@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function TeamStatisticsContent(props) {
-    const {id, statistics, state} = props;
+    const {id, statistics, records, state} = props;
 
     const [show, setShow] = useState(false);
 
@@ -34,19 +34,6 @@ function TeamStatisticsContent(props) {
            <SoccerTeamForm handleClose={handleClose} show={show} id={id} reload={props.reload}/> 
         );
     }
-
-    let overallPerformanceDummy = [
-        { name: 'Wins', value: 3}, 
-        { name: 'Loses', value: 2 }, 
-        { name: 'Draws', value: 1 }, 
-    ];
-    const yearlyPerformanceDummy= [
-        {year: 2016, wins: 3, losses: 2, draws: 1}, 
-        {year: 2017, wins: 2, losses: 2, draws: 0}, 
-        {year: 2018, wins: 2, losses: 1, draws: 2}, 
-        {year: 2019, wins: 4, losses: 2, draws: 1},
-        {year: 2020, wins: 2, losses: 3, draws: 0},
-    ];
 
     let content;
     if (statistics.length === 0) {
@@ -93,13 +80,29 @@ function TeamStatisticsContent(props) {
 
             fouls.push({year: year, fouls: statistic.fouls});
             averages[7].average += statistic.fouls;
-        })
+        });
 
-        averages.forEach(stat => stat.average /= statistics.length)
+        averages.forEach(stat => stat.average /= statistics.length);
+
+        let yearlyRecords = [];
+        let overallPerformance = [
+        { name: 'Wins', value: 0}, 
+        { name: 'Loses', value: 0 }, 
+        { name: 'Draws', value: 0 }, 
+        ];
+
+        records.forEach((record) => {
+            yearlyRecords.push({year: record.year, wins: record.wins, losses: record.loss, draws: record.draw})
+            overallPerformance[0].value += record.wins;
+            overallPerformance[1].value += record.loss;
+            overallPerformance[2].value += record.draw;
+        });
+
+        overallPerformance.forEach(result => result.value /= records.length);
 
         content = <SoccerTeamStatistics 
-                    yearlyPerformance={yearlyPerformanceDummy} 
-                    overallPerformance={overallPerformanceDummy} 
+                    yearlyPerformance={yearlyRecords} 
+                    overallPerformance={overallPerformance} 
                     averages={averages} 
                     goalsFor={goalsFor}
                     goalsAllowed={goalsAllowed}
