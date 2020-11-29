@@ -97,7 +97,7 @@ def getAllPlayerStatistics():
     else:
         return PlayerHandler().getAllPlayerSoccerStatistics()
 
-@app.route('/player/soccer<int:stat_id>', methods = [GET, PUT, DELETE])
+@app.route('/player/soccer/<int:stat_id>', methods = [GET, PUT, DELETE])
 def getSoccerPlayerStatistic(stat_id):
     if request.method == GET:
         return PlayerHandler().getSoccerPlayerStatisticById(stat_id)
