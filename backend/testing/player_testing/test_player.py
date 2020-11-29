@@ -80,7 +80,10 @@ LINKS = [
 ]
 
 if __name__=='__main__':    
-    main()
+    # main()
+    lnk = HOST + '/player/soccer2'
+    p_name = {'player_name' : 'udyr', 'id' : 14}
+    print(get(lnk).content)
 
     # main() # Esto es para 
     # cheap_test(get, LINKS[0])

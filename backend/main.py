@@ -81,6 +81,9 @@ def getPlayerByID(id):
         return PlayerHandler().edit(request.get_json(), id)
     elif request.method == DELETE:
         return PlayerHandler().delete(id)
+    elif request.args:
+        return PlayerHandler().search(request.args)
+
     else:
         return PlayerHandler().get(id)
 
@@ -101,7 +104,6 @@ def getAllPlayerStatistics():
 def getSoccerPlayerStatistic(stat_id):
     if request.method == GET:
         return PlayerHandler().getSoccerPlayerStatisticById(stat_id)
-
     elif request.method == PUT:
         # TODO implement
         return None

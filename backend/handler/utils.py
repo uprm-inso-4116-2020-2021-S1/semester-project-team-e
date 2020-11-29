@@ -161,7 +161,7 @@ DATABASECONFIG = {
 }
 
 def connectDB():
-    global conn
+    # global conn
     try:
         conn = mariadb.connect(**DATABASECONFIG
             # host= 'localhost',

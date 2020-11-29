@@ -22,15 +22,12 @@ class PlayerHandler:
                     players.append(plyr)        
         return jsonify(Players = players)     
 
-    def add(self, json_obj: Dict):
-        # Pending Revision
+    def add(self, json_obj: Dict):        
         for entry in json_obj.keys():
-            if entry not in PlayerHandler.player_dummy.__dict__.keys():
+            if entry not in Player.PLAYER_DB_ADD_FORMAT:
                 return jsonify(Error='Unexpected attributes in post.'), BAD_REQUEST
-            else:                
-                player = Player(**json_obj)
-                PlayerRepository().add(player)
-                return jsonify(Player=player.__dict__), CREATED
+            else:
+                return jsonify(Player_Id=PlayerRepository().addPlayer(json_obj)), CREATED
 
     def edit(self, json_obj: Dict, player_id: int):
         # Pending Revision
@@ -44,18 +41,16 @@ class PlayerHandler:
                 print(f'After the edit was made: {PlayerRepository().edit(player)}')
                 return jsonify(Player=vars(PlayerRepository().get(player_id))), OK
 
-    def delete(self, player_id):
-        # Pending Revision
+    def delete(self, player_id):        
         player: Player
-        player = PlayerRepository().get(player_id)
-        PlayerRepository().delete(player_id)
+        player = PlayerRepository().getPlayerByID(player_id)        
         if player:
-            return jsonify(Player=player.__dict__), OK
+            PlayerRepository().deletePlayer(player_id)
+            return jsonify(Player=player), OK
         else:
             return jsonify(Error='No Player found with that id.'), NOT_FOUND
 
     def get(self, player_id):
-        # Pending Revision
         player: Player
         player = PlayerRepository().getPlayerAndStats(player_id)
         if player:
@@ -63,38 +58,28 @@ class PlayerHandler:
         else:
             return jsonify(Error='No Player found.'), NOT_FOUND
 
-    def search(self, args: Dict):        
-        # Pending Revision
-        player_rep = PlayerRepository()        
-        # try:
-        return jsonify(player_rep.getPlayerByAttributes(args)), OK
-        # except Exception as e:
-            # print(e)
-            # return jsonify(Error='Invalid player attributes for search.'), NOT_FOUND
-
-    def compare_players(self, player_1, player_2):
-        # Pending Revision
-        # TODO do it mai dude
-        pass
-
-
+    def search(self, args: dict):        
+        ''' Only searches for a player that has any attribute provided ''' 
+        player_rep = PlayerRepository()                
+        results = player_rep.getPlayerByAttributes(args)
+        if results:
+            return jsonify(Player=results), OK
+        else:
+            return jsonify(Error='No player found...'), NOT_FOUND
+    
     def getAllPlayerSoccerStatistics(self):
-        # Pending Revision
+        ''' Gets all players individual soccer statistics '''
         player_individual_stats = PlayerRepository().getAllPlayerStatistics()
-        print(player_individual_stats)
-        for idx, item in enumerate(player_individual_stats):
-            item: SoccerPlayerStatistic
-            player_individual_stats[idx] = item.to_dictionary()
-            
         return jsonify(SoccerPlayerStatistic = player_individual_stats), OK
 
     def getSoccerPlayerStatisticById(self, id):
-        #  Pending Revision
+        ''' Gets soccer player stat by given id ''' 
         player_stat: SoccerPlayerStatistic
-        player_stat = PlayerRepository().getPlayerStatById(id)
+        player_stat = PlayerRepository().getPlayerStatById('soccer', id)
         if player_stat:
-            return jsonify(SoccerPlayerStatistic = player_stat.to_dictionary()), OK
+            return jsonify(SoccerPlayerStatistic = player_stat), OK
         else:
             return jsonify(Error = 'No player found by that id.'), NOT_FOUND
 
 
+    

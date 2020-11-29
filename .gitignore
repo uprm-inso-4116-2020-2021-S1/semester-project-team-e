@@ -36,3 +36,4 @@ backend/soccerTeam/__pycache__/soccerTeamDAO.cpython-38.pyc
 backend/soccerTeam/__pycache__/soccerTeamStatistics.cpython-38.pyc
 backend/soccerTeam/__pycache__/TeamStatisticFactory.cpython-38.pyc
 backend/team/__pycache__/teamServices.cpython-38.pyc
+backend/soccerTeam/__pycache__/TeamSpecificationPattern.cpython-38.pyc

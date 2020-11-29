@@ -22,20 +22,19 @@ class PlayerDAO(DAO):
         return self.close_and_return_result()        
         
 
-    @classmethod
-    def get_by_attribute(cls, self, player_args: dict):        
+    
+    def get_by_attribute(self, player_args: dict):        
         select_query = Player.search_by_atr(player_args)
         self.execute_query_and_fetch(select_query)
         return self.close_and_return_result()        
         
 
-    def add(self, player_info: Dict):        
-        add_query = 'insert into player (player_name, height, weight, team_name, sport_name) values(?, ?, ?, ?, ?)'        
-        self.execute_query_and_fetch(add_query, player_info)        
+    def add(self, player_info: dict):        
+        add_query = 'insert into player (player_name, height, weight, team_name, sport_name) values(?, ?, ?, ?, ?)'
+        self.execute_query_and_fetch(add_query, player_info.values())        
         self.close_and_return_result()
         if self.cursor.lastrowid:
-            last_player_id = self.cursor.lastrowid
-            
+            last_player_id = self.cursor.lastrowid            
             return last_player_id
         else:
             return None

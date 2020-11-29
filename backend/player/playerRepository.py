@@ -56,10 +56,8 @@ class PlayerRepository:
         else:
             return None    
 
-    def addPlayer(self, player: Player):
-        # Pending Revision
-        player_json = player.to_db_format()
-        return PlayerDAO().add(player_json)
+    def addPlayer(self, player: dict):        
+        return PlayerDAO().add(player)
 
     def editPlayer(self, player_info):
         # Pending Revision
@@ -67,8 +65,7 @@ class PlayerRepository:
         return PlayerDAO().edit(player_info)
         
 
-    def deletePlayer(self, player_id):
-        # Pending Revision
+    def deletePlayer(self, player_id):        
         return PlayerDAO().delete(player_id)
         
     
@@ -87,12 +84,23 @@ class PlayerRepository:
         ''' Gets every individual player statistic regardless of player or sport ''' 
         stat_ls = []
         for stat_type in INDIVIDUAL_DB_STATISTICS.values():
+            stat_dao = stat_type[DAO_TYPE]
             stat_type = stat_type[TABLE_NAME_INDEX]
-            receive_ls = self._genericGetAllTable(stat_type)
+            receive_ls = self._genericGetAllTable(stat_dao)
             if receive_ls:
-                entity_keys = DAO._get_column_names(INDIVIDUAL_DB_STATISTICS[stat_type][TABLE_NAME_INDEX])
+                entity_keys = DAO()._get_column_names(stat_type)
                 receive_ls = to_specified_format(receive_ls, entity_keys)
                 stat_ls.extend(receive_ls)
+        return stat_ls
+
+
+    def getPlayerStatById(self, sport_type: str, stat_id: int):
+        dao_type = INDIVIDUAL_DB_STATISTICS.get(sport_type, None)
+        if dao_type:
+            dao_type = dao_type[DAO_TYPE]
+            return self._genericGetByIdTable(dao_type, stat_id)
+        else:
+            return None
 
     def getPlayerStatisticsByPlayerId(self, player_id):
         stat_ls = []

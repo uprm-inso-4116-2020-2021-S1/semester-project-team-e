@@ -34,15 +34,20 @@ class DB_Entity:
         ret_str = ''
         for idx, item_pair in enumerate(arg_dict.items()):
             key, value = item_pair
-            # print(value, type(value))
+            # print(value, type(value))            
+            number_check: str
+            number_check = value.replace('.', '')
+            if number_check.isnumeric():
+                value = float(value)
+        
             if idx == 0:
                 if isinstance(value, str):
-                    ret_str += f'{key} like {value}'
+                    ret_str += f'{key} like "{value}"'
                 else:
                     ret_str += f'{key} = {value}'
             else:
                 if isinstance(value, str):
-                    ret_str += f' or {key} like {value}'
+                    ret_str += f' or {key} like "{value}"'
                 else:
                     ret_str += f' or {key} = {value}'
 

@@ -29,7 +29,7 @@ class Player(DB_Entity):
 
 
     def __init__(self, player_id=None, player_name=None, height=None, weight=None, team_name=None, sport_name=None, team_sport_id=None, sport_stats=None):
-        self.player_id = player_id
+        self.id = player_id
         self.player_name = player_name
         self.height = height
         self.weight = weight
@@ -45,8 +45,12 @@ class Player(DB_Entity):
         db_dict = {}
         inst_values = vars(self)
         for entry in Player.PLAYER_DB_FORMAT:
-            db_dict[entry] = inst_values[entry]
-
+            # db_dict_value = db_dict.get(entry, None)
+            # curr_inst_val = inst_values.get(entry, None)             
+            if db_dict.get(entry, None) and inst_values.get(entry, None):                
+                db_dict[entry] = inst_values[entry]
+            # if db_dict_value and curr_inst_val:                
+            
         return db_dict
 
     def to_specified_db_format(self, format):
@@ -56,12 +60,6 @@ class Player(DB_Entity):
             db_dict[entry] = inst_values[entry]
 
         return db_dict
-
-
-    # @staticmethod
-    # def search_by_atr(recvd: dict):
-    #     pass
-
 
     @staticmethod
     def search_by_atr(front_end_dict: dict):                                                     # This last bit with the dictionary could be eliminated later
