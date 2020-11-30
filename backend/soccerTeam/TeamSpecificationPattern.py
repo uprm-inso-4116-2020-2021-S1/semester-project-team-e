@@ -8,7 +8,7 @@ class SoccerTeamSpecification:
         count = 0
         for x in players:
             count += 1
-        if count >= 7:
+        if count >= 1:
             return True
         else:
             return False

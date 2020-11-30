@@ -1,6 +1,6 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useRef} from 'react';
 import {useParams} from 'react-router-dom';
-import { Container, Row, Col, Nav, Card, Button, Modal, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Nav, Card, Button, Modal, Spinner, Form } from 'react-bootstrap';
 import {AuthContext} from './AuthContext';
 import TeamStatisticsContent from './team_statistics/TeamStatisticsContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,7 @@ import { faBalanceScale, faPlus, faFrown } from '@fortawesome/free-solid-svg-ico
 import TeamCompare from './TeamCompare';
 import PlayerPreview from './PlayerPreview';
 import axios from 'axios';
+import {useForm, Controller} from 'react-hook-form';
 
 function ManagerContent(props) {
     const {managers} = props;
@@ -44,12 +45,40 @@ function ManagerContent(props) {
 
 function PlayersContent(props) {
     const {players, state} = props;
+    const [show, setShow] = useState(false);
+    const [newPlayer, setNewPlayer] = useState({});
+    const {control, handleSubmit} = useForm();
+    const isInitialMount = useRef(true);
 
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const onSubmit = data => {
+        setNewPlayer(data);
+        console.log(data); 
+        handleClose();
+        props.reload(1);
+    };
+
+    useEffect(() => {
+        const addPlayer = async () => {
+            axios.defaults.headers.post['Authorization'] = `Bearer  ${state.token}`;
+            await axios.post('http://localhost:5000/player', newPlayer)
+                .then((response) => {})
+                .catch((error) => {});
+        }
+
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            addPlayer();
+        }
+    }, [newPlayer])
+       
     const AddPlayerBtn = () => {
         if (state.name) {
             return (
                 <Row className="m-2 d-flex justify-content-end">
-                    <Button>
+                    <Button onClick={handleShow}>
                         Add Player <FontAwesomeIcon icon={faPlus}/>
                     </Button>
                 </Row>
@@ -63,6 +92,30 @@ function PlayersContent(props) {
 
     return (
         <Container className="m-2">
+             <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>New player:</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        <Form.Group controlId="name">
+                            <Form.Label>Name:</Form.Label>
+                            <Controller as={Form.Control} name="name" control={control} defaultValue=""/>
+                        </Form.Group>
+                        <Form.Group controlId="height">
+                            <Form.Label>Height:</Form.Label>
+                            <Controller as={Form.Control} name="height" control={control} defaultValue=""/>
+                        </Form.Group>
+                        <Form.Group controlId="weight">
+                            <Form.Label>Weight:</Form.Label>
+                            <Controller as={Form.Control} name="weight" control={control} defaultValue=""/>
+                        </Form.Group>
+                        <Button type="submit" variant="primary">
+                            submit
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
             <AddPlayerBtn/>
             {/* {players.map(player => ( */}
                 {/* <PlayerPreview playerID={} playerName={} position={} /> */}
@@ -88,6 +141,8 @@ function TeamProfile() {
     const [isError, setIsError] = useState(false);
     const [teamData, setTeamData] = useState({});
     const [statistics, setStatistics] = useState([]);
+    const [records, setRecords] = useState([]);
+    const [isReload, setIsReload] = useState(0);
 
     useEffect(() => {
         const fetchTeamData = async () => {
@@ -98,7 +153,8 @@ function TeamProfile() {
                         setIsError(true);
                     } else {
                         setTeamData(response.data.Teams[0]);
-                        setStatistics(response.data.Teams[0].team_statistics)
+                        setStatistics(response.data.Teams[0].team_statistics);
+                        setRecords(response.data.Teams[0].team_Records);
                         setIsError(false);
                     }})
                 .catch(() => setIsError(true));
@@ -106,7 +162,7 @@ function TeamProfile() {
         }
 
         fetchTeamData();
-    }, []);
+    }, [isReload]);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -118,14 +174,11 @@ function TeamProfile() {
                 <Modal.Title>Compare Team:</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TeamCompare team={{teamName: "Los coquis", teamID: 2}}/>
+                <TeamCompare team={{team_name: teamData.team_name, team: id}}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                    Save Changes
                 </Button>
             </Modal.Footer>
         </Modal>
@@ -153,13 +206,13 @@ function TeamProfile() {
             let content;
             switch (tab) {
                 case tabs.STATISTICS:
-                        content = <TeamStatisticsContent state={state} statistics={statistics} id={id}/>
+                        content = <TeamStatisticsContent state={state} statistics={statistics} records={records} id={id} reload={setIsReload}/>
                     break;
                 case tabs.MANAGER:
                     content = <ManagerContent managers={teamData.managers}/>
                     break;
                 case tabs.PLAYERS:
-                    content = <PlayersContent state={state}/>
+                    content = <PlayersContent state={state} reload={setIsReload}/>
                     break;
                 default:
                     break;

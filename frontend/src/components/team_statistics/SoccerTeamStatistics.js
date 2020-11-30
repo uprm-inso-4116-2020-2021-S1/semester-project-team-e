@@ -36,11 +36,12 @@ function SoccerTeamForm(props) {
 
     const onSubmit = data => {
         transformData(data);
-        setMatchResult({date: data.date, match_result: data.match_result});
-        delete data.match_result;
+        // setMatchResult({date: data.date, match_result: data.match_result});
+        // delete data.match_result;
         setStatistic(data);
         console.log(data); 
-        props.handleClose()
+        props.handleClose();
+        props.reload(2);
     };
 
     return (
@@ -63,10 +64,10 @@ function SoccerTeamForm(props) {
                                 as = {
                                     <Row>
                                         <Col>
-                                            <Form.Check type="radio" label="Won" name="formHorizontalRadios" id="formHorizontalRadios1" value="won"/>
+                                            <Form.Check type="radio" label="Won" name="formHorizontalRadios" id="formHorizontalRadios1" value="win"/>
                                         </Col>
                                         <Col>
-                                            <Form.Check type="radio" label="Lost" name="formHorizontalRadios" id="formHorizontalRadios2" value="lost"/>
+                                            <Form.Check type="radio" label="Lost" name="formHorizontalRadios" id="formHorizontalRadios2" value="loss"/>
                                         </Col>
                                         <Col>
                                             <Form.Check type="radio" label="Draw" name="formHorizontalRadios" id="formHorizontalRadios2" value="draw"/>

@@ -17,6 +17,7 @@ function MyTeams() {
     const [myTeams, setMyTeams] = useState([]);
     const [newTeam, setNewTeam] = useState({});
     const [teamIdToDelete, setTeamIdToDelete] = useState();
+    const [action, setAction] = useState("");
     const isInitialMount = useRef(true);
 
     const handleClose = () => setShow(false);
@@ -25,8 +26,10 @@ function MyTeams() {
     useEffect(() => {
         const getMyTeams = async () => {
             setIsLoading(true);
+            await new Promise(r => setTimeout(r, 100)); //Sometimes the server responds faster than the delete or add and returns previous state of database.
             await axios.post('http://localhost:5000/manager/myteams', {username: state.name})
                 .then((response) => {
+                    console.log(response.data.Teams);
                     setMyTeams(response.data.Teams);
                     setIsError(false);
                 })
@@ -38,7 +41,7 @@ function MyTeams() {
             axios.defaults.headers.post['Authorization'] = `Bearer  ${state.token}`;
             await axios.post('http://localhost:5000/team', newTeam)
                 .then((response) => {})
-                .catch((error) => {})
+                .catch((error) => {});
         }
 
          const deleteTeam = async () => {
@@ -52,17 +55,27 @@ function MyTeams() {
             isInitialMount.current = false;
             getMyTeams();
         } else {
-            addTeam();
-            getMyTeams();
+            console.log(action);
+            if (action === "delete"){
+                console.log("deleting");
+                deleteTeam();
+                getMyTeams();
+            } else if (action === "add") {
+                console.log("adding");
+                addTeam();
+                getMyTeams();
+            }
+            setAction("");
         }
-    }, [newTeam]);
+    }, [newTeam, teamIdToDelete]);
 
     const AddTeamForm = () => {
         const {control, handleSubmit} = useForm();
 
         const onSubmit = data => {
             data.username = state.name;
-            setNewTeam(data)
+            setAction("add");
+            setNewTeam(data);
             console.log(data);
             handleClose();
         }
@@ -139,11 +152,11 @@ function MyTeams() {
                     return (
                         myTeams.map(team => (
                             <Row key={team.team}>
-                                <Col onClick={(team) => {console.log(team.team)}}>
+                                <Col>
                                     <TeamPreview teamName={team.team_name} teamID={team.team} teamMemberLength={0}/>
                                 </Col>                        
                                 <Col xs="auto" className="align-self-center">
-                                    <Button variant="light"><FontAwesomeIcon icon={faTrash}/></Button>
+                                    <Button onClick={() => {setAction("delete"); setTeamIdToDelete(team.team)}} variant="light"><FontAwesomeIcon icon={faTrash}/></Button>
                                 </Col>
                             </Row>
                         ))
