@@ -1,5 +1,5 @@
 from team.teamRepository import TeamRepository
-SOCCER_COMPATISON_STAT_FORMAT = ['statid', 'team_id', 'goals_for', 'goals_allowed', 'shots', 'shots_on_goal', 'saves', 'passes', 'possession', 'fouls', 'date']
+SOCCER_COMPATISON_STAT_FORMAT = ['goals_for', 'goals_allowed', 'shots', 'shots_on_goal', 'saves', 'passes', 'possession', 'fouls']
 
 class TeamService:
     @staticmethod
