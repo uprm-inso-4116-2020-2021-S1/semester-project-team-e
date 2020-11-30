@@ -82,7 +82,7 @@ LINKS = [
 if __name__=='__main__':    
     # main()
     # lnk = HOST + '/player13'
-    lnk = HOST + '/player/stat14'
+    lnk = HOST + '/player'
     player_to_edit = {
             'id' : 13,            
             'player_name' : 'Luis Markez',
@@ -92,7 +92,16 @@ if __name__=='__main__':
             'sport_name' : 'Soccer',
             'team_sport_id' : 2
         }
-    print(get(lnk).content)
+    player_to_add = {
+            'team_name' : 'Bored',
+            'height' : 666,
+            'sport_name' : 'IDK',
+            'weight' : 666,
+            
+            'player_name' : 'Im Tired',
+            
+        }
+    print(post(lnk, json=player_to_add).content)
 
     # main() # Esto es para 
     # cheap_test(get, LINKS[0])

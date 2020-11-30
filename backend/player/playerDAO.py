@@ -30,8 +30,8 @@ class PlayerDAO(DAO):
         
 
     def add(self, player_info: dict):        
-        add_query = 'insert into player (player_name, height, weight, team_name, sport_name) values(?, ?, ?, ?, ?)'
-        self.execute_query_and_fetch(add_query, player_info.values())        
+        add_query = 'insert into player (player_name, height, weight, team_name, sport_name) values(%(player_name)s, %(height)s, %(weight)s, %(team_name)s, %(sport_name)s)'
+        self.execute_query_and_fetch(add_query, player_info)        
         self.close_and_return_result()
         if self.cursor.lastrowid:
             last_player_id = self.cursor.lastrowid            

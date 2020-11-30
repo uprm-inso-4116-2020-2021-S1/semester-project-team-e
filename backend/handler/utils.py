@@ -119,7 +119,10 @@ class DAO(object):
         
     def execute_query_and_fetch(self, query: str, args: List=None):
         if args:
-            self.cursor.execute(query, tuple(args))    
+            if isinstance(args, dict):
+                self.cursor.execute(query, args)    
+            else:
+                self.cursor.execute(query, tuple(args))    
         else:
             self.cursor.execute(query)
         try:
