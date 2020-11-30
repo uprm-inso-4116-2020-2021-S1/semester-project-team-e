@@ -155,4 +155,10 @@ class TeamRepository:
         return team_obj 
 
     def getAvgStats(self, tid):
-        return next(avg_stat[1:] for avg_stat in SoccerTeamDAO.getByid(tid))
+        cursor = self.conn.cursor()
+        query = "select avg(goals_for), avg(goals_allowed), avg(shots), avg(shots_on_goal), avg(saves), avg(passes), avg(possession), avg(fouls) from  (soccer_team_statistics join team_sport on team_sport_id = team_sport.id) where team_id = ?"
+        cursor.execute(query, (tid,))
+        tup = cursor.fetchall()[0]
+        cursor.close()
+        self.conn.close()
+        return tup

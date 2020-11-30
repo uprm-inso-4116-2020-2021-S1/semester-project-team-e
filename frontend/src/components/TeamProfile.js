@@ -174,14 +174,11 @@ function TeamProfile() {
                 <Modal.Title>Compare Team:</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TeamCompare team={{teamName: "Los coquis", teamID: 2}}/>
+                <TeamCompare team={{team_name: teamData.team_name, team: id}}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                    Save Changes
                 </Button>
             </Modal.Footer>
         </Modal>
