@@ -18,10 +18,6 @@ soccer_dummy_data = [
 ]
 
 
-
-
-
-
 class PlayerTest(TestCase):    
     PLAYER_ROUTES = {
         'getall':HOST + '/player',        
@@ -34,27 +30,27 @@ class PlayerTest(TestCase):
         obtained = content.content.decode()
         obtained = json.loads(obtained)         
         print(obtained)       
-        # self.assertEquals(GETALLRES, obtained)        
+        
 
     def test_get_by_player_id(self):
         print('\nTesting get player by id method...')
         url = HOST + '/player14'
         obtained = get(url).content.decode()
         print(obtained)
-        # self.assertEquals(GETPLAYERID, obtained)
+        
 
     def test_get_all_player_soccer_individual_statistics(self):
         print('\nTesting GET for all soccer method...')
         url = HOST + '/player/soccer'
         content = get(url).content.decode()
         print(content)
-        # self.assertEquals(GETALLPLAYERISTAT, content)
+        
 
     def test_get_player_by_attribute(self):
         print('\nTesting get player by attributes')
         url = HOST + '/player'
         obtained = get(url, params={'player_name':'udyr', 'team_name':'Gatez'}).content.decode()
-        # self.assertEquals(GETATTRIBUTE, obtained)
+        
 
     def test_add_player(self):
         print('\nTesting add Player to database by rest...')
@@ -67,7 +63,7 @@ class PlayerTest(TestCase):
             'sport_name' : 'Soccer',
         }
         obtained = post(url, json=player_to_add)
-        # self.assertEquals(201, obtained.status_code)
+        
 
 
 
@@ -80,47 +76,5 @@ LINKS = [
 ]
 
 if __name__=='__main__':    
-    # main()
-    # lnk = HOST + '/player13'
-    lnk = HOST + '/player'
-    player_to_edit = {
-            'id' : 13,            
-            'player_name' : 'Luis Markez',
-            'height' : 4.6,
-            'weight' : 169,
-            'team_name' : 'Destroyers',
-            'sport_name' : 'Soccer',
-            'team_sport_id' : 2
-        }
-    player_to_add = {
-            'team_name' : 'Bored',
-            'height' : 666,
-            'sport_name' : 'IDK',
-            'weight' : 666,
-            
-            'player_name' : 'Im Tired',
-            
-        }
-    print(post(lnk, json=player_to_add).content)
-
-    # main() # Esto es para 
-    # cheap_test(get, LINKS[0])
-    # cheap_test(get, LINKS[1])
-    # cheap_test(get, LINKS[2])
-
-    # cheap_test(post, LINKS)
-    # player_1 = json.dumps(player_dat[0])
-    # player_2 = json.dumps(player_dat[1])
-    # player_1 = player_dat[0]
-    # player_2 = player_dat[1]
-    # print(get(LINKS[0]).content)
-    # # print(get(LINKS[1]).content)
-    # print(get(LINKS[2]).content)
-    # print(post(LINKS[0], json=player_dat[2]))
-    # print(put(LINKS[3], json=player_dat[2]).content)
-    # print(delete(LINKS[3]).content)
-    # TODO En la base de datos cambia lo del key dependiente para que el edit sea mas sencillo
+    main()
     
-    # print(post(LINKS[0], json=player_1))
-    # print(put(LINKS[1], json=player_2))
-    # print(delete(LINKS[1]))
